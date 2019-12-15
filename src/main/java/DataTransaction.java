@@ -1,6 +1,6 @@
-public class DataDAO {
+public class DataTransaction {
 
-    DataDTO data = new DataDTO();
+    Data data = new Data();
 
     public void write() {
         // counter collectionunundan counterSeq sayisini al.
@@ -8,7 +8,5 @@ public class DataDAO {
 
     public void delete() {
         // whenever article is deleted "minus 1" all the articles after that. <- Is it necessary?
-
-
     }
 }

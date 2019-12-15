@@ -1,4 +1,4 @@
-public class DataDTO {
+public class Data {
 
     private int id;
     private int articleID;
@@ -13,19 +13,6 @@ public class DataDTO {
     }
 
     public void setArticleLink(String articleLink) {
-        this.articleLink = articleLink;
-    }
-
-    public DataDTO() {
-    }
-
-    public DataDTO(int id, int articleID, String title, String mainTopic, String author, String relatedTopics, String articleLink) {
-        this.id = id;
-        this.articleID = articleID;
-        this.title = title;
-        this.mainTopic = mainTopic;
-        this.author = author;
-        this.relatedTopics = relatedTopics;
         this.articleLink = articleLink;
     }
 

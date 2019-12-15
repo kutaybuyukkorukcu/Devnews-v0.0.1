@@ -9,10 +9,14 @@ import java.io.IOException;
 public class Crawler {
 
     // Get articleLink's from database. List or not i will decide that when i think of multithreading and concurreny.
-    
-    public DataDTO fill() {
+    // Create it as a function and use it in castToPojo() function.
+    // This function returns articleLinks contained in ArrayList.
+    // getArticleLinks(); <- This function will be located in DataTransaction.
 
-        DataDTO dataDTO = new DataDTO();
+    // castToPojo(ArrayList<String> articleLinks, int articleID)
+    public Data castToPojo(int articleID) {
+
+        Data data = new Data();
 
         // DB'den urlleri cek. Her seferinde url adinda bir String'e atansin.
         String url = "https://www.infoq.com/news/2019/12/oracle-goolge-api-battle/";
@@ -43,16 +47,14 @@ public class Crawler {
 
         String relatedTopics = validator.removeLastChar(topics.toString());
 
-        // DB'de id ve articleID kendisi articak sekilde yaratilacak.
         // articleLink yine DB'den geliyor.
-        dataDTO.setArticleLink(url);
-        dataDTO.setAuthor(author);
-        dataDTO.setTitle(title);
-        dataDTO.setMainTopic(mainTopic);
-        dataDTO.setRelatedTopics(relatedTopics);
+        data.setArticleID(articleID);
+        data.setArticleLink(url);
+        data.setAuthor(author);
+        data.setTitle(title);
+        data.setMainTopic(mainTopic);
+        data.setRelatedTopics(relatedTopics);
 
-        // DB'ye tekrar yazma.
-
-        return dataDTO;
+        return data;
     }
 }

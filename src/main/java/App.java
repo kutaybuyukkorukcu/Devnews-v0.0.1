@@ -1,12 +1,12 @@
 import com.mongodb.*;
+import com.mongodb.MongoClient;
 import com.mongodb.client.*;
+
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
-import utils.Validator;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.PojoCodecProvider;
 
-import java.io.IOException;
-import java.net.SocketTimeoutException;
-import java.util.function.Consumer;
 import org.bson.Document;
 
 public class App {
@@ -14,7 +14,8 @@ public class App {
     public static void main(String[] args) {
 
         MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-        MongoDatabase database = mongoClient.getDatabase("infoq");
+        CodecRegistry pojoCodecRegistry = org.bson.codecs.configuration.CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), org.bson.codecs.configuration.CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+        MongoDatabase database = mongoClient.getDatabase("infoq").withCodecRegistry(pojoCodecRegistry);
 
         MongoCursor<String> databases = mongoClient.listDatabaseNames().iterator();
 
@@ -29,66 +30,80 @@ public class App {
             }
         }
 
-        // Collection data icin ayri bir fonksiyon olucak.
-        if (!flag) {
-            database.createCollection("data");
-        }
+        counterValue(database, flag);
+//         Collection data icin ayri bir fonksiyon olucak.
+//        if (!flag) {
+//            database.createCollection("data", DataDTO.class);
+//        }
 
-        MongoCollection<DataDTO> collection = database.getCollection("data", DataDTO.class);
-
-        Document document = new Document();
-        Document query = new Document();
-
-//        findAndModify ile counter adinda collection olusturup ordan tek tek artan bir ID elde edecegim.
-
-        document.put("articleID", 1);
-        document.put("title", "Yo");
-        document.put("mainTopic", "development");
-        document.put("author", "kutay");
-        document.put("relatedTopics", "AI|DEVELOPMENT|MOBILE");
-        document.put("articleLink", "www.google.com");
-
-        query.put("title", "Yo");
-
-        MongoCursor<DataDTO> cursor = collection.find(query).iterator();
-
-        //        collection.insertOne(document);
-
-        try {
-            while (cursor.hasNext()) {
-                System.out.println(cursor.next().toJson());
-            }
-        }finally {
-            mongoClient.close();
-        }
+//        MongoCollection<DataDTO> collection = database.getCollection("data", DataDTO.class);
+//
+//        Document document = new Document();
+//        Document query = new Document();
+//
+//        document.put("articleID", 1);
+//        document.put("title", "Yo");
+//        document.put("mainTopic", "development");
+//        document.put("author", "kutay");
+//        document.put("relatedTopics", "AI|DEVELOPMENT|MOBILE");
+//        document.put("articleLink", "www.google.com");
+//
+//        query.put("title", "Yo");
+//
+//        MongoCursor<DataDTO> cursor = collection.find(query).iterator();
+//
+//        //        collection.insertOne(document);
+//
+//        try {
+//            while (cursor.hasNext()) {
+//                System.out.println(cursor.next().toJson());
+//            }
+//        }finally {
+//            mongoClient.close();
+//        }
     }
 
+    public static void crawlingDataToPOJO(MongoDatabase database, boolean flag) {
+
+        if (!flag) {
+            database.createCollection("data");
+            MongoCollection<Data> _collection = database.getCollection("data", Data.class);
+            Data data = new Data();
+            // -- Eklemeler yapacagim.
+            // Create a queryID , articleID -> queryID = "const" value for querying, articleID = "int" i will inc 1 everytime
+            _collection.insertOne(data);
+        }
+    }
     /*
     // Create's a collection named counter if there's none.
     // Increments counterValue by 1 and returns it.
     // Purpose of this collection : Defines an articleID for each article.
      */
-    public void counterValue(MongoDatabase database, boolean flag) {
+    public static int counterValue(MongoDatabase database, boolean flag) {
 
         if (!flag) {
             database.createCollection("counter");
-            Document document = new Document();
+            MongoCollection<Counter> _collection = database.getCollection("counter", Counter.class);
+            Counter counter = new Counter();
             // Create a queryID , articleID -> queryID = "const" value for querying, articleID = "int" i will inc 1 everytime
-            document.put("counterName", "articleID");
-            document.put("counterValue", 1);
+            counter.setCounterName("counterName");
+            counter.setCounterValue(1);
+            _collection.insertOne(counter);
         }
 
-        MongoCollection collection = database.getCollection("counter");
+        MongoCollection<Counter> collection = database.getCollection("counter", Counter.class);
 
         Document query = new Document("counterName", "articleID");
         Document update = new Document();
-        update.put("$inc", update.put("counterValue", 1));
+        Document inside = new Document();
+        inside.put("counterValue", 1);
+        update.put("$inc", inside);
 
         FindOneAndUpdateOptions options = new FindOneAndUpdateOptions();
         options.returnDocument(ReturnDocument.AFTER);
         options.upsert(true);
 
-        Object doc = collection.findOneAndUpdate(query, update, options);
-        doc.toString();
+        Counter doc = collection.findOneAndUpdate(query, update, options);
+        return doc.getCounterValue();
     }
 }
