@@ -8,9 +8,11 @@ import java.io.IOException;
 
 public class Crawler {
 
-    public static void main(String[] args) {
+    // Get articleLink's from database. List or not i will decide that when i think of multithreading and concurreny.
+    
+    public DataDTO fill() {
 
-        Data data = new Data();
+        DataDTO dataDTO = new DataDTO();
 
         // DB'den urlleri cek. Her seferinde url adinda bir String'e atansin.
         String url = "https://www.infoq.com/news/2019/12/oracle-goolge-api-battle/";
@@ -43,13 +45,14 @@ public class Crawler {
 
         // DB'de id ve articleID kendisi articak sekilde yaratilacak.
         // articleLink yine DB'den geliyor.
-        data.setArticleLink(url);
-        data.setAuthor(author);
-        data.setTitle(title);
-        data.setMainTopic(mainTopic);
-        data.setRelatedTopics(relatedTopics);
+        dataDTO.setArticleLink(url);
+        dataDTO.setAuthor(author);
+        dataDTO.setTitle(title);
+        dataDTO.setMainTopic(mainTopic);
+        dataDTO.setRelatedTopics(relatedTopics);
 
         // DB'ye tekrar yazma.
 
+        return dataDTO;
     }
 }

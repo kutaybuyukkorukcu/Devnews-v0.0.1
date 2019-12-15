@@ -1,4 +1,4 @@
-public class Data {
+public class DataDTO {
 
     private int id;
     private int articleID;
@@ -16,10 +16,10 @@ public class Data {
         this.articleLink = articleLink;
     }
 
-    public Data() {
+    public DataDTO() {
     }
 
-    public Data(int id, int articleID, String title, String mainTopic, String author, String relatedTopics, String articleLink) {
+    public DataDTO(int id, int articleID, String title, String mainTopic, String author, String relatedTopics, String articleLink) {
         this.id = id;
         this.articleID = articleID;
         this.title = title;
