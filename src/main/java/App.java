@@ -1,64 +1,65 @@
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import com.mongodb.*;
+import com.mongodb.client.*;
 import utils.Validator;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.net.SocketTimeoutException;
+import java.util.function.Consumer;
+import org.bson.Document;
 
 public class App {
 
     public static void main(String[] args) {
 
         Data data = new Data();
-        DBObject doc = createDBObject(data);
 
-        MongoClient mongoClient = new MongoClient("localhost", 27017);
+        MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+        MongoDatabase database = mongoClient.getDatabase("infoq");
 
+        MongoCursor<String> wowe = mongoClient.listDatabaseNames().iterator();
 
-        // DB'den urlleri cek. Her seferinde url adinda bir String'e atansin.
-        String url = "https://www.infoq.com/news/2019/12/oracle-goolge-api-battle/";
+        boolean flag = false;
 
-        Validator validator = new Validator();
-
-        StringBuilder topics = new StringBuilder();
-
-        Document doc = null;
-
-        try {
-            doc = Jsoup.connect(url).get();
-        } catch (IOException e) {
-            e.printStackTrace();
+        while (wowe.hasNext()) {
+            if (wowe.toString() == "infoq") {
+                flag = true;
+            }
         }
-        
-        String topic = doc.select("div.article__category > a[title]").text();
-        String mainTopic = validator.validate(topic);
+        System.out.println(flag);
 
-        String title = doc.select("div.actions__left > h1").text();
-        String author = doc.select("span.author__name > a").text();
-
-        Elements ul = doc.select("div.topics > ul");
-        Elements li = ul.select("li");
-        for(Element item : li) {
-            topics.append(item.text() + "|");
+        if (!flag) {
+            database.createCollection("data");
         }
 
-        String relatedTopics = validator.removeLastChar(topics.toString());
+        MongoCollection collection = database.getCollection("data");
 
-        // DB'de id ve articleID kendisi articak sekilde yaratilacak.
-        // articleLink yine DB'den geliyor.
-        data.setArticleLink(url);
-        data.setAuthor(author);
-        data.setTitle(title);
-        data.setMainTopic(mainTopic);
-        data.setRelatedTopics(relatedTopics);
+        Document document = new Document();
 
-        // DB'ye tekrar yazma.
+        BasicDBObject query = new BasicDBObject();
+//        findAndModify ile counter adinda collection olusturup ordan tek tek artan bir ID elde edecegim.
+//        document.put("articleID", 1);
+//        document.put("title", data.getTitle());
+//        document.put("mainTopic", data.getMainTopic());
+//        document.put("author", data.getAuthor());
+//        document.put("relatedTopics", data.getRelatedTopics());
+//        document.put("articleLink", data.getArticleLink());
+
+        document.put("articleID", 1);
+        document.put("title", "Yo");
+        document.put("mainTopic", "development");
+        document.put("author", "kutay");
+        document.put("relatedTopics", "AI|DEVELOPMENT|MOBILE");
+        document.put("articleLink", "www.google.com");
+
+        query.put("title", "Yo");
+
+        MongoCursor cursor = collection.find(query).iterator();
+
+        while (cursor.hasNext()) {
+            System.out.println(cursor.toString());
+        }
+        //        collection.insertOne(document);
 
     }
 
-    private static DBO
 }
