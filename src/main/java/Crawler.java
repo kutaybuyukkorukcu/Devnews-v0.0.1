@@ -8,7 +8,13 @@ import java.io.IOException;
 
 public class Crawler {
 
-    public static void main(String[] args) {
+    // Get articleLink's from database. List or not i will decide that when i think of multithreading and concurreny.
+    // Create it as a function and use it in castToPojo() function.
+    // This function returns articleLinks contained in ArrayList.
+    // getArticleLinks(); <- This function will be located in DataTransaction.
+
+    // castToPojo(ArrayList<String> articleLinks, int articleID)
+    public Data castToPojo(int articleID) {
 
         Data data = new Data();
 
@@ -41,15 +47,14 @@ public class Crawler {
 
         String relatedTopics = validator.removeLastChar(topics.toString());
 
-        // DB'de id ve articleID kendisi articak sekilde yaratilacak.
         // articleLink yine DB'den geliyor.
+        data.setArticleID(articleID);
         data.setArticleLink(url);
         data.setAuthor(author);
         data.setTitle(title);
         data.setMainTopic(mainTopic);
         data.setRelatedTopics(relatedTopics);
 
-        // DB'ye tekrar yazma.
-
+        return data;
     }
 }

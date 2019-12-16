@@ -16,19 +16,6 @@ public class Data {
         this.articleLink = articleLink;
     }
 
-    public Data() {
-    }
-
-    public Data(int id, int articleID, String title, String mainTopic, String author, String relatedTopics, String articleLink) {
-        this.id = id;
-        this.articleID = articleID;
-        this.title = title;
-        this.mainTopic = mainTopic;
-        this.author = author;
-        this.relatedTopics = relatedTopics;
-        this.articleLink = articleLink;
-    }
-
     public int getId() {
         return id;
     }
