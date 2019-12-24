@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="38286669-2b91-42c5-881a-bf7d3478cd0d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Crawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Crawler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataTransaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/App.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Data.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/utils/Validator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/Validator.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,6 +116,14 @@
       <workItem from="1576317292829" duration="5822000" />
       <workItem from="1576400096177" duration="17701000" />
       <workItem from="1576429459862" duration="1672000" />
+      <workItem from="1576482567456" duration="1262000" />
+      <workItem from="1576659438344" duration="1821000" />
+      <workItem from="1576828956797" duration="2133000" />
+      <workItem from="1576999989715" duration="643000" />
+      <workItem from="1577083569436" duration="5536000" />
+      <workItem from="1577101625021" duration="1188000" />
+      <workItem from="1577103127734" duration="601000" />
+      <workItem from="1577206728019" duration="3400000" />
     </task>
     <servers />
   </component>
@@ -133,9 +135,10 @@
       <screen x="1366" y="0" width="1920" height="1379" />
     </state>
     <state x="278" y="669" width="847" height="677" key="#Project_Structure/1366.0.1920.1379@1366.0.1920.1379" timestamp="1576247607791" />
-    <state x="141" y="665" width="1084" height="752" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1576252764437">
-      <screen x="1366" y="0" width="1920" height="1379" />
+    <state x="141" y="665" width="1084" height="752" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577206851506">
+      <screen x="0" y="611" width="1366" height="768" />
     </state>
+    <state x="141" y="665" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.611.1366.768/1366.0.1920.1080@0.611.1366.768" timestamp="1577206851506" />
     <state x="141" y="665" width="1084" height="752" key="#com.intellij.execution.impl.EditConfigurationsDialog/1366.0.1920.1379@1366.0.1920.1379" timestamp="1576252764437" />
     <state x="241" y="108" width="374" height="577" key="#com.intellij.ide.util.MemberChooser" timestamp="1576426821675">
       <screen x="0" y="27" width="1366" height="741" />
@@ -146,6 +149,15 @@
       <screen x="1366" y="0" width="1920" height="1379" />
     </state>
     <state x="1843" y="386" width="525" height="428" key="#com.intellij.ide.util.TreeClassChooserDialog/1366.0.1920.1379@1366.0.1920.1379" timestamp="1576252683087" />
+    <state x="524" y="882" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1577209122848">
+      <screen x="0" y="611" width="1366" height="768" />
+    </state>
+    <state x="524" y="288" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.27.1366.741@0.27.1366.741" timestamp="1577103083935" />
+    <state x="524" y="882" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.611.1366.768/1366.0.1920.1080@0.611.1366.768" timestamp="1577209122848" />
+    <state x="261" y="652" width="824" height="684" key="#com.intellij.openapi.projectRoots.ui.ProjectJdksEditor" timestamp="1577208738117">
+      <screen x="0" y="611" width="1366" height="768" />
+    </state>
+    <state x="261" y="652" width="824" height="684" key="#com.intellij.openapi.projectRoots.ui.ProjectJdksEditor/0.611.1366.768/1366.0.1920.1080@0.611.1366.768" timestamp="1577208738117" />
     <state x="348" y="27" width="650" height="741" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1576429078791">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
@@ -155,6 +167,10 @@
     </state>
     <state width="973" height="390" key="DebuggerActiveHint/0.27.1366.741@0.27.1366.741" timestamp="1576422961817" />
     <state width="1367" height="724" key="DebuggerActiveHint/1366.0.1920.1379@1366.0.1920.1379" timestamp="1576257756272" />
+    <state x="456" y="752" width="424" height="484" key="FileChooserDialogImpl" timestamp="1577208737089">
+      <screen x="0" y="611" width="1366" height="768" />
+    </state>
+    <state x="456" y="752" width="424" height="484" key="FileChooserDialogImpl/0.611.1366.768/1366.0.1920.1080@0.611.1366.768" timestamp="1577208737089" />
     <state width="1320" height="218" key="GridCell.Tab.0.bottom" timestamp="1576429347833">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
@@ -200,10 +216,11 @@
     </state>
     <state x="159" y="27" width="1024" height="741" key="SettingsEditor/0.27.1366.741@0.27.1366.741" timestamp="1576235706600" />
     <state x="257" y="649" width="900" height="730" key="SettingsEditor/1366.0.1920.1379@1366.0.1920.1379" timestamp="1576254547178" />
-    <state x="307" y="192" key="com.intellij.ide.util.TipDialog" timestamp="1576429475043">
-      <screen x="0" y="27" width="1366" height="741" />
+    <state x="307" y="782" key="com.intellij.ide.util.TipDialog" timestamp="1577206746775">
+      <screen x="0" y="611" width="1366" height="768" />
     </state>
-    <state x="307" y="192" key="com.intellij.ide.util.TipDialog/0.27.1366.741@0.27.1366.741" timestamp="1576429475043" />
+    <state x="307" y="192" key="com.intellij.ide.util.TipDialog/0.27.1366.741@0.27.1366.741" timestamp="1577103128029" />
+    <state x="307" y="782" key="com.intellij.ide.util.TipDialog/0.611.1366.768/1366.0.1920.1080@0.611.1366.768" timestamp="1577206746775" />
     <state x="5" y="175" width="672" height="677" key="run.anything.popup" timestamp="1576400826942">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
