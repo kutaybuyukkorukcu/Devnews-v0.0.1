@@ -71,7 +71,7 @@ public class App {
             Data data = new Data();
             // -- Eklemeler yapacagim.
             // Create a queryID , articleID -> queryID = "const" value for querying, articleID = "int" i will inc 1 everytime
-            _collection.insertOne(data);
+            _collection.insertOne(data);  
         }
     }
     /*
