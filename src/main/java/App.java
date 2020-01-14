@@ -63,6 +63,7 @@ public class App {
 //        }
     }
 
+    // Bu fonksiyon ayni zamanda icerisinde countervalue() fonksiyonunu calistirip onun donmesini bekledikten sonra diger linke gecmesi gerekir.
     public static void crawlingDataToPOJO(MongoDatabase database, boolean flag) {
 
         if (!flag) {
