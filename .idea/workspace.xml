@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="38286669-2b91-42c5-881a-bf7d3478cd0d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -123,7 +121,9 @@
       <workItem from="1577083569436" duration="5536000" />
       <workItem from="1577101625021" duration="1188000" />
       <workItem from="1577103127734" duration="601000" />
-      <workItem from="1577206728019" duration="3400000" />
+      <workItem from="1577206728019" duration="6110000" />
+      <workItem from="1577308989835" duration="1200000" />
+      <workItem from="1578914124709" duration="5060000" />
     </task>
     <servers />
   </component>
@@ -216,11 +216,16 @@
     </state>
     <state x="159" y="27" width="1024" height="741" key="SettingsEditor/0.27.1366.741@0.27.1366.741" timestamp="1576235706600" />
     <state x="257" y="649" width="900" height="730" key="SettingsEditor/1366.0.1920.1379@1366.0.1920.1379" timestamp="1576254547178" />
-    <state x="307" y="782" key="com.intellij.ide.util.TipDialog" timestamp="1577206746775">
-      <screen x="0" y="611" width="1366" height="768" />
+    <state x="307" y="192" key="com.intellij.ide.util.TipDialog" timestamp="1578916919692">
+      <screen x="0" y="27" width="1366" height="741" />
     </state>
-    <state x="307" y="192" key="com.intellij.ide.util.TipDialog/0.27.1366.741@0.27.1366.741" timestamp="1577103128029" />
+    <state x="307" y="192" key="com.intellij.ide.util.TipDialog/0.27.1366.741@0.27.1366.741" timestamp="1578916919692" />
     <state x="307" y="782" key="com.intellij.ide.util.TipDialog/0.611.1366.768/1366.0.1920.1080@0.611.1366.768" timestamp="1577206746775" />
+    <state x="588" y="1251" key="com.intellij.ide.util.TipDialog/281.1080.1366.768/0.0.1920.1080@281.1080.1366.768" timestamp="1577308989874" />
+    <state x="451" y="316" width="454" height="160" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1578997315406">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state x="451" y="316" width="454" height="160" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.27.1366.741@0.27.1366.741" timestamp="1578997315406" />
     <state x="5" y="175" width="672" height="677" key="run.anything.popup" timestamp="1576400826942">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
