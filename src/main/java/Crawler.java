@@ -15,13 +15,13 @@ public class Crawler {
     // getArticleLinks(); <- This function will be located in DataTransaction.
 
     // castToPojo(ArrayList<String> articleLinks, int articleID)
-    public Data castToPojo(int articleID) {
+    public Data castToPojo(String url, int articleID) {
 
         Data data = new Data();
 
-        // DB'den urlleri cek. Her seferinde url adinda bir String'e atansin.
-        // isNew'i 1 olanlari cek sadece.
-        String url = "https://www.infoq.com/news/2019/12/oracle-goolge-api-battle/";
+//        DB'den urlleri cek. Her seferinde url adinda bir String'e atansin.
+//        isNew'i 1 olanlari cek sadece.
+//        String url = "https://www.infoq.com/news/2019/12/oracle-goolge-api-battle/";
 
         Validator validator = new Validator();
 
@@ -56,6 +56,7 @@ public class Crawler {
         data.setTitle(title);
         data.setMainTopic(mainTopic);
         data.setRelatedTopics(relatedTopics);
+        data.setIsNew(1);
 
         return data;
     }

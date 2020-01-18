@@ -1,3 +1,4 @@
+import com.google.gson.Gson;
 import com.mongodb.*;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
@@ -5,12 +6,20 @@ import com.mongodb.client.*;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import model.Counter;
-import model.Data;
 import db.initializeDB;
+import model.Data;
+import model.Link;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
 import org.bson.Document;
+import service.DataService;
+import service.LinkService;
+
+import java.util.ArrayList;
+
+import static spark.Spark.post;
+import static spark.Spark.get;
 
 public class App {
 
@@ -26,6 +35,30 @@ public class App {
         initializeDB.createData(database, flag);
         initializeDB.createLink(database, flag);
 
+        final LinkService linkService = new LinkService();
+        final DataService dataService = new DataService();
+
+        get("/datas", (request, response) -> {
+            response.type("application/json");
+
+            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(dataService.getData(database))));
+        });
+
+        post("/links", (request, response) -> {
+            response.type("application/json");
+
+            Link link = new Gson().fromJson(request.body(), Link.class);
+            linkService.addLink(link, database);
+
+            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
+        });
+
+        get("/crawl", (request, response) -> {
+            response.type("application/json");
+
+            ArrayList<String> urls = linkService.getLinks(database);
+            int articleID = counterValue(database);
+        });
     }
 
     /*
