@@ -52,12 +52,12 @@ public class Validator {
     }
 
     public void setAI() {
-        generic.put("Big Data", "AI, ML and Data Engineering");
-        generic.put("Machine Learning", "AI, ML and Data Engineering");
-        generic.put("NoSQL", "AI, ML and Data Engineering");
-        generic.put("Database", "AI, ML and Data Engineering");
-        generic.put("Data Analytics", "AI, ML and Data Engineering");
-        generic.put("Streaming", "AI, ML and Data Engineering");
+        generic.put("Big model.Data", "AI, ML and model.Data Engineering");
+        generic.put("Machine Learning", "AI, ML and model.Data Engineering");
+        generic.put("NoSQL", "AI, ML and model.Data Engineering");
+        generic.put("Database", "AI, ML and model.Data Engineering");
+        generic.put("model.Data Analytics", "AI, ML and model.Data Engineering");
+        generic.put("Streaming", "AI, ML and model.Data Engineering");
     }
 
     public void setCulture() {

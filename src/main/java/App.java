@@ -4,6 +4,9 @@ import com.mongodb.client.*;
 
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
+import model.Counter;
+import model.Data;
+import db.initializeDB;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
@@ -17,81 +20,20 @@ public class App {
         CodecRegistry pojoCodecRegistry = org.bson.codecs.configuration.CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), org.bson.codecs.configuration.CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         MongoDatabase database = mongoClient.getDatabase("infoq").withCodecRegistry(pojoCodecRegistry);
 
-        MongoCursor<String> databases = mongoClient.listDatabaseNames().iterator();
+        boolean flag = initializeDB.checkDB(mongoClient);
 
-        // Checking database named infoq.
-        // By checking that i'm making sure the code doesn't try to create data collection once again.
-        boolean flag = false;
+        initializeDB.createCounter(database, flag);
+        initializeDB.createData(database, flag);
+        initializeDB.createLink(database, flag);
 
-        while (databases.hasNext()) {
-            if (databases.next().equals("infoq")) {
-                flag = true;
-                break;
-            }
-        }
-
-        counterValue(database, flag);
-//         Collection data icin ayri bir fonksiyon olucak.
-//        if (!flag) {
-//            database.createCollection("data", DataDTO.class);
-//        }
-
-//        MongoCollection<DataDTO> collection = database.getCollection("data", DataDTO.class);
-//
-//        Document document = new Document();
-//        Document query = new Document();
-//
-//        document.put("articleID", 1);
-//        document.put("title", "Yo");
-//        document.put("mainTopic", "development");
-//        document.put("author", "kutay");
-//        document.put("relatedTopics", "AI|DEVELOPMENT|MOBILE");
-//        document.put("articleLink", "www.google.com");
-//
-//        query.put("title", "Yo");
-//
-//        MongoCursor<DataDTO> cursor = collection.find(query).iterator();
-//
-//        //        collection.insertOne(document);
-//
-//        try {
-//            while (cursor.hasNext()) {
-//                System.out.println(cursor.next().toJson());
-//            }
-//        }finally {
-//            mongoClient.close();
-//        }
     }
 
-    // Bu fonksiyon ayni zamanda icerisinde countervalue() fonksiyonunu calistirip onun donmesini bekledikten sonra diger linke gecmesi gerekir.
-    public static void crawlingDataToPOJO(MongoDatabase database, boolean flag) {
-
-        if (!flag) {
-            database.createCollection("data");
-            MongoCollection<Data> _collection = database.getCollection("data", Data.class);
-            Data data = new Data();
-            // -- Eklemeler yapacagim.
-            // Create a queryID , articleID -> queryID = "const" value for querying, articleID = "int" i will inc 1 everytime
-            _collection.insertOne(data);  
-        }
-    }
     /*
     // Create's a collection named counter if there's none.
     // Increments counterValue by 1 and returns it.
     // Purpose of this collection : Defines an articleID for each article.
      */
-    public static int counterValue(MongoDatabase database, boolean flag) {
-
-        if (!flag) {
-            database.createCollection("counter");
-            MongoCollection<Counter> _collection = database.getCollection("counter", Counter.class);
-            Counter counter = new Counter();
-            // Create a queryID , articleID -> queryID = "const" value for querying, articleID = "int" i will inc 1 everytime
-            counter.setCounterName("counterName");
-            counter.setCounterValue(1);
-            _collection.insertOne(counter);
-        }
-
+    public static int counterValue(MongoDatabase database) {
         MongoCollection<Counter> collection = database.getCollection("counter", Counter.class);
 
         Document query = new Document("counterName", "articleID");
