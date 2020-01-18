@@ -1,3 +1,4 @@
+import model.Data;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,6 +20,7 @@ public class Crawler {
         Data data = new Data();
 
         // DB'den urlleri cek. Her seferinde url adinda bir String'e atansin.
+        // isNew'i 1 olanlari cek sadece.
         String url = "https://www.infoq.com/news/2019/12/oracle-goolge-api-battle/";
 
         Validator validator = new Validator();

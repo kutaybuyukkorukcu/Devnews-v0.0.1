@@ -1,3 +1,5 @@
+package model;
+
 public class Counter {
 
     private String counterName;
