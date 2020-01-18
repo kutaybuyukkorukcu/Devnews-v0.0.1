@@ -5,7 +5,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import utils.Validator;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.file.*;
 
 public class Crawler {
 
@@ -59,5 +63,22 @@ public class Crawler {
         data.setIsNew(1);
 
         return data;
+    }
+
+    public void CSVWriter(Data data) {
+        Path path = Paths.get("src/main/resources/articles.csv");
+        StringBuilder sb = new StringBuilder();
+        sb.append(Integer.toString(data.getArticleID()) + "\t");
+        sb.append(data.getTitle() + "\t");
+        sb.append(data.getMainTopic() + "\t");
+        sb.append(data.getAuthor() + "\t");
+        sb.append(data.getRelatedTopics());
+
+        try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.APPEND)) {
+            writer.newLine();
+            writer.write(sb.toString());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

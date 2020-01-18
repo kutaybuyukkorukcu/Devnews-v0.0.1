@@ -37,6 +37,7 @@ public class App {
 
         final LinkService linkService = new LinkService();
         final DataService dataService = new DataService();
+        final Crawler crawler = new Crawler();
 
         get("/datas", (request, response) -> {
             response.type("application/json");
@@ -57,7 +58,16 @@ public class App {
             response.type("application/json");
 
             ArrayList<String> urls = linkService.getLinks(database);
-            int articleID = counterValue(database);
+
+            for (String url : urls) {
+                int articleID = counterValue(database);
+//                String url = "https://www.infoq.com/news/2019/12/oracle-goolge-api-battle";
+                Data data = crawler.castToPojo(url, articleID);
+                crawler.CSVWriter(data);
+                dataService.addData(data, database);
+            }
+
+            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(dataService.getData(database))));
         });
     }
 
