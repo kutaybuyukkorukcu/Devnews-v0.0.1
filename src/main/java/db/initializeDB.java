@@ -1,5 +1,6 @@
 package db;
 
+import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -36,7 +37,12 @@ public class initializeDB {
     public static void createLink(MongoDatabase database, boolean flag) {
         if (!flag) {
             database.createCollection("link");
-//            MongoCollection<Link> _collection = database.getCollection("link", Link.class);
+        }
+    }
+
+    public static void createLike(MongoDatabase database, boolean flag) {
+        if (!flag) {
+            database.createCollection("like");
         }
     }
 

@@ -5,6 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Crawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Crawler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/db/initializeDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/initializeDB.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,8 +30,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -126,7 +127,7 @@
       <workItem from="1577206728019" duration="6110000" />
       <workItem from="1577308989835" duration="1200000" />
       <workItem from="1578914124709" duration="20014000" />
-      <workItem from="1579179966528" duration="25559000" />
+      <workItem from="1579179966528" duration="30464000" />
     </task>
     <servers />
   </component>
@@ -143,10 +144,10 @@
     </state>
     <state x="141" y="665" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.611.1366.768/1366.0.1920.1080@0.611.1366.768" timestamp="1577206851506" />
     <state x="141" y="665" width="1084" height="752" key="#com.intellij.execution.impl.EditConfigurationsDialog/1366.0.1920.1379@1366.0.1920.1379" timestamp="1576252764437" />
-    <state x="214" y="191" width="548" height="577" key="#com.intellij.ide.util.MemberChooser" timestamp="1579348887212">
+    <state x="214" y="191" width="548" height="577" key="#com.intellij.ide.util.MemberChooser" timestamp="1579384344227">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
-    <state x="214" y="191" width="548" height="577" key="#com.intellij.ide.util.MemberChooser/0.27.1366.741@0.27.1366.741" timestamp="1579348887212" />
+    <state x="214" y="191" width="548" height="577" key="#com.intellij.ide.util.MemberChooser/0.27.1366.741@0.27.1366.741" timestamp="1579384344227" />
     <state x="491" y="719" width="374" height="577" key="#com.intellij.ide.util.MemberChooser/1366.0.1920.1379@1366.0.1920.1379" timestamp="1576261349729" />
     <state x="1843" y="386" width="525" height="428" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1576252683087">
       <screen x="1366" y="0" width="1920" height="1379" />
