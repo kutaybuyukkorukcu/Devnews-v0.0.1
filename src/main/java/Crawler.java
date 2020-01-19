@@ -1,5 +1,6 @@
 import model.Data;
 import model.Like;
+import model.Link;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,8 +11,13 @@ import javax.print.Doc;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class Crawler {
 
@@ -118,5 +124,31 @@ public class Crawler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<String> keke1() {
+        try (Stream<String> stream = Files.lines(Paths.get("src/main/resources/links.txt"))) {
+            ArrayList<String> list = new ArrayList<>();
+
+            stream
+                    .filter(s -> s.endsWith("/"))
+                    .forEach(list::add);
+
+            return list;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<String>();
+    }
+
+    // castToLinkCollection
+    public Link keke2(String url) {
+        Link link = new Link();
+
+        link.setLink(url);
+        link.setIsNew(1);
+
+        return link;
     }
 }
