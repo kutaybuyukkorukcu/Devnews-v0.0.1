@@ -2,29 +2,49 @@ package model;
 
 public class Like {
 
-    private String link;
-
+    private int articleID;
+    private String url;
     private String title;
-
     private String mainTopic;
     private int isNew;
+
     public Like() {
 
     }
 
-    public Like(String link, String title, String mainTopic, int isNew) {
-        this.link = link;
+    public Like(int articleID, String url, String title, String mainTopic, int isNew) {
+        this.articleID = articleID;
+        this.url = url;
         this.title = title;
         this.mainTopic = mainTopic;
         this.isNew = isNew;
     }
 
-    public String getLink() {
-        return link;
+    @Override
+    public String toString() {
+        return "Like{" +
+                "articleID=" + articleID +
+                ", url='" + url + '\'' +
+                ", title='" + title + '\'' +
+                ", mainTopic='" + mainTopic + '\'' +
+                ", isNew=" + isNew +
+                '}';
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public int getArticleID() {
+        return articleID;
+    }
+
+    public void setArticleID(int articleID) {
+        this.articleID = articleID;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getTitle() {

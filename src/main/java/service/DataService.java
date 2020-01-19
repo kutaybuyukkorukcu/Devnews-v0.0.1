@@ -17,23 +17,10 @@ public class DataService {
     public void addData(Data data, MongoDatabase database){
         MongoCollection<Data> collection = database.getCollection("data", Data.class);
 
-//        Document query = new Document();
-
         collection.insertOne(data);
-
-//        MongoCursor<Data> cursor = collection.find(query).iterator();
-//
-//
-//        try {
-//            while (cursor.hasNext()) {
-//                System.out.println(cursor.next().toString());
-//            }
-//        }finally {
-//            mongoClient.close();
-//        }
     }
 
-    public ArrayList<Data> getData(MongoDatabase database) {
+    public ArrayList<Data> getDatas(MongoDatabase database) {
         MongoCollection<Data> collection = database.getCollection("data", Data.class);
 
         ArrayList<Data> list = new ArrayList<Data>();
@@ -51,7 +38,6 @@ public class DataService {
     public boolean dataExist(Data data, MongoDatabase database) {
         MongoCollection<Data> collection = database.getCollection("data", Data.class);
 
-//        Bson queryFilter = eq("title", data.getTitle());
         Document queryFilter =  new Document("title", data.getTitle());
 
         FindIterable result = collection.find(queryFilter).limit(1);

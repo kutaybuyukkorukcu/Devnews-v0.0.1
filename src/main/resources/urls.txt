@@ -497,4 +497,3 @@ https://www.infoq.com/articles/serverless-security/
 https://www.infoq.com/articles/distributed-tracing-microservices/
 https://www.infoq.com/articles/regression-testing-strategies/
 https://www.infoq.com/articles/growing-innovative-culture/
-https://www.infoq.com/articles/Designing-Implementing-Using-Reactive-APIs/

@@ -1,25 +1,22 @@
 package db;
 
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import model.Counter;
-import model.Data;
-import model.Link;
 
 public class initializeDB {
 
     public static void createCounter(MongoDatabase database, boolean flag) {
         if (!flag) {
             database.createCollection("counter");
-            MongoCollection<Counter> _collection = database.getCollection("counter", Counter.class);
+            MongoCollection<Counter> collection = database.getCollection("counter", Counter.class);
             Counter counter = new Counter();
             // Create a queryID , articleID -> queryID = "const" value for querying, articleID = "int" i will inc 1 everytime
             counter.setCounterName("articleID");
-            counter.setCounterValue(-1);
-            _collection.insertOne(counter);
+            counter.setCounterValue(0);
+            collection.insertOne(counter);
         }
     }
 
@@ -34,9 +31,9 @@ public class initializeDB {
         }
     }
 
-    public static void createLink(MongoDatabase database, boolean flag) {
+    public static void createUrl(MongoDatabase database, boolean flag) {
         if (!flag) {
-            database.createCollection("link");
+            database.createCollection("url");
         }
     }
 
