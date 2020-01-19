@@ -1,77 +1,29 @@
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import model.Data;
 import model.Like;
-import model.Link;
+import model.Url;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import utils.Validator;
 
-import javax.print.Doc;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class Crawler {
 
     Validator validator = new Validator();
 
-    public Like castToLike(String url) {
-        Like like = new Like();
-
-        Document doc = null;
-
-        try {
-            doc = Jsoup.connect(url).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String topic = doc.select("div.article__category > a[title]").text();
-        String mainTopic = validator.validate(topic);
-
-        String title = doc.select("div.actions__left > h1").text();
-
-        like.setMainTopic(mainTopic);
-        like.setTitle(title);
-        like.setIsNew(1);
-
-        return like;
-    }
-
-    public void writeLikes(Like like) {
-
-        Path path = Paths.get("src/main/resources/likes.csv");
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(like.getTitle() + "\t");
-        sb.append(like.getMainTopic());
-
-        try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.APPEND)) {
-            writer.newLine();
-            writer.write(sb.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // castToPojo(ArrayList<String> articleLinks, int articleID)
-    public Data castToPojo(String url, int articleID) {
+    public Data urlToData(String url, int articleID) {
 
         Data data = new Data();
-
-//        DB'den urlleri cek. Her seferinde url adinda bir String'e atansin.
-//        isNew'i 1 olanlari cek sadece.
-//        String url = "https://www.infoq.com/news/2019/12/oracle-goolge-api-battle/";
-
-//        Validator validator = new Validator();
 
         StringBuilder topics = new StringBuilder();
 
@@ -109,7 +61,7 @@ public class Crawler {
         return data;
     }
 
-    public void CSVWriter(Data data) {
+    public void writeDatas(Data data) {
         Path path = Paths.get("src/main/resources/articles.csv");
         StringBuilder sb = new StringBuilder();
         sb.append(Integer.toString(data.getArticleID()) + "\t");
@@ -126,8 +78,8 @@ public class Crawler {
         }
     }
 
-    public ArrayList<String> txtToLink1() {
-        try (Stream<String> stream = Files.lines(Paths.get("src/main/resources/links.txt"))) {
+    public ArrayList<String> fileToList() {
+        try (Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls.txt"))) {
             ArrayList<String> list = new ArrayList<>();
 
             stream
@@ -142,13 +94,55 @@ public class Crawler {
         return new ArrayList<String>();
     }
 
-    // castToLinkCollection
-    public Link txtToLink2(String url) {
-        Link link = new Link();
+    public Url urlToUrlCollection(String url) {
+        Url _url = new Url();
 
-        link.setLink(url);
-        link.setIsNew(1);
+        _url.setUrl(url);
+        _url.setIsNew(1);
 
-        return link;
+        return _url;
+    }
+
+    public Like urlToLikeCollection(String url, MongoDatabase database) {
+
+        MongoCollection<Data> collection = database.getCollection("data", Data.class);
+
+        org.bson.Document queryFilter =  new org.bson.Document("articleLink", url);
+
+        FindIterable<Data> result = collection.find(queryFilter).limit(1);
+
+        if (result != null) {
+            Like like = new Like();
+
+            Data data = result.first();
+
+            like.setArticleID(data.getArticleID());
+            like.setUrl(url);
+            like.setTitle(data.getTitle());
+            like.setMainTopic(data.getMainTopic());
+            like.setIsNew(1);
+
+            return like;
+        }
+
+        return new Like();
+    }
+
+    public void writeLikes(Like like) {
+
+        Path path = Paths.get("src/main/resources/likes.csv");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(like.getArticleID() + "\t");
+        sb.append(like.getUrl() + "\t");
+        sb.append(like.getTitle() + "\t");
+        sb.append(like.getMainTopic());
+
+        try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.APPEND)) {
+            writer.newLine();
+            writer.write(sb.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

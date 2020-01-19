@@ -3,9 +3,7 @@ package service;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import model.Data;
 import model.Like;
-import model.Link;
 
 import java.util.ArrayList;
 
@@ -24,8 +22,8 @@ public class LikeService {
 
         try(MongoCursor<Like> cursor = collection.find().iterator()) {
             while (cursor.hasNext()) {
-                Like link = cursor.next();
-                list.add(link);
+                Like like = cursor.next();
+                list.add(like);
             }
         }
 
