@@ -38,6 +38,7 @@ public class App {
         initializeDB.createLink(database, flag);
         initializeDB.createLike(database, flag);
 
+
         final LikeService likeService = new LikeService();
         final LinkService linkService = new LinkService();
         final DataService dataService = new DataService();
@@ -54,6 +55,18 @@ public class App {
 
             Link link = new Gson().fromJson(request.body(), Link.class);
             linkService.addLink(link, database);
+
+            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
+        });
+
+        get("/keke", (request, response) -> {
+            response.type("application/json");
+            ArrayList<String> list = crawler.keke1();
+
+            for (String url : list) {
+                Link link = crawler.keke2(url);
+                linkService.addLink(link, database);
+            }
 
             return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
