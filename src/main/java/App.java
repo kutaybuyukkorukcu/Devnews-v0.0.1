@@ -8,12 +8,14 @@ import com.mongodb.client.model.ReturnDocument;
 import model.Counter;
 import db.initializeDB;
 import model.Data;
+import model.Like;
 import model.Link;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
 import org.bson.Document;
 import service.DataService;
+import service.LikeService;
 import service.LinkService;
 
 import java.util.ArrayList;
@@ -34,7 +36,9 @@ public class App {
         initializeDB.createCounter(database, flag);
         initializeDB.createData(database, flag);
         initializeDB.createLink(database, flag);
+        initializeDB.createLike(database, flag);
 
+        final LikeService likeService = new LikeService();
         final LinkService linkService = new LinkService();
         final DataService dataService = new DataService();
         final Crawler crawler = new Crawler();
@@ -68,6 +72,21 @@ public class App {
             }
 
             return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(dataService.getData(database))));
+        });
+
+        get("/likes", (request, response) -> {
+            // mongodb'deki linkleri ceksin.
+            // cekilen linkleri crawllasin
+            // crawldan main_topic ve title donup hem dosyaya yazsin hem de database Like collectionuna
+            response.type("application/json");
+
+            ArrayList<String> urls = linkService.getLinks(database);
+
+            for (String url : urls) {
+
+            }
+
+            return 0;
         });
     }
 
