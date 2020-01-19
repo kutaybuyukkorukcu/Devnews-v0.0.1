@@ -28,6 +28,7 @@ public class Validator {
     }
 
     public void setDevelopment() {
+        generic.put("Development", "Development");
         generic.put("Java", "Development");
         generic.put("Kotlin", "Development");
         generic.put(".NET", "Development");
@@ -38,9 +39,11 @@ public class Validator {
         generic.put("JavaScript", "Development");
         generic.put("Mobile", "Development");
         generic.put("Web Development", "Development");
+        generic.put("Emerging Technologies", "Development");
     }
 
     public void setArchitecture() {
+        generic.put("Architecture & Design", "Architecture & Design");
         generic.put("Architecture", "Architecture & Design");
         generic.put("Enterprise Architecture", "Architecture & Design");
         generic.put("Scalability/Performance", "Architecture & Design");
@@ -52,15 +55,17 @@ public class Validator {
     }
 
     public void setAI() {
-        generic.put("Big model.Data", "AI, ML and model.Data Engineering");
-        generic.put("Machine Learning", "AI, ML and model.Data Engineering");
-        generic.put("NoSQL", "AI, ML and model.Data Engineering");
-        generic.put("Database", "AI, ML and model.Data Engineering");
-        generic.put("model.Data Analytics", "AI, ML and model.Data Engineering");
-        generic.put("Streaming", "AI, ML and model.Data Engineering");
+        generic.put("AI, ML & Data Engineering", "AI, ML & Data Engineering");
+        generic.put("Big Data", "AI, ML & Data Engineering");
+        generic.put("Machine Learning", "AI, ML & Data Engineering");
+        generic.put("NoSQL", "AI, ML & Data Engineering");
+        generic.put("Database", "AI, ML & Data Engineering");
+        generic.put("Data Analytics", "AI, ML & Data Engineering");
+        generic.put("Streaming", "AI, ML & Data Engineering");
     }
 
     public void setCulture() {
+        generic.put("Culture & Methods", "Culture & Methods");
         generic.put("Agile", "Culture & Methods");
         generic.put("Diversity", "Culture & Methods");
         generic.put("Leadership", "Culture & Methods");
@@ -75,6 +80,7 @@ public class Validator {
     }
 
     public void setDevops() {
+        generic.put("DevOps", "DevOps");
         generic.put("Infrastructure", "DevOps");
         generic.put("Continuous Delivery", "DevOps");
         generic.put("Automation", "DevOps");

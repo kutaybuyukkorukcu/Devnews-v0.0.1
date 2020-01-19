@@ -126,7 +126,7 @@ public class Crawler {
         }
     }
 
-    public ArrayList<String> keke1() {
+    public ArrayList<String> txtToLink1() {
         try (Stream<String> stream = Files.lines(Paths.get("src/main/resources/links.txt"))) {
             ArrayList<String> list = new ArrayList<>();
 
@@ -143,7 +143,7 @@ public class Crawler {
     }
 
     // castToLinkCollection
-    public Link keke2(String url) {
+    public Link txtToLink2(String url) {
         Link link = new Link();
 
         link.setLink(url);
