@@ -18,7 +18,7 @@ public class initializeDB {
             Counter counter = new Counter();
             // Create a queryID , articleID -> queryID = "const" value for querying, articleID = "int" i will inc 1 everytime
             counter.setCounterName("articleID");
-            counter.setCounterValue(0);
+            counter.setCounterValue(-1);
             _collection.insertOne(counter);
         }
     }

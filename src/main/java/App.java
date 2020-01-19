@@ -59,12 +59,12 @@ public class App {
             return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
 
-        get("/keke", (request, response) -> {
+        get("/tolink", (request, response) -> {
             response.type("application/json");
-            ArrayList<String> list = crawler.keke1();
+            ArrayList<String> list = crawler.txtToLink1();
 
             for (String url : list) {
-                Link link = crawler.keke2(url);
+                Link link = crawler.txtToLink2(url);
                 linkService.addLink(link, database);
             }
 
@@ -78,7 +78,6 @@ public class App {
 
             for (String url : urls) {
                 int articleID = counterValue(database);
-//                String url = "https://www.infoq.com/news/2019/12/oracle-goolge-api-battle";
                 Data data = crawler.castToPojo(url, articleID);
                 crawler.CSVWriter(data);
                 dataService.addData(data, database);
