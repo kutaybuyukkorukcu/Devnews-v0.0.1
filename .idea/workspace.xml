@@ -3,18 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="38286669-2b91-42c5-881a-bf7d3478cd0d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Crawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Crawler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/db/initializeDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/initializeDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/model/Like.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Like.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/Link.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Url.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/DataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/DataService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/LikeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/LikeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/LinkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/UrlService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/articles.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/articles.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/likes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/likes.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/links.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +128,7 @@
       <workItem from="1578914124709" duration="20014000" />
       <workItem from="1579179966528" duration="30701000" />
       <workItem from="1579419606284" duration="3441000" />
-      <workItem from="1579445461081" duration="11257000" />
+      <workItem from="1579445461081" duration="16261000" />
     </task>
     <servers />
   </component>

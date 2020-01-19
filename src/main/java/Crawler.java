@@ -115,9 +115,6 @@ public class Crawler {
             Like like = new Like();
 
             Data data = result.first();
-
-            like.setArticleID(data.getArticleID());
-            like.setUrl(url);
             like.setTitle(data.getTitle());
             like.setMainTopic(data.getMainTopic());
             like.setIsNew(1);
@@ -133,8 +130,6 @@ public class Crawler {
         Path path = Paths.get("src/main/resources/likes.csv");
 
         StringBuilder sb = new StringBuilder();
-        sb.append(like.getArticleID() + "\t");
-        sb.append(like.getUrl() + "\t");
         sb.append(like.getTitle() + "\t");
         sb.append(like.getMainTopic());
 
