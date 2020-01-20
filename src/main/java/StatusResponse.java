@@ -1,5 +1,6 @@
 public enum StatusResponse {
-    SUCCESS("Success"), ERROR("Error");
+    SUCCESS("Success"),
+    ERROR("Error");
 
     final private String status;
 

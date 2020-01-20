@@ -5,18 +5,22 @@ import com.mongodb.client.*;
 
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
+import com.sun.tools.javac.Main;
 import model.*;
 import db.initializeDB;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
 import org.bson.Document;
+import org.json.JSONArray;
 import service.ArticleService;
 import service.DataService;
 import service.LikeService;
 import service.UrlService;
+import utils.initializeLists;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static spark.Spark.post;
 import static spark.Spark.get;
@@ -36,6 +40,7 @@ public class App {
         initializeDB.createUrl(database, flag);
         initializeDB.createLike(database, flag);
 
+        new initializeLists();
 
         final LikeService likeService = new LikeService();
         final UrlService urlService = new UrlService();
@@ -43,7 +48,6 @@ public class App {
         final ArticleService articleService = new ArticleService();
         final Crawler crawler = new Crawler();
 
-        articleService.JSONArrayToList(articleService.getRecommendations());
         // Get datas stored in Data collection
         get("/datas", (request, response) -> {
             response.type("application/json");
@@ -110,10 +114,45 @@ public class App {
             }
 
             return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(likeService.getLikes(database))));
+                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(likeService.getLikesAsList(database))));
         });
 
+        get("/son", (request, response) -> {
+            // Like collectionundaki Title ve Main_Topic'i ceker ve ArrayList<Like>'e atar.
+            // ini
 
+            ArrayList<Like> likes = likeService.getLikesAsList(database);
+            Iterator<Like> iter = likes.iterator();
+
+            while(iter.hasNext()){
+                Like like = iter.next();
+                JSONArray jsonArray = articleService.getRecommendations(like.getTitle());
+
+                if (like.getMainTopic().equals(MainTopics.DEVELOPMENT.getMainTopic())) {
+                    articleService.JSONArrayToList(jsonArray, initializeLists.development);
+                } else if (like.getMainTopic().equals(MainTopics.ARCHITECTURE.getMainTopic())) {
+                    articleService.JSONArrayToList(jsonArray, initializeLists.architecture);
+                } else if (like.getMainTopic().equals(MainTopics.AI.getMainTopic())) {
+                    articleService.JSONArrayToList(jsonArray, initializeLists.ai);
+                } else if (like.getMainTopic().equals(MainTopics.CULTURE.getMainTopic())) {
+                    articleService.JSONArrayToList(jsonArray, initializeLists.culture);
+                } else if (like.getMainTopic().equals(MainTopics.DEVOPS.getMainTopic())) {
+                    articleService.JSONArrayToList(jsonArray, initializeLists.devops);
+                } else {
+                    articleService.JSONArrayToList(jsonArray, new ArrayList<Article>());
+                }
+            }
+
+
+            return new Gson().toJson(
+                    new StandardResponse(StatusResponse.SUCCESS));
+        });
+
+        get("/son1", (request, response) -> {
+
+
+            return 0;
+        });
     }
 
     /*
