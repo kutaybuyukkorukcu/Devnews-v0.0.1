@@ -15,7 +15,7 @@ public class LikeService {
         collection.insertOne(like);
     }
 
-    public ArrayList<Like> getLikes(MongoDatabase database) {
+    public ArrayList<Like> getLikesAsList(MongoDatabase database) {
         MongoCollection<Like> collection = database.getCollection("like", Like.class);
 
         ArrayList<Like> list = new ArrayList<Like>();
