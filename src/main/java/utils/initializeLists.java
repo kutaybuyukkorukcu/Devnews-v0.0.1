@@ -12,7 +12,7 @@ public class initializeLists {
     public static ArrayList<Article> culture = null;
     public static ArrayList<Article> devops = null;
 
-    public initializeLists() {
+    public static void generateLists() {
         development = new ArrayList<>();
         architecture = new ArrayList<>();
         ai = new ArrayList<>();
