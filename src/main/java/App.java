@@ -5,15 +5,13 @@ import com.mongodb.client.*;
 
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
-import model.Counter;
+import model.*;
 import db.initializeDB;
-import model.Data;
-import model.Like;
-import model.Url;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
 import org.bson.Document;
+import service.ArticleService;
 import service.DataService;
 import service.LikeService;
 import service.UrlService;
@@ -42,8 +40,10 @@ public class App {
         final LikeService likeService = new LikeService();
         final UrlService urlService = new UrlService();
         final DataService dataService = new DataService();
+        final ArticleService articleService = new ArticleService();
         final Crawler crawler = new Crawler();
 
+        articleService.JSONArrayToList(articleService.getRecommendations());
         // Get datas stored in Data collection
         get("/datas", (request, response) -> {
             response.type("application/json");
@@ -112,6 +112,8 @@ public class App {
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(likeService.getLikes(database))));
         });
+
+
     }
 
     /*
@@ -135,4 +137,5 @@ public class App {
         Counter doc = collection.findOneAndUpdate(query, update, options);
         return doc.getCounterValue();
     }
+
 }
