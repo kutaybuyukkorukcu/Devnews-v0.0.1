@@ -2,8 +2,6 @@ package model;
 
 public class Like {
 
-    private int articleID;
-    private String url;
     private String title;
     private String mainTopic;
     private int isNew;
@@ -12,9 +10,7 @@ public class Like {
 
     }
 
-    public Like(int articleID, String url, String title, String mainTopic, int isNew) {
-        this.articleID = articleID;
-        this.url = url;
+    public Like(String title, String mainTopic, int isNew) {
         this.title = title;
         this.mainTopic = mainTopic;
         this.isNew = isNew;
@@ -23,28 +19,10 @@ public class Like {
     @Override
     public String toString() {
         return "Like{" +
-                "articleID=" + articleID +
-                ", url='" + url + '\'' +
                 ", title='" + title + '\'' +
                 ", mainTopic='" + mainTopic + '\'' +
                 ", isNew=" + isNew +
                 '}';
-    }
-
-    public int getArticleID() {
-        return articleID;
-    }
-
-    public void setArticleID(int articleID) {
-        this.articleID = articleID;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public String getTitle() {
