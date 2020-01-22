@@ -1,5 +1,4 @@
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mongodb.*;
 import com.mongodb.MongoClient;
@@ -7,7 +6,6 @@ import com.mongodb.client.*;
 
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
-import com.sun.tools.javac.Main;
 import model.*;
 import db.initializeDB;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -128,17 +126,17 @@ public class App {
 
                 // == instead of equals() maybe?
                 if (like.getMainTopic().equals(MainTopics.DEVELOPMENT.getMainTopic())) {
-                    articleService.JSONArrayToList(jsonObject, initializeLists.development);
+                    articleService.JsonObjectToList(jsonObject, initializeLists.development);
                 } else if (like.getMainTopic().equals(MainTopics.ARCHITECTURE.getMainTopic())) {
-                    articleService.JSONArrayToList(jsonObject, initializeLists.architecture);
+                    articleService.JsonObjectToList(jsonObject, initializeLists.architecture);
                 } else if (like.getMainTopic().equals(MainTopics.AI.getMainTopic())) {
-                    articleService.JSONArrayToList(jsonObject, initializeLists.ai);
+                    articleService.JsonObjectToList(jsonObject, initializeLists.ai);
                 } else if (like.getMainTopic().equals(MainTopics.CULTURE.getMainTopic())) {
-                    articleService.JSONArrayToList(jsonObject, initializeLists.culture);
+                    articleService.JsonObjectToList(jsonObject, initializeLists.culture);
                 } else if (like.getMainTopic().equals(MainTopics.DEVOPS.getMainTopic())) {
-                    articleService.JSONArrayToList(jsonObject, initializeLists.devops);
+                    articleService.JsonObjectToList(jsonObject, initializeLists.devops);
                 } else {
-                    articleService.JSONArrayToList(jsonObject, new ArrayList<Article>());
+                    articleService.JsonObjectToList(jsonObject, new ArrayList<Article>());
                 }
             }
 
@@ -154,14 +152,18 @@ public class App {
             initializeLists.culture = articleService.returnRecommendations(initializeLists.culture);
             initializeLists.devops = articleService.returnRecommendations(initializeLists.devops);
 
-            articleService.cekVeYaz(initializeLists.development,database);
-            articleService.cekVeYaz(initializeLists.architecture,database);
-            articleService.cekVeYaz(initializeLists.ai,database);
-            articleService.cekVeYaz(initializeLists.culture,database);
-            articleService.cekVeYaz(initializeLists.devops,database);
+            dataService.sendRecommendations(initializeLists.development,database);
+            dataService.sendRecommendations(initializeLists.architecture,database);
+            dataService.sendRecommendations(initializeLists.ai,database);
+            dataService.sendRecommendations(initializeLists.culture,database);
+            dataService.sendRecommendations(initializeLists.devops,database);
 
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(likeService.getLikesAsList(database))));
+        });
+
+        get("/orly", (request, response) -> {
+
         });
     }
 
@@ -185,6 +187,17 @@ public class App {
 
         Counter doc = collection.findOneAndUpdate(query, update, options);
         return doc.getCounterValue();
+    }
+
+    public void lal1(UrlService urlService, Crawler crawler, LikeService likeService, MongoDatabase database) {
+        ArrayList<String> urls = urlService.getUrlsAsList(database);
+
+        for (String url : urls) {
+            Like like = crawler.urlToLikeCollection(url, database);
+            like.toString();
+            crawler.writeLikes(like);
+            likeService.addLike(like, database);
+        }
     }
 
 }

@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 public class ArticleService {
 
-    public void JSONArrayToList(JsonObject jsonObject, ArrayList<Article> articles) {
+    public void JsonObjectToList(JsonObject jsonObject, ArrayList<Article> articles) {
 
         JsonArray jsonArray =  jsonObject.getAsJsonArray("list");
         Iterator<JsonElement> iter = jsonArray.iterator();
@@ -89,35 +89,35 @@ public class ArticleService {
     }
 
     // Dosyaya yazma islemi ayri bir fonksiyon ve generic yapilabilir.
-    public void cekVeYaz(ArrayList<Article> articles, MongoDatabase database) {
-
-        Iterator<Article> iter = articles.iterator();
-
-        while(iter.hasNext()) {
-            int articleID = iter.next().getArticleID();
-
-            MongoCollection<Data> collection = database.getCollection("data", Data.class);
-
-            Document queryFilter =  new Document("articleID", articleID);
-
-            FindIterable<Data> result = collection.find(queryFilter).limit(1);
-
-            Data data = result.first();
-            Path path = Paths.get("src/main/resources/recommendations.txt");
-
-            StringBuilder sb = new StringBuilder();
-            sb.append(data.getMainTopic() + "\t");
-            sb.append(data.getTitle() + "\t");
-            sb.append(data.getArticleLink());
-
-            // StandardOpenOption'a CREATE_NEW ekle.
-            // Set kontrolu yapilsin. Ayni articleID'ye sahipler yazilmasin.
-            try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.APPEND)) {
-                writer.newLine();
-                writer.write(sb.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    public void cekVeYaz(ArrayList<Article> articles, MongoDatabase database) {
+//
+//        Iterator<Article> iter = articles.iterator();
+//
+//        while(iter.hasNext()) {
+//            int articleID = iter.next().getArticleID();
+//
+//            MongoCollection<Data> collection = database.getCollection("data", Data.class);
+//
+//            Document queryFilter =  new Document("articleID", articleID);
+//
+//            FindIterable<Data> result = collection.find(queryFilter).limit(1);
+//
+//            Data data = result.first();
+//            Path path = Paths.get("src/main/resources/recommendations.txt");
+//
+//            StringBuilder sb = new StringBuilder();
+//            sb.append(data.getMainTopic() + "\t");
+//            sb.append(data.getTitle() + "\t");
+//            sb.append(data.getArticleLink());
+//
+//            // StandardOpenOption'a CREATE_NEW ekle.
+//            // Set kontrolu yapilsin. Ayni articleID'ye sahipler yazilmasin.
+//            try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.APPEND)) {
+//                writer.newLine();
+//                writer.write(sb.toString());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 }
