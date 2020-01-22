@@ -43,7 +43,11 @@
             <artifactId>unirest-java</artifactId>
             <version>3.4.00</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
         <!--        <dependency>-->
 <!--            <groupId>javax.ws.rs</groupId>-->
 <!--            <artifactId>javax.ws.rs-api</artifactId>-->

@@ -17,7 +17,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -44,9 +46,10 @@ public class DataService {
         return list;
     }
 
-    public void sendRecommendations(ArrayList<Article> articles, MongoDatabase database) {
+    public String sendRecommendations(ArrayList<Article> articles, MongoDatabase database) {
 
         Iterator<Article> iter = articles.iterator();
+        StringBuilder sb = new StringBuilder();
 
         while(iter.hasNext()) {
             int articleID = iter.next().getArticleID();
@@ -58,22 +61,24 @@ public class DataService {
             FindIterable<Data> result = collection.find(queryFilter).limit(1);
 
             Data data = result.first();
-            Path path = Paths.get("src/main/resources/recommendations.txt");
+//            Path path = Paths.get("src/main/resources/recommendations.txt");
 
-            StringBuilder sb = new StringBuilder();
-            sb.append(data.getMainTopic() + "\t");
-            sb.append(data.getTitle() + "\t");
-            sb.append(data.getArticleLink());
+//            sb.append(data.getMainTopic() + "\t");
+//            sb.append(data.getTitle() + "\t");
+//            sb.append(data.getArticleLink());
+            String html = createMail(data);
+            sb.append(html);
+            sb.append("\n");
 
-            // StandardOpenOption'a CREATE_NEW ekle.
-            // Set kontrolu yapilsin. Ayni articleID'ye sahipler yazilmasin.
-            try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.APPEND)) {
-                writer.newLine();
-                writer.write(sb.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+//                writer.newLine();
+//                writer.write(sb.toString());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
+
+        return sb.toString();
     }
 
     public boolean dataExist(Data data, MongoDatabase database) {
@@ -84,5 +89,18 @@ public class DataService {
         FindIterable result = collection.find(queryFilter).limit(1);
 
         return result.first() == null ? false : true;
+    }
+
+    public String createMail(Data data) {
+        // verilerden mail formati olusturmasini bekleriz.
+        String mainTopic = data.getMainTopic();
+        String title = data.getTitle();
+        String url = data.getArticleLink();
+
+        String html = "<h2> " + mainTopic + " </h2>" + "\n"
+                + "<h4> " + title + " </h4>" + "\n"
+                + "<h5> " + url + " </h5>";
+
+        return html;
     }
 }

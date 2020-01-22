@@ -16,10 +16,13 @@ import service.ArticleService;
 import service.DataService;
 import service.LikeService;
 import service.UrlService;
+import utils.Mail;
 import utils.initializeLists;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import static spark.Spark.post;
 import static spark.Spark.get;
@@ -97,73 +100,16 @@ public class App {
                     new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(dataService.getDatas(database))));
         });
 
-        get("/likes", (request, response) -> {
-            // Like collectionundaki linkleri ceksin.
-            // cekilen linkleri crawllasin
-            // crawldan main_topic ve title donup hem dosyaya yazsin hem de database Like collectionuna
+        get("/recommend", (request, response) -> {
+
             response.type("application/json");
 
-            ArrayList<String> urls = urlService.getUrlsAsList(database);
-
-            for (String url : urls) {
-                Like like = crawler.urlToLikeCollection(url, database);
-                like.toString();
-                crawler.writeLikes(like);
-                likeService.addLike(like, database);
-            }
+            lal1(urlService, crawler, likeService, database);
+            lal2(likeService, articleService, database);
+            lal3(articleService, dataService, database);
 
             return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(likeService.getLikesAsList(database))));
-        });
-
-        get("/son", (request, response) -> {
-            ArrayList<Like> likes = likeService.getLikesAsList(database);
-            Iterator<Like> iter = likes.iterator();
-
-            while(iter.hasNext()) {
-                Like like = iter.next();
-                JsonObject jsonObject = articleService.getRecommendations(like.getTitle());
-
-                // == instead of equals() maybe?
-                if (like.getMainTopic().equals(MainTopics.DEVELOPMENT.getMainTopic())) {
-                    articleService.JsonObjectToList(jsonObject, initializeLists.development);
-                } else if (like.getMainTopic().equals(MainTopics.ARCHITECTURE.getMainTopic())) {
-                    articleService.JsonObjectToList(jsonObject, initializeLists.architecture);
-                } else if (like.getMainTopic().equals(MainTopics.AI.getMainTopic())) {
-                    articleService.JsonObjectToList(jsonObject, initializeLists.ai);
-                } else if (like.getMainTopic().equals(MainTopics.CULTURE.getMainTopic())) {
-                    articleService.JsonObjectToList(jsonObject, initializeLists.culture);
-                } else if (like.getMainTopic().equals(MainTopics.DEVOPS.getMainTopic())) {
-                    articleService.JsonObjectToList(jsonObject, initializeLists.devops);
-                } else {
-                    articleService.JsonObjectToList(jsonObject, new ArrayList<Article>());
-                }
-            }
-
-            return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(likeService.getLikesAsList(database))));
-        });
-
-        get("/son1", (request, response) -> {
-
-            initializeLists.development = articleService.returnRecommendations(initializeLists.development);
-            initializeLists.architecture = articleService.returnRecommendations(initializeLists.architecture);
-            initializeLists.ai = articleService.returnRecommendations(initializeLists.ai);
-            initializeLists.culture = articleService.returnRecommendations(initializeLists.culture);
-            initializeLists.devops = articleService.returnRecommendations(initializeLists.devops);
-
-            dataService.sendRecommendations(initializeLists.development,database);
-            dataService.sendRecommendations(initializeLists.architecture,database);
-            dataService.sendRecommendations(initializeLists.ai,database);
-            dataService.sendRecommendations(initializeLists.culture,database);
-            dataService.sendRecommendations(initializeLists.devops,database);
-
-            return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(likeService.getLikesAsList(database))));
-        });
-
-        get("/orly", (request, response) -> {
-
+                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(urlService.getUrlsAsList(database))));
         });
     }
 
@@ -189,7 +135,7 @@ public class App {
         return doc.getCounterValue();
     }
 
-    public void lal1(UrlService urlService, Crawler crawler, LikeService likeService, MongoDatabase database) {
+    public static void lal1(UrlService urlService, Crawler crawler, LikeService likeService, MongoDatabase database) {
         ArrayList<String> urls = urlService.getUrlsAsList(database);
 
         for (String url : urls) {
@@ -200,4 +146,48 @@ public class App {
         }
     }
 
+    public static void lal2(LikeService likeService, ArticleService articleService, MongoDatabase database) {
+        ArrayList<Like> likes = likeService.getLikesAsList(database);
+        Iterator<Like> iter = likes.iterator();
+
+        while(iter.hasNext()) {
+            Like like = iter.next();
+            System.out.println(like.toString());
+            JsonObject jsonObject = articleService.getRecommendations(like.getTitle());
+
+            // == instead of equals() maybe?
+            if (like.getMainTopic().equals(MainTopics.DEVELOPMENT.getMainTopic())) {
+                articleService.JsonObjectToList(jsonObject, initializeLists.development);
+            } else if (like.getMainTopic().equals(MainTopics.ARCHITECTURE.getMainTopic())) {
+                articleService.JsonObjectToList(jsonObject, initializeLists.architecture);
+            } else if (like.getMainTopic().equals(MainTopics.AI.getMainTopic())) {
+                articleService.JsonObjectToList(jsonObject, initializeLists.ai);
+            } else if (like.getMainTopic().equals(MainTopics.CULTURE.getMainTopic())) {
+                articleService.JsonObjectToList(jsonObject, initializeLists.culture);
+            } else if (like.getMainTopic().equals(MainTopics.DEVOPS.getMainTopic())) {
+                articleService.JsonObjectToList(jsonObject, initializeLists.devops);
+            } else {
+                articleService.JsonObjectToList(jsonObject, new ArrayList<Article>());
+            }
+        }
+    }
+
+    public static void lal3(ArticleService articleService, DataService dataService, MongoDatabase database) {
+        initializeLists.development = articleService.returnRecommendations(initializeLists.development);
+        initializeLists.architecture = articleService.returnRecommendations(initializeLists.architecture);
+        initializeLists.ai = articleService.returnRecommendations(initializeLists.ai);
+        initializeLists.culture = articleService.returnRecommendations(initializeLists.culture);
+        initializeLists.devops = articleService.returnRecommendations(initializeLists.devops);
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(dataService.sendRecommendations(initializeLists.development,database));
+        sb.append(dataService.sendRecommendations(initializeLists.architecture,database));
+        sb.append(dataService.sendRecommendations(initializeLists.ai,database));
+        sb.append(dataService.sendRecommendations(initializeLists.culture,database));
+        sb.append(dataService.sendRecommendations(initializeLists.devops,database));
+
+        Mail mail = new Mail();
+        mail.sendMail(sb.toString());
+    }
 }

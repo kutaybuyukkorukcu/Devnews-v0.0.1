@@ -1,10 +1,14 @@
 package service;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import model.Data;
 import model.Like;
+import org.bson.Document;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 
 public class LikeService {
@@ -15,12 +19,17 @@ public class LikeService {
         collection.insertOne(like);
     }
 
+    public void updateIsNew() {
+
+    }
+
     public ArrayList<Like> getLikesAsList(MongoDatabase database) {
         MongoCollection<Like> collection = database.getCollection("like", Like.class);
 
+        Document queryFilter =  new Document("isNew", 1);
         ArrayList<Like> list = new ArrayList<Like>();
 
-        try(MongoCursor<Like> cursor = collection.find().iterator()) {
+        try(MongoCursor<Like> cursor = collection.find(queryFilter).iterator()) {
             while (cursor.hasNext()) {
                 Like like = cursor.next();
                 list.add(like);

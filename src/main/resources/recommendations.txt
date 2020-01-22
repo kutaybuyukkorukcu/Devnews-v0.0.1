@@ -1,12 +1,81 @@
-main_topic	title	url
+main_topic  title	url
 
+<h2> AI, ML & Data Engineering </h2>
+<h4> Data Citizens: Why We All Care about Data Ethics </h4>
+<h5> https://www.infoq.com/articles/data-ethics/ </h5>
 
-AI, ML & Data Engineering	Data Citizens: Why We All Care about Data Ethics	https://www.infoq.com/articles/data-ethics/
-Development	Explore the New Java 10 “var” Type: An Introduction and Hands-on Tutorial	https://www.infoq.com/articles/java-10-var-type/
-Development	Java Feature Spotlight: Local Variable Type Inference	https://www.infoq.com/articles/java-local-variable-type-inference/
-Development	Your Roadmap to an Open Mobile Application Development Strategy	https://www.infoq.com/articles/open-madp-mobile-enterprise-apps/
-Culture & Methods	Architecturally Aligned Testing	https://www.infoq.com/articles/architecturally-aligned-testing/
-DevOps	Q&A with Tyler Treat on Microservice Observability	https://www.infoq.com/articles/tyler-treat-observability/
-DevOps	Istio and the Future of Service Meshes	https://www.infoq.com/articles/istio-future-service-mesh/
-DevOps	Observability-Driven Development for Tackling the Great Unknown	https://www.infoq.com/articles/observability-driven-development/
-Architecture & Design	The Fundamental Truth behind Successful Development Practices: Software is Synthetic	https://www.infoq.com/articles/software-is-synthetic/
+<h2> Development </h2>
+<h4> Explore the New Java 10 “var” Type: An Introduction and Hands-on Tutorial </h4>
+<h5> https://www.infoq.com/articles/java-10-var-type/ </h5>
+
+<h2> Development </h2>
+<h4> Java Feature Spotlight: Local Variable Type Inference </h4>
+<h5> https://www.infoq.com/articles/java-local-variable-type-inference/ </h5>
+
+<h2> Development </h2>
+<h4> Your Roadmap to an Open Mobile Application Development Strategy </h4>
+<h5> https://www.infoq.com/articles/open-madp-mobile-enterprise-apps/ </h5>
+
+<h2> Culture & Methods </h2>
+<h4> Architecturally Aligned Testing </h4>
+<h5> https://www.infoq.com/articles/architecturally-aligned-testing/ </h5>
+
+<h2> DevOps </h2>
+<h4> Q&A with Tyler Treat on Microservice Observability </h4>
+<h5> https://www.infoq.com/articles/tyler-treat-observability/ </h5>
+
+<h2> DevOps </h2>
+<h4> Istio and the Future of Service Meshes </h4>
+<h5> https://www.infoq.com/articles/istio-future-service-mesh/ </h5>
+
+<h2> DevOps </h2>
+<h4> Observability-Driven Development for Tackling the Great Unknown </h4>
+<h5> https://www.infoq.com/articles/observability-driven-development/ </h5>
+
+<h2> Architecture & Design </h2>
+<h4> The Fundamental Truth behind Successful Development Practices: Software is Synthetic </h4>
+<h5> https://www.infoq.com/articles/software-is-synthetic/ </h5>
+
+<h2> DevOps </h2>
+<h4> Microservices in a Post-Kubernetes Era </h4>
+<h5> https://www.infoq.com/articles/microservices-post-kubernetes/ </h5>
+
+<h2> AI, ML & Data Engineering </h2>
+<h4> Data Citizens: Why We All Care about Data Ethics </h4>
+<h5> https://www.infoq.com/articles/data-ethics/ </h5>
+
+<h2> Development </h2>
+<h4> Explore the New Java 10 “var” Type: An Introduction and Hands-on Tutorial </h4>
+<h5> https://www.infoq.com/articles/java-10-var-type/ </h5>
+
+<h2> Development </h2>
+<h4> Java Feature Spotlight: Local Variable Type Inference </h4>
+<h5> https://www.infoq.com/articles/java-local-variable-type-inference/ </h5>
+
+<h2> Development </h2>
+<h4> Your Roadmap to an Open Mobile Application Development Strategy </h4>
+<h5> https://www.infoq.com/articles/open-madp-mobile-enterprise-apps/ </h5>
+
+<h2> Culture & Methods </h2>
+<h4> Architecturally Aligned Testing </h4>
+<h5> https://www.infoq.com/articles/architecturally-aligned-testing/ </h5>
+
+<h2> DevOps </h2>
+<h4> Q&A with Tyler Treat on Microservice Observability </h4>
+<h5> https://www.infoq.com/articles/tyler-treat-observability/ </h5>
+
+<h2> DevOps </h2>
+<h4> Istio and the Future of Service Meshes </h4>
+<h5> https://www.infoq.com/articles/istio-future-service-mesh/ </h5>
+
+<h2> DevOps </h2>
+<h4> Observability-Driven Development for Tackling the Great Unknown </h4>
+<h5> https://www.infoq.com/articles/observability-driven-development/ </h5>
+
+<h2> Architecture & Design </h2>
+<h4> The Fundamental Truth behind Successful Development Practices: Software is Synthetic </h4>
+<h5> https://www.infoq.com/articles/software-is-synthetic/ </h5>
+
+<h2> DevOps </h2>
+<h4> Microservices in a Post-Kubernetes Era </h4>
+<h5> https://www.infoq.com/articles/microservices-post-kubernetes/ </h5>
