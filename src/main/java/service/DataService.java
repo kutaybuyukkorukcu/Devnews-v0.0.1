@@ -7,21 +7,9 @@ import com.mongodb.client.MongoDatabase;
 import model.Article;
 import model.Data;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
-
-import static com.mongodb.client.model.Filters.eq;
 
 public class DataService {
 

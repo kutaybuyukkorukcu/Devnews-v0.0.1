@@ -1,16 +1,13 @@
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.mongodb.*;
+import com.mongodb.DB;
 import com.mongodb.MongoClient;
-import com.mongodb.client.*;
-
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
+import db.DBDriver;
 import model.*;
-import db.initializeDB;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.PojoCodecProvider;
-
 import org.bson.Document;
 import service.ArticleService;
 import service.DataService;
@@ -20,30 +17,25 @@ import utils.Mail;
 import utils.initializeLists;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
-import static spark.Spark.post;
-import static spark.Spark.get;
+import static spark.Spark.*;
 
 public class App {
 
     public static void main(String[] args) {
 
-        MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-        CodecRegistry pojoCodecRegistry = org.bson.codecs.configuration.CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), org.bson.codecs.configuration.CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
-        MongoDatabase database = mongoClient.getDatabase("infoq").withCodecRegistry(pojoCodecRegistry);
 
-        boolean flag = initializeDB.checkDB(mongoClient);
+        boolean flag = DBDriver.checkDB();
 
-        initializeDB.createCounter(database, flag);
-        initializeDB.createData(database, flag);
-        initializeDB.createUrl(database, flag);
-        initializeDB.createLike(database, flag);
+        DBDriver.createCounter(flag);
+        DBDriver.createData(flag);
+        DBDriver.createUrl(flag);
+        DBDriver.createLike(flag);
 
         initializeLists.generateLists();
 
+        // Burada final koydum ama nedenini arastirmam lazim.
         final LikeService likeService = new LikeService();
         final UrlService urlService = new UrlService();
         final DataService dataService = new DataService();
