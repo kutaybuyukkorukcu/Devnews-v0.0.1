@@ -61,21 +61,9 @@ public class DataService {
             FindIterable<Data> result = collection.find(queryFilter).limit(1);
 
             Data data = result.first();
-//            Path path = Paths.get("src/main/resources/recommendations.txt");
-
-//            sb.append(data.getMainTopic() + "\t");
-//            sb.append(data.getTitle() + "\t");
-//            sb.append(data.getArticleLink());
             String html = createMail(data);
             sb.append(html);
             sb.append("\n");
-
-//            try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
-//                writer.newLine();
-//                writer.write(sb.toString());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
         }
 
         return sb.toString();

@@ -40,8 +40,7 @@ public class ArticleService {
 
         JsonArray jsonArray =  jsonObject.getAsJsonArray("list");
         Iterator<JsonElement> iter = jsonArray.iterator();
-
-
+        
         while(iter.hasNext()) {
                 Article article = new Article();
                 JsonArray arr = (JsonArray) iter.next();
@@ -81,8 +80,6 @@ public class ArticleService {
                 return a2 - a1;
             }
         };
-
-        // Set kontrolu yapilsin. Ayni articleID'ye sahipler alinmasin.
         return (ArrayList<Article>) articles.stream()
                 .sorted(comparator)
                 .limit(5)

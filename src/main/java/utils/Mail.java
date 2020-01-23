@@ -42,13 +42,12 @@ public class Mail {
     private static final String EMAIL_TO = "kutaybuyukkorukcu@gmail.com";
 
     private static final String EMAIL_SUBJECT = "InfoQ Onerilen Icerikler";
-    private static final String EMAIL_TEXT = "";
 
     public void sendMail(String sb) {
         Properties prop = System.getProperties();
         prop.put("mail.smtp.host", SMTP_SERVER);
         prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.port", "25");
+        prop.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(prop, null);
         Message msg = new MimeMessage(session);

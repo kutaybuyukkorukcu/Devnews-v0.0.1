@@ -26,7 +26,6 @@ public class Validator {
                 .map(str -> str.substring(0, str.length() - 1))
                 .orElse(s);
     }
-
     public void setDevelopment() {
         generic.put("Development", "Development");
         generic.put("Java", "Development");

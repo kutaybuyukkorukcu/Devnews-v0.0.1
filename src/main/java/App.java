@@ -104,9 +104,9 @@ public class App {
 
             response.type("application/json");
 
-            lal1(urlService, crawler, likeService, database);
-            lal2(likeService, articleService, database);
-            lal3(articleService, dataService, database);
+            getUrls(urlService, crawler, likeService, database);
+            getLikesAndRecommend(likeService, articleService, database);
+            getRecommends(articleService, dataService, database);
 
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(urlService.getUrlsAsList(database))));
@@ -135,7 +135,7 @@ public class App {
         return doc.getCounterValue();
     }
 
-    public static void lal1(UrlService urlService, Crawler crawler, LikeService likeService, MongoDatabase database) {
+    public static void getUrls(UrlService urlService, Crawler crawler, LikeService likeService, MongoDatabase database) {
         ArrayList<String> urls = urlService.getUrlsAsList(database);
 
         for (String url : urls) {
@@ -146,7 +146,7 @@ public class App {
         }
     }
 
-    public static void lal2(LikeService likeService, ArticleService articleService, MongoDatabase database) {
+    public static void getLikesAndRecommend(LikeService likeService, ArticleService articleService, MongoDatabase database) {
         ArrayList<Like> likes = likeService.getLikesAsList(database);
         Iterator<Like> iter = likes.iterator();
 
@@ -172,7 +172,7 @@ public class App {
         }
     }
 
-    public static void lal3(ArticleService articleService, DataService dataService, MongoDatabase database) {
+    public static void getRecommends(ArticleService articleService, DataService dataService, MongoDatabase database) {
         initializeLists.development = articleService.returnRecommendations(initializeLists.development);
         initializeLists.architecture = articleService.returnRecommendations(initializeLists.architecture);
         initializeLists.ai = articleService.returnRecommendations(initializeLists.ai);

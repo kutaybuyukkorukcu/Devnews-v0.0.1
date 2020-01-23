@@ -19,10 +19,6 @@ public class LikeService {
         collection.insertOne(like);
     }
 
-    public void updateIsNew() {
-
-    }
-
     public ArrayList<Like> getLikesAsList(MongoDatabase database) {
         MongoCollection<Like> collection = database.getCollection("like", Like.class);
 
@@ -37,5 +33,9 @@ public class LikeService {
         }
 
         return list;
+    }
+
+    public void updateIsNew() {
+
     }
 }
