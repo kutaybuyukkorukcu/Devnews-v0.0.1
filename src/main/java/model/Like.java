@@ -19,7 +19,7 @@ public class Like {
     @Override
     public String toString() {
         return "Like{" +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", mainTopic='" + mainTopic + '\'' +
                 ", isNew=" + isNew +
                 '}';
