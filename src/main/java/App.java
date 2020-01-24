@@ -1,7 +1,5 @@
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
@@ -19,26 +17,18 @@ import utils.initializeLists;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static spark.Spark.*;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 public class App {
 
     public static void main(String[] args) {
 
-
-        boolean flag = DBDriver.checkDB();
-
-        DBDriver.createCounter(flag);
-        DBDriver.createData(flag);
-        DBDriver.createUrl(flag);
-        DBDriver.createLike(flag);
-
         initializeLists.generateLists();
-
-        // Burada final koydum ama nedenini arastirmam lazim.
-        final LikeService likeService = new LikeService();
-        final UrlService urlService = new UrlService();
-        final DataService dataService = new DataService();
+        final DBDriver dbDriver = new DBDriver();
+        final LikeService likeService = new LikeService(dbDriver);
+        final UrlService urlService = new UrlService(dbDriver);
+        final DataService dataService = new DataService(dbDriver);
         final ArticleService articleService = new ArticleService();
         final Crawler crawler = new Crawler();
 
@@ -46,7 +36,8 @@ public class App {
         get("/datas", (request, response) -> {
             response.type("application/json");
 
-            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(dataService.getDatas(database))));
+            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS,
+                    new Gson().toJsonTree(dataService.getDatas())));
         });
 
         // Reads each url from text file and then inserts the urls into the Url collection
@@ -57,7 +48,7 @@ public class App {
 
             for (String url : list) {
                 Url link = crawler.urlToUrlCollection(url);
-                urlService.addUrls(link, database);
+                urlService.addUrls(link);
             }
 
             return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
@@ -67,7 +58,7 @@ public class App {
             response.type("application/json");
 
             Url url = new Gson().fromJson(request.body(), Url.class);
-            urlService.addUrls(url, database);
+            urlService.addUrls(url);
 
             return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
@@ -79,29 +70,31 @@ public class App {
         get("/crawl", (request, response) -> {
             response.type("application/json");
 
-            ArrayList<String> urls = urlService.getUrlsAsList(database);
+            ArrayList<String> urls = urlService.getUrlsAsList();
 
             for (String url : urls) {
-                int articleID = counterValue(database);
+                int articleID = counterValue(dbDriver);
                 Data data = crawler.urlToData(url, articleID);
                 crawler.writeDatas(data);
-                dataService.addData(data, database);
+                dataService.addData(data);
             }
 
             return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(dataService.getDatas(database))));
+                    new StandardResponse(StatusResponse.SUCCESS,
+                            new Gson().toJsonTree(dataService.getDatas())));
         });
 
         get("/recommend", (request, response) -> {
 
             response.type("application/json");
 
-            getUrls(urlService, crawler, likeService, database);
-            getLikesAndRecommend(likeService, articleService, database);
-            getRecommends(articleService, dataService, database);
+            getUrls(urlService, crawler, likeService);
+            getLikesAndRecommend(likeService, articleService);
+            getRecommends(articleService, dataService);
 
             return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(urlService.getUrlsAsList(database))));
+                    new StandardResponse(StatusResponse.SUCCESS,
+                            new Gson().toJsonTree(urlService.getUrlsAsList())));
         });
     }
 
@@ -110,8 +103,11 @@ public class App {
     // Increments counterValue by 1 and returns it.
     // Purpose of this collection : Defines an articleID for each article.
      */
-    public static int counterValue(MongoDatabase database) {
-        MongoCollection<Counter> collection = database.getCollection("counter", Counter.class);
+    public static int counterValue(DBDriver dbDriver) {
+
+        // Will relocate this function and will remove the parameter
+        MongoDatabase mongoDatabase = dbDriver.getDatabaseInstance();
+        MongoCollection<Counter> collection = mongoDatabase.getCollection("counter", Counter.class);
 
         Document query = new Document("counterName", "articleID");
         Document update = new Document();
@@ -127,24 +123,24 @@ public class App {
         return doc.getCounterValue();
     }
 
-    public static void getUrls(UrlService urlService, Crawler crawler, LikeService likeService, MongoDatabase database) {
-        ArrayList<String> urls = urlService.getUrlsAsList(database);
+    public static void getUrls(UrlService urlService, Crawler crawler, LikeService likeService) {
+        ArrayList<String> urls = urlService.getUrlsAsList();
 
         for (String url : urls) {
-            Like like = crawler.urlToLikeCollection(url, database);
+            Like like = crawler.urlToLikeCollection(url);
             like.toString();
             crawler.writeLikes(like);
-            likeService.addLike(like, database);
+            likeService.addLike(like);
         }
     }
 
-    public static void getLikesAndRecommend(LikeService likeService, ArticleService articleService, MongoDatabase database) {
-        ArrayList<Like> likes = likeService.getLikesAsList(database);
+    public static void getLikesAndRecommend(LikeService likeService, ArticleService articleService) {
+
+        ArrayList<Like> likes = likeService.getLikesAsList();
         Iterator<Like> iter = likes.iterator();
 
         while(iter.hasNext()) {
             Like like = iter.next();
-            System.out.println(like.toString());
             JsonObject jsonObject = articleService.getRecommendations(like.getTitle());
 
             // == instead of equals() maybe?
@@ -164,7 +160,7 @@ public class App {
         }
     }
 
-    public static void getRecommends(ArticleService articleService, DataService dataService, MongoDatabase database) {
+    public static void getRecommends(ArticleService articleService, DataService dataService) {
         initializeLists.development = articleService.returnRecommendations(initializeLists.development);
         initializeLists.architecture = articleService.returnRecommendations(initializeLists.architecture);
         initializeLists.ai = articleService.returnRecommendations(initializeLists.ai);
@@ -173,11 +169,11 @@ public class App {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(dataService.sendRecommendations(initializeLists.development,database));
-        sb.append(dataService.sendRecommendations(initializeLists.architecture,database));
-        sb.append(dataService.sendRecommendations(initializeLists.ai,database));
-        sb.append(dataService.sendRecommendations(initializeLists.culture,database));
-        sb.append(dataService.sendRecommendations(initializeLists.devops,database));
+        sb.append(dataService.sendRecommendations(initializeLists.development));
+        sb.append(dataService.sendRecommendations(initializeLists.architecture));
+        sb.append(dataService.sendRecommendations(initializeLists.ai));
+        sb.append(dataService.sendRecommendations(initializeLists.culture));
+        sb.append(dataService.sendRecommendations(initializeLists.devops));
 
         Mail mail = new Mail();
         mail.sendMail(sb.toString());

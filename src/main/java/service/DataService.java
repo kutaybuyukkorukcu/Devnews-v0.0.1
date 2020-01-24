@@ -1,9 +1,11 @@
 package service;
 
+import com.mongodb.Mongo;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import db.DBDriver;
 import model.Article;
 import model.Data;
 import org.bson.Document;
@@ -13,14 +15,24 @@ import java.util.Iterator;
 
 public class DataService {
 
-    public void addData(Data data, MongoDatabase database){
-        MongoCollection<Data> collection = database.getCollection("data", Data.class);
+    private DBDriver dbDriver;
+
+    MongoDatabase mongoDatabase = dbDriver.getDatabaseInstance();
+
+    public DataService(DBDriver dbDriver) {
+        this.dbDriver = dbDriver;
+    }
+
+    public void addData(Data data){
+
+        MongoCollection<Data> collection = mongoDatabase.getCollection("data", Data.class);
 
         collection.insertOne(data);
     }
 
-    public ArrayList<Data> getDatas(MongoDatabase database) {
-        MongoCollection<Data> collection = database.getCollection("data", Data.class);
+    public ArrayList<Data> getDatas() {
+
+        MongoCollection<Data> collection = mongoDatabase.getCollection("data", Data.class);
 
         ArrayList<Data> list = new ArrayList<Data>();
 
@@ -34,7 +46,7 @@ public class DataService {
         return list;
     }
 
-    public String sendRecommendations(ArrayList<Article> articles, MongoDatabase database) {
+    public String sendRecommendations(ArrayList<Article> articles) {
 
         Iterator<Article> iter = articles.iterator();
         StringBuilder sb = new StringBuilder();
@@ -42,7 +54,7 @@ public class DataService {
         while(iter.hasNext()) {
             int articleID = iter.next().getArticleID();
 
-            MongoCollection<Data> collection = database.getCollection("data", Data.class);
+            MongoCollection<Data> collection = mongoDatabase.getCollection("data", Data.class);
 
             Document queryFilter =  new Document("articleID", articleID);
 
@@ -57,8 +69,9 @@ public class DataService {
         return sb.toString();
     }
 
-    public boolean dataExist(Data data, MongoDatabase database) {
-        MongoCollection<Data> collection = database.getCollection("data", Data.class);
+    public boolean dataExist(Data data) {
+
+        MongoCollection<Data> collection = mongoDatabase.getCollection("data", Data.class);
 
         Document queryFilter =  new Document("title", data.getTitle());
 
@@ -68,6 +81,7 @@ public class DataService {
     }
 
     public String createMail(Data data) {
+
         // verilerden mail formati olusturmasini bekleriz.
         String mainTopic = data.getMainTopic();
         String title = data.getTitle();

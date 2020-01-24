@@ -1,6 +1,8 @@
+import com.mongodb.Mongo;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import db.DBDriver;
 import model.Data;
 import model.Like;
 import model.Url;
@@ -103,9 +105,10 @@ public class Crawler {
         return _url;
     }
 
-    public Like urlToLikeCollection(String url, MongoDatabase database) {
+    public Like urlToLikeCollection(String url) {
 
-        MongoCollection<Data> collection = database.getCollection("data", Data.class);
+        MongoDatabase mongoDatabase = DBDriver.getDatabaseInstance();
+        MongoCollection<Data> collection = mongoDatabase.getCollection("data", Data.class);
 
         org.bson.Document queryFilter =  new org.bson.Document("articleLink", url);
 

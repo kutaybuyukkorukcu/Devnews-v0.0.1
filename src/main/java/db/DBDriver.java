@@ -1,5 +1,6 @@
 package db;
 
+import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoClientURI;
@@ -12,9 +13,22 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 
 public class DBDriver {
 
-    public static void createCounter(boolean flag) {
+    MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+    CodecRegistry pojoCodecRegistry = org.bson.codecs.configuration.CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
+            org.bson.codecs.configuration.CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
-        MongoDatabase mongoDatabase = DBDriver.getDatabaseInstance();
+    MongoDatabase mongoDatabase = mongoClient.getDatabase("infoq").withCodecRegistry(pojoCodecRegistry);
+
+    boolean flag = checkDB();
+
+    public DBDriver() {
+        createCounter();
+        createData();
+        createLike();
+        createUrl();
+    }
+
+    public void createCounter() {
 
         if (!flag) {
             mongoDatabase.createCollection("counter");
@@ -27,36 +41,29 @@ public class DBDriver {
         }
     }
 
-    public static void createData(boolean flag) {
-
-        MongoDatabase mongoDatabase = DBDriver.getDatabaseInstance();
+    public void createData() {
 
         if (!flag) {
             mongoDatabase.createCollection("data");
         }
     }
 
-    public static void createUrl(boolean flag) {
-
-        MongoDatabase mongoDatabase = DBDriver.getDatabaseInstance();
+    public void createUrl() {
 
         if (!flag) {
             mongoDatabase.createCollection("url");
         }
     }
 
-    public static void createLike(boolean flag) {
-
-        MongoDatabase mongoDatabase = DBDriver.getDatabaseInstance();
+    public void createLike() {
 
         if (!flag) {
             mongoDatabase.createCollection("like");
         }
     }
 
-    public static boolean checkDB() {
+    public boolean checkDB() {
 
-        MongoClient mongoClient = DBDriver.getClientInstance();
         MongoCursor<String> databases = mongoClient.listDatabaseNames().iterator();
 
         // Making sure code won't try to create db once again.
@@ -71,21 +78,12 @@ public class DBDriver {
         return flag;
     }
 
-    public static MongoClient getClientInstance() {
-
-        // URI credential dosyasindan alinsin.
-        MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+    public MongoClient getClientInstance() {
 
         return  mongoClient;
     }
 
-    public static MongoDatabase getDatabaseInstance() {
-
-        MongoClient mongoClient = DBDriver.getClientInstance();
-        CodecRegistry pojoCodecRegistry = org.bson.codecs.configuration.CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
-                org.bson.codecs.configuration.CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
-
-        MongoDatabase mongoDatabase = mongoClient.getDatabase("infoq").withCodecRegistry(pojoCodecRegistry);
+    public MongoDatabase getDatabaseInstance() {
 
         return mongoDatabase;
     }
