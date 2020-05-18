@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class UrlService {
 
-    public void addUrls(Url url, MongoDatabase database) {
+    public void addUrl(Url url, MongoDatabase database) {
         MongoCollection<Url> collection = database.getCollection("url", Url.class);
 
         collection.insertOne(url);

@@ -1,7 +1,6 @@
 package utils;
 
 import com.sun.mail.smtp.SMTPTransport;
-import com.sun.tools.javac.Main;
 import service.DataService;
 
 import javax.activation.DataHandler;

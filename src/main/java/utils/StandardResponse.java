@@ -1,3 +1,5 @@
+package utils;
+
 import com.google.gson.JsonElement;
 
 public class StandardResponse {

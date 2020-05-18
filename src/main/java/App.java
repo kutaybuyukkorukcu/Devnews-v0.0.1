@@ -16,13 +16,13 @@ import service.ArticleService;
 import service.DataService;
 import service.LikeService;
 import service.UrlService;
-import utils.Mail;
+import utils.CorsFilter;
+import utils.StandardResponse;
+import utils.StatusResponse;
 import utils.initializeLists;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import static spark.Spark.post;
 import static spark.Spark.get;
@@ -48,11 +48,15 @@ public class App {
         final UrlService urlService = new UrlService();
         final DataService dataService = new DataService();
         final ArticleService articleService = new ArticleService();
+        final CorsFilter corsFilter = new CorsFilter();
         final Crawler crawler = new Crawler();
+
+        corsFilter.apply();
 
         // Get datas stored in Data collection
         get("/datas", (request, response) -> {
             response.type("application/json");
+
 
             return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(dataService.getDatas(database))));
         });
@@ -65,7 +69,7 @@ public class App {
 
             for (String url : list) {
                 Url link = crawler.urlToUrlCollection(url);
-                urlService.addUrls(link, database);
+                urlService.addUrl(link, database);
             }
 
             return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
@@ -75,7 +79,7 @@ public class App {
             response.type("application/json");
 
             Url url = new Gson().fromJson(request.body(), Url.class);
-            urlService.addUrls(url, database);
+            urlService.addUrl(url, database);
 
             return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
@@ -100,16 +104,22 @@ public class App {
                     new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(dataService.getDatas(database))));
         });
 
+        // Ustteki API'ler daha cok veriyi formata sokmak ve recommendationa hazirlamak icin kullaniliyor.
+        // Kullanicinin kullandigi API'ler degil
+
         get("/recommend", (request, response) -> {
 
             response.type("application/json");
+
+            initializeLists.recommendedArticles.clear();
 
             lal1(urlService, crawler, likeService, database);
             lal2(likeService, articleService, database);
             lal3(articleService, dataService, database);
 
+
             return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(urlService.getUrlsAsList(database))));
+                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(initializeLists.recommendedArticles)));
         });
     }
 
@@ -135,6 +145,9 @@ public class App {
         return doc.getCounterValue();
     }
 
+    // Merhaba hocam kisinin begendigi makalelere gore oneren bir sistem yapmistim.
+    // Ayni sekilde devam ediyor sistem ama client tarafindan istek gonderiyor artik kullanici.
+
     public static void lal1(UrlService urlService, Crawler crawler, LikeService likeService, MongoDatabase database) {
         ArrayList<String> urls = urlService.getUrlsAsList(database);
 
@@ -152,7 +165,6 @@ public class App {
 
         while(iter.hasNext()) {
             Like like = iter.next();
-            System.out.println(like.toString());
             JsonObject jsonObject = articleService.getRecommendations(like.getTitle());
 
             // == instead of equals() maybe?
@@ -179,15 +191,15 @@ public class App {
         initializeLists.culture = articleService.returnRecommendations(initializeLists.culture);
         initializeLists.devops = articleService.returnRecommendations(initializeLists.devops);
 
-        StringBuilder sb = new StringBuilder();
+        dataService.sendRecommendations(initializeLists.development, initializeLists.recommendedArticles, database);
+        dataService.sendRecommendations(initializeLists.architecture, initializeLists.recommendedArticles, database);
+        dataService.sendRecommendations(initializeLists.ai, initializeLists.recommendedArticles, database);
+        dataService.sendRecommendations(initializeLists.culture, initializeLists.recommendedArticles, database);
+        dataService.sendRecommendations(initializeLists.devops, initializeLists.recommendedArticles, database);
 
-        sb.append(dataService.sendRecommendations(initializeLists.development,database));
-        sb.append(dataService.sendRecommendations(initializeLists.architecture,database));
-        sb.append(dataService.sendRecommendations(initializeLists.ai,database));
-        sb.append(dataService.sendRecommendations(initializeLists.culture,database));
-        sb.append(dataService.sendRecommendations(initializeLists.devops,database));
+        System.out.print("Successfully Compiled!");
 
-        Mail mail = new Mail();
-        mail.sendMail(sb.toString());
+//        Mail mail = new Mail();
+//        mail.sendMail(sb.toString());
     }
 }
