@@ -57,7 +57,9 @@ public class App {
             response.type("application/json");
 
 
-            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, statusCode, new Gson().toJsonTree(dataService.getDatas(database))));
+            return new Gson().toJson(
+                    new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
+                            StatusResponse.SUCCESS.getMessage(),new Gson().toJsonTree(dataService.getDatas(database))));
         });
 
         // Reads each url from text file and then inserts the urls into the Url collection
@@ -71,7 +73,9 @@ public class App {
                 urlService.addUrl(link, database);
             }
 
-            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, statusCode));
+            return new Gson().toJson(
+                    new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
+                            StatusResponse.SUCCESS.getMessage()));
         });
 
         post("/urls", (request, response) -> {
@@ -80,7 +84,9 @@ public class App {
             Url url = new Gson().fromJson(request.body(), Url.class);
             urlService.addUrl(url, database);
 
-            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, statusCode));
+            return new Gson().toJson(
+                    new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
+                            StatusResponse.SUCCESS.getMessage()));
         });
 
         // Reads each url from database, crawls it and then
@@ -100,11 +106,9 @@ public class App {
             }
 
             return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, statusCode, new Gson().toJsonTree(dataService.getDatas(database))));
+                    new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
+                            StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(dataService.getDatas(database))));
         });
-
-        // Ustteki API'ler daha cok veriyi formata sokmak ve recommendationa hazirlamak icin kullaniliyor.
-        // Kullanicinin kullandigi API'ler degil
 
         get("/recommend", (request, response) -> {
 
@@ -112,13 +116,15 @@ public class App {
 
             initializeLists.recommendedArticles.clear();
 
-            lal1(urlService, crawler, likeService, database);
-            lal2(likeService, articleService, database);
-            lal3(articleService, dataService, database);
+            addLikesToDatabase(urlService, crawler, likeService, database);
+            getRecommendedArticles(likeService, articleService, database);
+            recommendedArticlesToList(articleService, dataService, database);
 
 
             return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, statusCode, new Gson().toJsonTree(initializeLists.recommendedArticles)));
+                    new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
+                            StatusResponse.SUCCESS.getMessage(),
+                            new Gson().toJsonTree(initializeLists.recommendedArticles)));
         });
 
 
@@ -149,7 +155,7 @@ public class App {
     // Merhaba hocam kisinin begendigi makalelere gore oneren bir sistem yapmistim.
     // Ayni sekilde devam ediyor sistem ama client tarafindan istek gonderiyor artik kullanici.
 
-    public static void lal1(UrlService urlService, Crawler crawler, LikeService likeService, MongoDatabase database) {
+    public static void addLikesToDatabase(UrlService urlService, Crawler crawler, LikeService likeService, MongoDatabase database) {
         ArrayList<String> urls = urlService.getUrlsAsList(database);
 
         for (String url : urls) {
@@ -160,7 +166,7 @@ public class App {
         }
     }
 
-    public static void lal2(LikeService likeService, ArticleService articleService, MongoDatabase database) {
+    public static void getRecommendedArticles(LikeService likeService, ArticleService articleService, MongoDatabase database) {
         ArrayList<Like> likes = likeService.getLikesAsList(database);
         Iterator<Like> iter = likes.iterator();
 
@@ -185,7 +191,7 @@ public class App {
         }
     }
 
-    public static void getRecommends(ArticleService articleService, DataService dataService, MongoDatabase database) {
+    public static void recommendedArticlesToList(ArticleService articleService, DataService dataService, MongoDatabase database) {
         initializeLists.development = articleService.returnRecommendations(initializeLists.development);
         initializeLists.architecture = articleService.returnRecommendations(initializeLists.architecture);
         initializeLists.ai = articleService.returnRecommendations(initializeLists.ai);
@@ -200,7 +206,9 @@ public class App {
         dataService.sendRecommendations(initializeLists.devops, initializeLists.recommendedArticles, database);
 
 
-        Mail mail = new Mail();
-        mail.sendMail(initializeLists.recommendedArticles.toString());
+//        Mail mail = new Mail();
+//        mail.sendMail(initializeLists.recommendedArticles.toString());
+
+        // TODO : recommendedArticles.toString() -> mail formatina donusturecek bir fonksiyon yaz.
     }
 }

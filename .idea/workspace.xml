@@ -4,13 +4,7 @@
     <list default="true" id="57c1feae-1585-4bb9-a566-fc5502751d24" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Crawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Crawler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/CorsFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helper/CorsFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Mail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/StandardResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/StandardResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utils/StatusResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/StatusResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Validator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helper/Validator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +72,8 @@
       <workItem from="1589792395375" duration="14243000" />
       <workItem from="1589876250022" duration="4337000" />
       <workItem from="1589898447668" duration="250000" />
+      <workItem from="1589909255396" duration="804000" />
+      <workItem from="1589921255990" duration="1810000" />
     </task>
     <servers />
   </component>
@@ -125,18 +121,19 @@
     </state>
     <state width="1877" height="121" key="GridCell.Tab.0.right/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589736756559" />
     <state width="914" height="207" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1589749044147" />
-    <state x="798" y="178" key="SettingsEditor" timestamp="1589832062200">
+    <state x="798" y="178" key="SettingsEditor" timestamp="1589921492445">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="440" y="94" key="SettingsEditor/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589722154298" />
     <state x="798" y="178" key="SettingsEditor/-1680.15.1680.1010/0.0.1920.1040@0.0.1920.1040" timestamp="1589832062200" />
-    <state x="330" y="316" width="583" height="336" key="com.intellij.ide.util.TipDialog" timestamp="1589898691375">
+    <state x="798" y="178" key="SettingsEditor/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589921492445" />
+    <state x="595" y="327" width="583" height="336" key="com.intellij.ide.util.TipDialog" timestamp="1589921264648">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="595" y="327" key="com.intellij.ide.util.TipDialog/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589740813176" />
     <state x="330" y="316" width="583" height="336" key="com.intellij.ide.util.TipDialog/-1680.15.1680.1010/0.0.1920.1040@0.0.1920.1040" timestamp="1589898691375" />
     <state x="595" y="327" key="com.intellij.ide.util.TipDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1589753906839" />
-    <state x="595" y="327" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589876501663" />
+    <state x="595" y="327" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589921264648" />
     <state x="953" y="0" width="974" height="1047" key="dock-window-1" timestamp="1589727014555">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
