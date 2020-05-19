@@ -52,6 +52,8 @@ public class ArticleService {
 
     }
 
+
+    // Belli bir formata soktuktan sonra hem elimde bulunan makale verilerini hem de kisinin begendiklerini artik recommendation icin yollayabilirim.
     public JsonObject getRecommendations(String title) {
 
         try {

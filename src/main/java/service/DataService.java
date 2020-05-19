@@ -46,10 +46,11 @@ public class DataService {
         return list;
     }
 
-    public String sendRecommendations(ArrayList<Article> articles, MongoDatabase database) {
+    public void sendRecommendations(ArrayList<Article> articles, ArrayList<Data> recommendedArticles ,MongoDatabase database) {
 
         Iterator<Article> iter = articles.iterator();
         StringBuilder sb = new StringBuilder();
+
 
         while(iter.hasNext()) {
             int articleID = iter.next().getArticleID();
@@ -61,24 +62,10 @@ public class DataService {
             FindIterable<Data> result = collection.find(queryFilter).limit(1);
 
             Data data = result.first();
-//            Path path = Paths.get("src/main/resources/recommendations.txt");
 
-//            sb.append(data.getMainTopic() + "\t");
-//            sb.append(data.getTitle() + "\t");
-//            sb.append(data.getArticleLink());
-            String html = createMail(data);
-            sb.append(html);
-            sb.append("\n");
-
-//            try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
-//                writer.newLine();
-//                writer.write(sb.toString());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            recommendedArticles.add(data);
         }
 
-        return sb.toString();
     }
 
     public boolean dataExist(Data data, MongoDatabase database) {

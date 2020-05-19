@@ -6,6 +6,8 @@ import com.mongodb.client.*;
 
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
+import helper.CorsFilter;
+import utils.initializeLists;
 import model.*;
 import db.initializeDB;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -16,13 +18,10 @@ import service.ArticleService;
 import service.DataService;
 import service.LikeService;
 import service.UrlService;
-import utils.Mail;
-import utils.initializeLists;
+import utils.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import static spark.Spark.post;
 import static spark.Spark.get;
@@ -48,13 +47,17 @@ public class App {
         final UrlService urlService = new UrlService();
         final DataService dataService = new DataService();
         final ArticleService articleService = new ArticleService();
+        final CorsFilter corsFilter = new CorsFilter();
         final Crawler crawler = new Crawler();
+
+        corsFilter.apply();
 
         // Get datas stored in Data collection
         get("/datas", (request, response) -> {
             response.type("application/json");
 
-            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(dataService.getDatas(database))));
+
+            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, statusCode, new Gson().toJsonTree(dataService.getDatas(database))));
         });
 
         // Reads each url from text file and then inserts the urls into the Url collection
@@ -65,19 +68,19 @@ public class App {
 
             for (String url : list) {
                 Url link = crawler.urlToUrlCollection(url);
-                urlService.addUrls(link, database);
+                urlService.addUrl(link, database);
             }
 
-            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
+            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, statusCode));
         });
 
         post("/urls", (request, response) -> {
             response.type("application/json");
 
             Url url = new Gson().fromJson(request.body(), Url.class);
-            urlService.addUrls(url, database);
+            urlService.addUrl(url, database);
 
-            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
+            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, statusCode));
         });
 
         // Reads each url from database, crawls it and then
@@ -97,20 +100,28 @@ public class App {
             }
 
             return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(dataService.getDatas(database))));
+                    new StandardResponse(StatusResponse.SUCCESS, statusCode, new Gson().toJsonTree(dataService.getDatas(database))));
         });
+
+        // Ustteki API'ler daha cok veriyi formata sokmak ve recommendationa hazirlamak icin kullaniliyor.
+        // Kullanicinin kullandigi API'ler degil
 
         get("/recommend", (request, response) -> {
 
             response.type("application/json");
 
+            initializeLists.recommendedArticles.clear();
+
             lal1(urlService, crawler, likeService, database);
             lal2(likeService, articleService, database);
             lal3(articleService, dataService, database);
 
+
             return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(urlService.getUrlsAsList(database))));
+                    new StandardResponse(StatusResponse.SUCCESS, statusCode, new Gson().toJsonTree(initializeLists.recommendedArticles)));
         });
+
+
     }
 
     /*
@@ -135,6 +146,9 @@ public class App {
         return doc.getCounterValue();
     }
 
+    // Merhaba hocam kisinin begendigi makalelere gore oneren bir sistem yapmistim.
+    // Ayni sekilde devam ediyor sistem ama client tarafindan istek gonderiyor artik kullanici.
+
     public static void lal1(UrlService urlService, Crawler crawler, LikeService likeService, MongoDatabase database) {
         ArrayList<String> urls = urlService.getUrlsAsList(database);
 
@@ -152,7 +166,6 @@ public class App {
 
         while(iter.hasNext()) {
             Like like = iter.next();
-            System.out.println(like.toString());
             JsonObject jsonObject = articleService.getRecommendations(like.getTitle());
 
             // == instead of equals() maybe?
@@ -172,22 +185,22 @@ public class App {
         }
     }
 
-    public static void lal3(ArticleService articleService, DataService dataService, MongoDatabase database) {
+    public static void getRecommends(ArticleService articleService, DataService dataService, MongoDatabase database) {
         initializeLists.development = articleService.returnRecommendations(initializeLists.development);
         initializeLists.architecture = articleService.returnRecommendations(initializeLists.architecture);
         initializeLists.ai = articleService.returnRecommendations(initializeLists.ai);
         initializeLists.culture = articleService.returnRecommendations(initializeLists.culture);
         initializeLists.devops = articleService.returnRecommendations(initializeLists.devops);
 
-        StringBuilder sb = new StringBuilder();
 
-        sb.append(dataService.sendRecommendations(initializeLists.development,database));
-        sb.append(dataService.sendRecommendations(initializeLists.architecture,database));
-        sb.append(dataService.sendRecommendations(initializeLists.ai,database));
-        sb.append(dataService.sendRecommendations(initializeLists.culture,database));
-        sb.append(dataService.sendRecommendations(initializeLists.devops,database));
+        dataService.sendRecommendations(initializeLists.development, initializeLists.recommendedArticles, database);
+        dataService.sendRecommendations(initializeLists.architecture, initializeLists.recommendedArticles, database);
+        dataService.sendRecommendations(initializeLists.ai, initializeLists.recommendedArticles, database);
+        dataService.sendRecommendations(initializeLists.culture, initializeLists.recommendedArticles, database);
+        dataService.sendRecommendations(initializeLists.devops, initializeLists.recommendedArticles, database);
+
 
         Mail mail = new Mail();
-        mail.sendMail(sb.toString());
+        mail.sendMail(initializeLists.recommendedArticles.toString());
     }
 }
