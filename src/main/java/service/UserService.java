@@ -4,13 +4,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import
-import model.Data;
 import model.User;
 import org.bson.Document;
 import utils.StandardResponse;
 import utils.StatusResponse;
 
-import javax.print.Doc;
 import java.util.ArrayList;
 
 public class UserService {
@@ -23,12 +21,12 @@ public class UserService {
         Boolean userExist = collection.find(queryByUsername).equals(user);
 
         if (userExist) {
-            new StandardResponse(StatusResponse.ERROR, "User exists!");
+            new StandardResponse(StatusResponse.ERROR, statusCode, "User exists!");
         }
 
         collection.insertOne(user);
 
-        new StandardResponse(StatusResponse.SUCCESS, "User created!");
+        new StandardResponse(StatusResponse.SUCCESS, statusCode, "User created!");
     }
 
     public ArrayList<User> getUsers(MongoDatabase database) {

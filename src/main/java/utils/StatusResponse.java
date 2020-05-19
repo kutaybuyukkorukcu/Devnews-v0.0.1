@@ -1,16 +1,31 @@
 package utils;
 
 public enum StatusResponse {
-    SUCCESS("Success"),
-    ERROR("Error");
+    SUCCESS(),
+    ERROR(),
+    NOT_MODIFIED(304, "Not modified!"),
+    BAD_REQUEST(400, "Bad request!"),
+    NOT_FOUND(404, "Not found!"),
+    SERVER_ERROR(500, "Internal server error!");
 
-    final private String status;
+    private int statusCode;
+    private String message;
 
-    StatusResponse(String status) {
-        this.status = status;
+    StatusResponse() {
+
     }
 
-    public String getStatus() {
-        return status;
+    StatusResponse(int statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
+    }
+
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

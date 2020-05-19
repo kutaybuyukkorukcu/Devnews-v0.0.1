@@ -6,6 +6,8 @@ import com.mongodb.client.*;
 
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
+import helper.CorsFilter;
+import utils.initializeLists;
 import model.*;
 import db.initializeDB;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -16,10 +18,7 @@ import service.ArticleService;
 import service.DataService;
 import service.LikeService;
 import service.UrlService;
-import utils.CorsFilter;
-import utils.StandardResponse;
-import utils.StatusResponse;
-import utils.initializeLists;
+import utils.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,7 +57,7 @@ public class App {
             response.type("application/json");
 
 
-            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(dataService.getDatas(database))));
+            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, statusCode, new Gson().toJsonTree(dataService.getDatas(database))));
         });
 
         // Reads each url from text file and then inserts the urls into the Url collection
@@ -72,7 +71,7 @@ public class App {
                 urlService.addUrl(link, database);
             }
 
-            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
+            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, statusCode));
         });
 
         post("/urls", (request, response) -> {
@@ -81,7 +80,7 @@ public class App {
             Url url = new Gson().fromJson(request.body(), Url.class);
             urlService.addUrl(url, database);
 
-            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
+            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, statusCode));
         });
 
         // Reads each url from database, crawls it and then
@@ -101,7 +100,7 @@ public class App {
             }
 
             return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(dataService.getDatas(database))));
+                    new StandardResponse(StatusResponse.SUCCESS, statusCode, new Gson().toJsonTree(dataService.getDatas(database))));
         });
 
         // Ustteki API'ler daha cok veriyi formata sokmak ve recommendationa hazirlamak icin kullaniliyor.
@@ -119,8 +118,10 @@ public class App {
 
 
             return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(initializeLists.recommendedArticles)));
+                    new StandardResponse(StatusResponse.SUCCESS, statusCode, new Gson().toJsonTree(initializeLists.recommendedArticles)));
         });
+
+
     }
 
     /*
@@ -184,12 +185,13 @@ public class App {
         }
     }
 
-    public static void lal3(ArticleService articleService, DataService dataService, MongoDatabase database) {
+    public static void getRecommends(ArticleService articleService, DataService dataService, MongoDatabase database) {
         initializeLists.development = articleService.returnRecommendations(initializeLists.development);
         initializeLists.architecture = articleService.returnRecommendations(initializeLists.architecture);
         initializeLists.ai = articleService.returnRecommendations(initializeLists.ai);
         initializeLists.culture = articleService.returnRecommendations(initializeLists.culture);
         initializeLists.devops = articleService.returnRecommendations(initializeLists.devops);
+
 
         dataService.sendRecommendations(initializeLists.development, initializeLists.recommendedArticles, database);
         dataService.sendRecommendations(initializeLists.architecture, initializeLists.recommendedArticles, database);
@@ -197,9 +199,8 @@ public class App {
         dataService.sendRecommendations(initializeLists.culture, initializeLists.recommendedArticles, database);
         dataService.sendRecommendations(initializeLists.devops, initializeLists.recommendedArticles, database);
 
-        System.out.print("Successfully Compiled!");
 
-//        Mail mail = new Mail();
-//        mail.sendMail(sb.toString());
+        Mail mail = new Mail();
+        mail.sendMail(initializeLists.recommendedArticles.toString());
     }
 }

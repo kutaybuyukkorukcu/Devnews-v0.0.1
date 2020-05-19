@@ -8,7 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import utils.Validator;
+import helper.Validator;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

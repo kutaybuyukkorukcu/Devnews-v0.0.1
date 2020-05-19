@@ -2,60 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="57c1feae-1585-4bb9-a566-fc5502751d24" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_konghq_unirest_java_3_4_00.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sparkjava_spark_core_2_8_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_mail_javax_mail_1_6_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_javax_servlet_api_3_1_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpasyncclient_4_1_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_9.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_nio_4_4_11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_5_9.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_jetty_client_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_jetty_http_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_jetty_io_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_jetty_security_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_jetty_server_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_jetty_servlet_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_jetty_util_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_jetty_webapp_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_jetty_xml_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_websocket_websocket_api_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_websocket_websocket_client_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_websocket_websocket_common_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_websocket_websocket_server_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_websocket_websocket_servlet_9_4_12_v20180830.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jsoup_jsoup_1_11_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mongodb_mongo_java_driver_3_8_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_25.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InfoqCrawler.iml" beforeDir="false" afterPath="$PROJECT_DIR$/InfoqCrawler.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/StandardResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/StandardResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/StatusResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/StatusResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/ArticleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/ArticleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/DataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/DataService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/UrlService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/UrlService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Mail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/initializeLists.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/initializeLists.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/articles.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/articles.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/likes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/likes.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/recommendations.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/recommendations.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/urls.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/urls.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/InfoqCrawler.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/utils/Validator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/Validator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Crawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Crawler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/CorsFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helper/CorsFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Mail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/StandardResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/StandardResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/StatusResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/StatusResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Validator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helper/Validator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +44,12 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
@@ -115,7 +75,9 @@
       <workItem from="1589722021240" duration="14396000" />
       <workItem from="1589740804827" duration="815000" />
       <workItem from="1589753892541" duration="3482000" />
-      <workItem from="1589792395375" duration="7553000" />
+      <workItem from="1589792395375" duration="14243000" />
+      <workItem from="1589876250022" duration="4337000" />
+      <workItem from="1589898447668" duration="250000" />
     </task>
     <servers />
   </component>
@@ -127,14 +89,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="353" y="158" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589722091830" />
-    <state x="765" y="204" key="#com.intellij.ide.util.MemberChooser" timestamp="1589795738625">
+    <state x="765" y="204" key="#com.intellij.ide.util.MemberChooser" timestamp="1589876930583">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="765" y="204" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589795738625" />
+    <state x="765" y="204" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589876930583" />
+    <state x="690" y="303" key="#com.intellij.ide.util.PackageChooserDialog" timestamp="1589878549395">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="303" key="#com.intellij.ide.util.PackageChooserDialog/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589878549395" />
     <state x="628" y="287" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1589722089232">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="628" y="287" key="#com.intellij.ide.util.TreeClassChooserDialog/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589722089232" />
+    <state x="761" y="411" width="398" height="221" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1589878561961">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="761" y="411" width="398" height="221" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589878561961" />
     <state width="914" height="207" key="GridCell.Tab.0.bottom" timestamp="1589749044147">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -155,24 +125,30 @@
     </state>
     <state width="1877" height="121" key="GridCell.Tab.0.right/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589736756559" />
     <state width="914" height="207" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1589749044147" />
-    <state x="440" y="94" key="SettingsEditor" timestamp="1589722154298">
+    <state x="798" y="178" key="SettingsEditor" timestamp="1589832062200">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="440" y="94" key="SettingsEditor/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589722154298" />
-    <state x="595" y="327" key="com.intellij.ide.util.TipDialog" timestamp="1589793125350">
+    <state x="798" y="178" key="SettingsEditor/-1680.15.1680.1010/0.0.1920.1040@0.0.1920.1040" timestamp="1589832062200" />
+    <state x="330" y="316" width="583" height="336" key="com.intellij.ide.util.TipDialog" timestamp="1589898691375">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="595" y="327" key="com.intellij.ide.util.TipDialog/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589740813176" />
+    <state x="330" y="316" width="583" height="336" key="com.intellij.ide.util.TipDialog/-1680.15.1680.1010/0.0.1920.1040@0.0.1920.1040" timestamp="1589898691375" />
     <state x="595" y="327" key="com.intellij.ide.util.TipDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1589753906839" />
-    <state x="595" y="327" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589793125350" />
+    <state x="595" y="327" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589876501663" />
     <state x="953" y="0" width="974" height="1047" key="dock-window-1" timestamp="1589727014555">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="953" y="0" width="974" height="1047" key="dock-window-1/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589727014555" />
-    <state x="616" y="240" key="run.anything.popup" timestamp="1589797724826">
+    <state x="1175" y="141" key="refactoring.ChangeSignatureDialog" timestamp="1589877799984">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1175" y="141" key="refactoring.ChangeSignatureDialog/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589877799984" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1589877187247">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="616" y="240" key="run.anything.popup/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589732600719" />
-    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589797724826" />
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589877187247" />
   </component>
 </project>

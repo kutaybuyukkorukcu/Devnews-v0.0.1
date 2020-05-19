@@ -1,7 +1,4 @@
-package utils;
-
 import com.sun.mail.smtp.SMTPTransport;
-import service.DataService;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -16,7 +13,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Properties;
 
 public class Mail {
