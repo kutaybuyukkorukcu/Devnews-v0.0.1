@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class User {
 
     private String username;
@@ -38,4 +40,15 @@ public class User {
     public void setActive(boolean active) {
         IsActive = active;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return isActive() == user.isActive() &&
+                getUsername().equals(user.getUsername()) &&
+                getPassword().equals(user.getPassword());
+    }
+
 }

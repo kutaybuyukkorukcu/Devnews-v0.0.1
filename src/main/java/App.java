@@ -7,6 +7,7 @@ import com.mongodb.client.*;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import helper.CorsFilter;
+import service.*;
 import utils.initializeLists;
 import model.*;
 import db.initializeDB;
@@ -14,14 +15,11 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
 import org.bson.Document;
-import service.ArticleService;
-import service.DataService;
-import service.LikeService;
-import service.UrlService;
 import utils.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Optional;
 
 import static spark.Spark.post;
 import static spark.Spark.get;
@@ -47,6 +45,7 @@ public class App {
         final UrlService urlService = new UrlService();
         final DataService dataService = new DataService();
         final ArticleService articleService = new ArticleService();
+        final UserService userService = new UserService();
         final CorsFilter corsFilter = new CorsFilter();
         final Crawler crawler = new Crawler();
 
@@ -127,7 +126,27 @@ public class App {
                             new Gson().toJsonTree(initializeLists.recommendedArticles)));
         });
 
+        get("/users:id", (request, response) -> {
 
+            response.type("application/json");
+
+            int id = Integer.parseInt(request.params(":id"));
+
+            Optional<User> user= userService.findUser(id, database);
+
+            // empty
+            if (!user.isPresent()) {
+                return new Gson().toJson(
+                    new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
+                            StatusResponse.SUCCESS.getMessage())
+                );
+            }
+
+            return new Gson().toJson(
+                    new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
+                            StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(user.get()))
+            );
+        });
     }
 
     /*
