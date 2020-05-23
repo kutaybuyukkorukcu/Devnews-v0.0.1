@@ -47,10 +47,22 @@ public class UserService {
         return list;
     }
 
+    public Optional<User> findUserByUsername(String username, MongoDatabase database) {
+        MongoCollection<User> collection = database.getCollection("user", User.class);
+        System.out.println(":))))))");
+        Document queryByUsername = new Document("username", username);
+//        Document queryByIsActive = new Document("isActive", true);
+// TODO : remove user collection from infoq database and re-create it. Then check the name of the user field active or isActive
+// TODO : and rename the active/isActive field based on the name from db collection.
+        User user = collection.find(queryByUsername).first();
+
+        return Optional.ofNullable(user);
+    }
+
     public Optional<User> findUser(int id, MongoDatabase database) {
         MongoCollection<User> collection = database.getCollection("user", User.class);
 
-        Document queryById = new Document("articleId", id);
+        Document queryById = new Document("id", id);
         Document queryByIsActive = new Document("isActive", true);
 
         User user = collection.find(queryById).filter(queryByIsActive).first();

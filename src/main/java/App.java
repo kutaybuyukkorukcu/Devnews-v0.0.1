@@ -8,7 +8,6 @@ import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import helper.CorsFilter;
 import service.*;
-import utils.initializeLists;
 import model.*;
 import db.initializeDB;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -17,12 +16,10 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.Document;
 import utils.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Optional;
+import java.lang.reflect.Array;
+import java.util.*;
 
-import static spark.Spark.post;
-import static spark.Spark.get;
+import static spark.Spark.*;
 
 public class App {
 
@@ -46,15 +43,31 @@ public class App {
         final DataService dataService = new DataService();
         final ArticleService articleService = new ArticleService();
         final UserService userService = new UserService();
-        final CorsFilter corsFilter = new CorsFilter();
         final Crawler crawler = new Crawler();
+
+        final CorsFilter corsFilter = new CorsFilter();
+        final JwtAuthentication jwtAuthentication = new JwtAuthentication();
 
         corsFilter.apply();
 
-        // Get datas stored in Data collection
-        get("/datas", (request, response) -> {
-            response.type("application/json");
+        before("/v1/*", (request, response) -> {
+            String jwt = jwtAuthentication.resolveToken(request);
 
+            // JWT unsuccessfully authenticated
+            // TODO : decodeJWT'den exception donunce program nasil davraniyor?
+            if (jwt.isEmpty() && !jwtAuthentication.decodeJWT(jwt)) {
+                halt(404, "Jwt unsuccessfuly authenticated");
+            }
+        });
+
+//        before((request, response) -> {
+//           log.trace("request : {}", request);
+//        });
+
+
+        // Get datas stored in Data collection
+        get("/v1/datas", (request, response) -> {
+            response.type("application/json");
 
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
@@ -62,7 +75,7 @@ public class App {
         });
 
         // Reads each url from text file and then inserts the urls into the Url collection
-        get("/urls", (request, response) -> {
+        get("/v1/urls", (request, response) -> {
             response.type("application/json");
 
             ArrayList<String> list = crawler.fileToList();
@@ -77,7 +90,7 @@ public class App {
                             StatusResponse.SUCCESS.getMessage()));
         });
 
-        post("/urls", (request, response) -> {
+        post("/v1/urls", (request, response) -> {
             response.type("application/json");
 
             Url url = new Gson().fromJson(request.body(), Url.class);
@@ -92,7 +105,7 @@ public class App {
         // -> Appends each formatted data into articles.csv file
         // -> Inserts each formatted data into Data collection
         // Use /crawl for generating .csv file which contains all articles
-        get("/crawl", (request, response) -> {
+        get("/v1/crawl", (request, response) -> {
             response.type("application/json");
 
             ArrayList<String> urls = urlService.getUrlsAsList(database);
@@ -109,7 +122,7 @@ public class App {
                             StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(dataService.getDatas(database))));
         });
 
-        get("/recommend", (request, response) -> {
+        get("/v1/recommend", (request, response) -> {
 
             response.type("application/json");
 
@@ -126,7 +139,62 @@ public class App {
                             new Gson().toJsonTree(initializeLists.recommendedArticles)));
         });
 
-        get("/users:id", (request, response) -> {
+        post("/signin", (request, response) -> {
+
+            try {
+                response.type("application/json");
+                System.out.println("reach");
+                User reqUser = new Gson().fromJson(request.body(), User.class);
+
+                // Creating static list for jwt. This will change in the future with the extension of domain models.
+                List<String> roles = new ArrayList<>();
+                roles.add("admin");
+
+                Optional<User> user = userService.findUserByUsername(reqUser.getUsername(), database);
+
+                System.out.println(user.toString());
+
+                System.out.println(user.get());
+
+                // Kullanici bulunamadi, kayitli degil.
+                if (!user.isPresent()) {
+                    return new Gson().toJsonTree(
+                            new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
+                                    StatusResponse.ERROR.getMessage())
+                    );
+                }
+
+                String token = jwtAuthentication.createToken(reqUser.getUsername(), roles);
+
+                return new Gson().toJson(
+                        new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
+                                StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(token))
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return new Gson().toJson(
+                    new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
+                            StatusResponse.ERROR.getMessage())
+            );
+        });
+
+        post("/signup", (request, response) -> {
+
+            response.type("application/json");
+
+            User user = new Gson().fromJson(request.body(), User.class);
+
+            userService.createOrUpdateUser(user, database);
+
+            return new Gson().toJson(
+                    new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
+                            StatusResponse.SUCCESS.getMessage())
+            );
+        });
+
+        get("/v1/users:id", (request, response) -> {
 
             response.type("application/json");
 
@@ -136,6 +204,7 @@ public class App {
 
             // empty
             if (!user.isPresent()) {
+                // User not found!
                 return new Gson().toJson(
                     new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
                             StatusResponse.SUCCESS.getMessage())
@@ -147,6 +216,7 @@ public class App {
                             StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(user.get()))
             );
         });
+
     }
 
     /*
@@ -179,8 +249,8 @@ public class App {
 
         for (String url : urls) {
             Like like = crawler.urlToLikeCollection(url, database);
-            like.toString();
-            crawler.writeLikes(like);
+//            like.toString();
+//            crawler.writeLikes(like);
             likeService.addLike(like, database);
         }
     }

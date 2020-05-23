@@ -18,7 +18,7 @@ import java.util.Properties;
 public class Mail {
 
     public String getAPIKEY() {
-        Path path = Paths.get("src/main/resources/credential.txt");
+        Path path = Paths.get("src/main/resources/config.properties");
 
         try(BufferedReader reader = Files.newBufferedReader(path, Charset.forName("UTF-8"))) {
             return reader.readLine();
