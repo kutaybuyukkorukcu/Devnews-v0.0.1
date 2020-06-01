@@ -1,3 +1,5 @@
+package utils;
+
 public enum MainTopics {
     DEVELOPMENT("Development"),
     ARCHITECTURE("Architecture & Design"),

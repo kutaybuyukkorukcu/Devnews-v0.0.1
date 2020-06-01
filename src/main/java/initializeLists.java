@@ -1,5 +1,3 @@
-package utils;
-
 import model.Article;
 import model.Data;
 

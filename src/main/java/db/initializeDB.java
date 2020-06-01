@@ -43,6 +43,12 @@ public class initializeDB {
         }
     }
 
+    public static void createUser(MongoDatabase database, boolean flag) {
+        if (!flag) {
+            database.createCollection("user");
+        }
+    }
+
     public static boolean checkDB(MongoClient mongoClient) {
         MongoCursor<String> databases = mongoClient.listDatabaseNames().iterator();
 
