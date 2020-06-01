@@ -19,6 +19,9 @@ public class UserService {
     public void createOrUpdateUser(User user, MongoDatabase database) {
         MongoCollection<User> collection = database.getCollection("user", User.class);
 
+        int incrementedId = getNextSequence(database);
+        user.setId(incrementedId);
+
         Document queryByUsername = new Document("username", user.getUsername());
 
         User userExist = collection.find(queryByUsername).first();
@@ -26,10 +29,14 @@ public class UserService {
         // temporary code.
         if (userExist == null) {
             collection.insertOne(user);
+        } else {
+            Document updatedUser = new Document("username", user.getUsername());
+
+            // TODO : Var olan kayidin icerdigi datayi degistirip tekrar insertOne ile update edebiliyor muyum?
+            collection.updateOne(queryByUsername, updatedUser);
         }
 
-        // TODO : Var olan kayidin icerdigi datayi degistirip tekrar insertOne ile update edebiliyor muyum?
-        collection.insertOne(user);
+
     }
 
     public ArrayList<User> getUsers(MongoDatabase database) {
@@ -49,7 +56,7 @@ public class UserService {
 
     public Optional<User> findUserByUsername(String username, MongoDatabase database) {
         MongoCollection<User> collection = database.getCollection("user", User.class);
-        System.out.println(":))))))");
+
         Document queryByUsername = new Document("username", username);
 //        Document queryByIsActive = new Document("isActive", true);
 // TODO : remove user collection from infoq database and re-create it. Then check the name of the user field active or isActive
@@ -68,5 +75,14 @@ public class UserService {
         User user = collection.find(queryById).filter(queryByIsActive).first();
 
         return Optional.ofNullable(user);
+    }
+
+
+    public static int getNextSequence(MongoDatabase database) {
+        MongoCollection<User> collection = database.getCollection("user", User.class);
+
+        User user = collection.find().sort(new Document("_id", -1)).first();
+
+        return user.getId() + 1;
     }
 }

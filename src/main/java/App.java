@@ -35,6 +35,7 @@ public class App {
         initializeDB.createData(database, flag);
         initializeDB.createUrl(database, flag);
         initializeDB.createLike(database, flag);
+        initializeDB.createUser(database, flag);
 
         initializeLists.generateLists();
 

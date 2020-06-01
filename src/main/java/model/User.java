@@ -7,7 +7,7 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private boolean IsActive;
+    private boolean isActive;
 
     public User() {
 
@@ -43,11 +43,11 @@ public class User {
     }
 
     public boolean isActive() {
-        return IsActive;
+        return isActive;
     }
 
     public void setActive(boolean active) {
-        IsActive = active;
+        isActive = active;
     }
 
     @Override
