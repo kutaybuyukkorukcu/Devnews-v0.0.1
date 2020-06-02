@@ -16,8 +16,12 @@ import kong.unirest.UnirestException;
 import kong.unirest.json.JSONObject;
 import model.Article;
 import model.Data;
+import model.Like;
 import org.bson.Document;
 import org.bson.json.JsonReader;
+import utils.MainTopics;
+import utils.initializeDB;
+import utils.initializeLists;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -35,6 +39,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ArticleService {
+
+    protected final MongoDatabase database;
+    protected final LikeService likeService;
+    protected final DataService dataService;
+
+    public ArticleService() {
+        database = initializeDB.getDatabase();
+        likeService = new LikeService();
+        dataService = new DataService();
+    }
 
     public void JsonObjectToList(JsonObject jsonObject, ArrayList<Article> articles) {
 
@@ -89,5 +103,68 @@ public class ArticleService {
                 .sorted(comparator)
                 .limit(5)
                 .collect(Collectors.toList());
+    }
+
+    public void sendRecommendations(ArrayList<Article> articles, ArrayList<Data> recommendedArticles) {
+
+        Iterator<Article> iter = articles.iterator();
+
+        while(iter.hasNext()) {
+            int articleID = iter.next().getArticleID();
+
+            MongoCollection<Data> collection = database.getCollection("data", Data.class);
+
+            Document queryFilter =  new Document("articleID", articleID);
+
+            Data data = collection.find(queryFilter).limit(1).first();
+
+            recommendedArticles.add(data);
+        }
+
+    }
+
+    public void getRecommendedArticles() {
+        ArrayList<Like> likes =  likeService.getLikesAsList();
+        Iterator<Like> iter = likes.iterator();
+
+        while(iter.hasNext()) {
+            Like like = iter.next();
+            JsonObject jsonObject = getRecommendations(like.getTitle());
+
+            if (like.getMainTopic().equals(MainTopics.DEVELOPMENT.getMainTopic())) {
+                JsonObjectToList(jsonObject, initializeLists.development);
+            } else if (like.getMainTopic().equals(MainTopics.ARCHITECTURE.getMainTopic())) {
+                JsonObjectToList(jsonObject, initializeLists.architecture);
+            } else if (like.getMainTopic().equals(MainTopics.AI.getMainTopic())) {
+                JsonObjectToList(jsonObject, initializeLists.ai);
+            } else if (like.getMainTopic().equals(MainTopics.CULTURE.getMainTopic())) {
+                JsonObjectToList(jsonObject, initializeLists.culture);
+            } else if (like.getMainTopic().equals(MainTopics.DEVOPS.getMainTopic())) {
+                JsonObjectToList(jsonObject, initializeLists.devops);
+            } else {
+                JsonObjectToList(jsonObject, new ArrayList<Article>());
+            }
+        }
+    }
+
+    public void recommendedArticlesToList() {
+        initializeLists.development = returnRecommendations(initializeLists.development);
+        initializeLists.architecture = returnRecommendations(initializeLists.architecture);
+        initializeLists.ai = returnRecommendations(initializeLists.ai);
+        initializeLists.culture = returnRecommendations(initializeLists.culture);
+        initializeLists.devops = returnRecommendations(initializeLists.devops);
+
+
+        sendRecommendations(initializeLists.development, initializeLists.recommendedArticles);
+        sendRecommendations(initializeLists.architecture, initializeLists.recommendedArticles);
+        sendRecommendations(initializeLists.ai, initializeLists.recommendedArticles);
+        sendRecommendations(initializeLists.culture, initializeLists.recommendedArticles);
+        sendRecommendations(initializeLists.devops, initializeLists.recommendedArticles);
+
+
+//        Mail mail = new Mail();
+//        mail.sendMail(utils.initializeLists.recommendedArticles.toString());
+
+        // TODO : recommendedArticles.toString() -> mail formatina donusturecek bir fonksiyon yaz.
     }
 }

@@ -1,15 +1,27 @@
-package db;
+package utils;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import model.Counter;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.PojoCodecProvider;
 
 public class initializeDB {
 
-    public static void createCounter(MongoDatabase database, boolean flag) {
-        if (!flag) {
+    final static MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+    final static CodecRegistry pojoCodecRegistry = org.bson.codecs.configuration.CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), org.bson.codecs.configuration.CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+    final static MongoDatabase database = mongoClient.getDatabase("infoq").withCodecRegistry(pojoCodecRegistry);
+
+    public static MongoDatabase getDatabase() {
+        return database;
+    }
+
+    public static void createCounter() {
+        if (!checkDB()) {
             database.createCollection("counter");
             MongoCollection<Counter> collection = database.getCollection("counter", Counter.class);
             Counter counter = new Counter();
@@ -20,10 +32,10 @@ public class initializeDB {
         }
     }
 
-    public static void createData(MongoDatabase database, boolean flag) {
-        if (!flag) {
+    public static void createData() {
+        if (!checkDB()) {
             database.createCollection("data");
-//            MongoCollection<Data> _collection = database.getCollection("data", Data.class);
+//    TODO :        MongoCollection<Data> _collection = database.getCollection("data", Data.class);
 //            Data data = new Data();
 //            // -- Eklemeler yapacagim.
 //            // Create a queryID , articleID -> queryID = "const" value for querying, articleID = "int" i will inc 1 everytime
@@ -31,25 +43,25 @@ public class initializeDB {
         }
     }
 
-    public static void createUrl(MongoDatabase database, boolean flag) {
-        if (!flag) {
+    public static void createUrl() {
+        if (!checkDB()) {
             database.createCollection("url");
         }
     }
 
-    public static void createLike(MongoDatabase database, boolean flag) {
-        if (!flag) {
+    public static void createLike() {
+        if (!checkDB()) {
             database.createCollection("like");
         }
     }
 
-    public static void createUser(MongoDatabase database, boolean flag) {
-        if (!flag) {
+    public static void createUser() {
+        if (!checkDB()) {
             database.createCollection("user");
         }
     }
 
-    public static boolean checkDB(MongoClient mongoClient) {
+    public static boolean checkDB() {
         MongoCursor<String> databases = mongoClient.listDatabaseNames().iterator();
 
         // Making sure code won't try to create db once again.

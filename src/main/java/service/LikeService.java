@@ -6,14 +6,26 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import model.Data;
 import model.Like;
+import model.Url;
 import org.bson.Document;
+import utils.initializeDB;
 
 import javax.print.Doc;
 import java.util.ArrayList;
 
 public class LikeService {
 
-    public void addLike(Like like, MongoDatabase database) {
+    protected final MongoDatabase database;
+    protected final UrlService urlService;
+    protected final CrawlerService crawlerService;
+
+    public LikeService() {
+        urlService = new UrlService();
+        crawlerService = new CrawlerService();
+        database = initializeDB.getDatabase();
+    }
+
+    public void addLike(Like like) {
         MongoCollection<Like> collection = database.getCollection("like", Like.class);
 
         collection.insertOne(like);
@@ -23,7 +35,7 @@ public class LikeService {
 
     }
 
-    public ArrayList<Like> getLikesAsList(MongoDatabase database) {
+    public ArrayList<Like> getLikesAsList() {
         MongoCollection<Like> collection = database.getCollection("like", Like.class);
 
         Document queryFilter =  new Document("isNew", 1);
@@ -37,5 +49,14 @@ public class LikeService {
         }
 
         return list;
+    }
+
+    public void addLikesToDatabase() {
+        ArrayList<String> urls = urlService.getUrlsAsList();
+
+        for (String url : urls) {
+            Like like = crawlerService.urlToLikeCollection(url);
+            addLike(like);
+        }
     }
 }

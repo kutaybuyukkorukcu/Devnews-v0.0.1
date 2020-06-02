@@ -1,5 +1,6 @@
 package service;
 
+import com.mongodb.Mongo;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -8,6 +9,7 @@ import model.User;
 import org.bson.Document;
 import utils.StandardResponse;
 import utils.StatusResponse;
+import utils.initializeDB;
 
 import javax.print.Doc;
 import java.util.ArrayList;
@@ -16,10 +18,16 @@ import java.util.Optional;
 
 public class UserService {
 
-    public void createOrUpdateUser(User user, MongoDatabase database) {
+    protected final MongoDatabase database;
+
+    public UserService() {
+        database = initializeDB.getDatabase();
+    }
+
+    public void createOrUpdateUser(User user) {
         MongoCollection<User> collection = database.getCollection("user", User.class);
 
-        int incrementedId = getNextSequence(database);
+        int incrementedId = getNextIdSequence();
         user.setId(incrementedId);
 
         Document queryByUsername = new Document("username", user.getUsername());
@@ -35,11 +43,9 @@ public class UserService {
             // TODO : Var olan kayidin icerdigi datayi degistirip tekrar insertOne ile update edebiliyor muyum?
             collection.updateOne(queryByUsername, updatedUser);
         }
-
-
     }
 
-    public ArrayList<User> getUsers(MongoDatabase database) {
+    public ArrayList<User> getUsers() {
         MongoCollection<User> collection = database.getCollection("user", User.class);
 
         ArrayList<User> list = new ArrayList<User>();
@@ -54,7 +60,7 @@ public class UserService {
         return list;
     }
 
-    public Optional<User> findUserByUsername(String username, MongoDatabase database) {
+    public Optional<User> findUserByUsername(String username) {
         MongoCollection<User> collection = database.getCollection("user", User.class);
 
         Document queryByUsername = new Document("username", username);
@@ -66,7 +72,7 @@ public class UserService {
         return Optional.ofNullable(user);
     }
 
-    public Optional<User> findUser(int id, MongoDatabase database) {
+    public Optional<User> findUser(int id) {
         MongoCollection<User> collection = database.getCollection("user", User.class);
 
         Document queryById = new Document("id", id);
@@ -78,7 +84,7 @@ public class UserService {
     }
 
 
-    public static int getNextSequence(MongoDatabase database) {
+    public int getNextIdSequence() {
         MongoCollection<User> collection = database.getCollection("user", User.class);
 
         User user = collection.find().sort(new Document("_id", -1)).first();

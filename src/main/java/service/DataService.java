@@ -8,6 +8,7 @@ import model.Article;
 import model.Data;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import utils.initializeDB;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -25,13 +26,19 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class DataService {
 
-    public void addData(Data data, MongoDatabase database){
+    protected final MongoDatabase database;
+
+    public DataService() {
+        database = initializeDB.getDatabase();
+    }
+
+    public void addData(Data data){
         MongoCollection<Data> collection = database.getCollection("data", Data.class);
 
         collection.insertOne(data);
     }
 
-    public ArrayList<Data> getDatas(MongoDatabase database) {
+    public ArrayList<Data> getDatas() {
         MongoCollection<Data> collection = database.getCollection("data", Data.class);
 
         ArrayList<Data> list = new ArrayList<Data>();
@@ -46,29 +53,7 @@ public class DataService {
         return list;
     }
 
-    public void sendRecommendations(ArrayList<Article> articles, ArrayList<Data> recommendedArticles ,MongoDatabase database) {
-
-        Iterator<Article> iter = articles.iterator();
-        StringBuilder sb = new StringBuilder();
-
-
-        while(iter.hasNext()) {
-            int articleID = iter.next().getArticleID();
-
-            MongoCollection<Data> collection = database.getCollection("data", Data.class);
-
-            Document queryFilter =  new Document("articleID", articleID);
-
-            FindIterable<Data> result = collection.find(queryFilter).limit(1);
-
-            Data data = result.first();
-
-            recommendedArticles.add(data);
-        }
-
-    }
-
-    public boolean dataExist(Data data, MongoDatabase database) {
+    public boolean dataExist(Data data) {
         MongoCollection<Data> collection = database.getCollection("data", Data.class);
 
         Document queryFilter =  new Document("title", data.getTitle());

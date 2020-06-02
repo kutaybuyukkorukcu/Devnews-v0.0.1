@@ -1,6 +1,11 @@
+package service;
+
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.FindOneAndUpdateOptions;
+import com.mongodb.client.model.ReturnDocument;
+import model.Counter;
 import model.Data;
 import model.Like;
 import model.Url;
@@ -9,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import helper.Validator;
+import utils.initializeDB;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -17,11 +23,17 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-public class Crawler {
+public class CrawlerService {
 
-    Validator validator = new Validator();
+    protected final Validator validator;
+    protected final MongoDatabase database;
 
-    public Data urlToData(String url, int articleID) {
+    public CrawlerService() {
+        validator = new Validator();
+        database = initializeDB.getDatabase();
+    }
+
+    public Data urlToData(String url) {
 
         Data data = new Data();
 
@@ -32,6 +44,7 @@ public class Crawler {
         try {
             doc = Jsoup.connect(url).get();
         } catch (IOException e) {
+            // TODO : logging and handling
             e.printStackTrace();
         }
 
@@ -48,6 +61,8 @@ public class Crawler {
         }
 
         String relatedTopics = validator.removeLastChar(topics.toString());
+
+        int articleID = getNextArticleIdSequence();
 
         // articleLink yine DB'den geliyor.
         data.setArticleID(articleID);
@@ -103,7 +118,7 @@ public class Crawler {
         return _url;
     }
 
-    public Like urlToLikeCollection(String url, MongoDatabase database) {
+    public Like urlToLikeCollection(String url) {
 
         MongoCollection<Data> collection = database.getCollection("data", Data.class);
 
@@ -139,5 +154,27 @@ public class Crawler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /*
+    // Create's a collection named counter if there's none.
+    // Increments counterValue by 1 and returns it.
+    // Purpose of this collection : Defines an articleID for each article.
+     */
+    public int getNextArticleIdSequence() {
+        MongoCollection<Counter> collection = database.getCollection("counter", Counter.class);
+
+        org.bson.Document query = new org.bson.Document("counterName", "articleID");
+        org.bson.Document update = new org.bson.Document();
+        org.bson.Document inside = new org.bson.Document();
+        inside.put("counterValue", 1);
+        update.put("$inc", inside);
+
+        FindOneAndUpdateOptions options = new FindOneAndUpdateOptions();
+        options.returnDocument(ReturnDocument.AFTER);
+        options.upsert(true);
+
+        Counter doc = collection.findOneAndUpdate(query, update, options);
+        return doc.getCounterValue();
     }
 }

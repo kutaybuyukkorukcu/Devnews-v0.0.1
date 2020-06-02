@@ -5,18 +5,25 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import model.Url;
 import org.bson.Document;
+import utils.initializeDB;
 
 import java.util.ArrayList;
 
 public class UrlService {
 
-    public void addUrl(Url url, MongoDatabase database) {
+    protected final MongoDatabase database;
+
+    public UrlService() {
+        database = initializeDB.getDatabase();
+    }
+
+    public void addUrl(Url url) {
         MongoCollection<Url> collection = database.getCollection("url", Url.class);
 
         collection.insertOne(url);
     }
 
-    public ArrayList<String> getUrlsAsList(MongoDatabase database) {
+    public ArrayList<String> getUrlsAsList() {
         MongoCollection<Url> collection = database.getCollection("url", Url.class);
 
         Document queryFilter =  new Document("isNew", 1);
