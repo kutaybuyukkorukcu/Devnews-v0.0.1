@@ -32,11 +32,11 @@ public class initializeDB {
         }
     }
 
-    public static void createData() {
+    public static void createArticle() {
         if (!checkDB()) {
-            database.createCollection("data");
-//    TODO :        MongoCollection<Data> _collection = database.getCollection("data", Data.class);
-//            Data data = new Data();
+            database.createCollection("article");
+//    TODO :        MongoCollection<Article> _collection = database.getCollection("data", Article.class);
+//            Article data = new Article();
 //            // -- Eklemeler yapacagim.
 //            // Create a queryID , articleID -> queryID = "const" value for querying, articleID = "int" i will inc 1 everytime
 //            _collection.insertOne(data);

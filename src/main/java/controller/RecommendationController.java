@@ -25,9 +25,9 @@ public class RecommendationController {
 
             initializeLists.recommendedArticles.clear();
 
-            likeService.addLikedDataToDatabase();
+            likeService.addLikedArticlesIntoLikeCollection();
             recommendationService.getRecommendations();
-            recommendationService.topRecommendationsToDataList();
+            recommendationService.topRecommendationsIntoArticleList();
 
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),

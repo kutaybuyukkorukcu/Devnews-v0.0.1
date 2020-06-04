@@ -1,14 +1,14 @@
 package service;
 
 import com.google.gson.*;
+import domain.Article;
 import domain.Recommendation;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
-import domain.Data;
 import domain.Like;
-import repository.DataRepository;
+import repository.ArticleRepository;
 import utils.MainTopics;
 import utils.initializeLists;
 
@@ -21,18 +21,18 @@ import java.util.stream.Collectors;
 public class RecommendationService {
 
     protected final LikeService likeService;
-    protected final DataService dataService;
+    protected final ArticleService articleService;
     protected final MailService mailService;
-    protected final DataRepository dataRepository;
+    protected final ArticleRepository articleRepository;
 
     public RecommendationService() {
         likeService = new LikeService();
-        dataService = new DataService();
+        articleService = new ArticleService();
         mailService = new MailService();
-        dataRepository = new DataRepository();
+        articleRepository = new ArticleRepository();
     }
 
-    public void JsonObjectToRecommendationList(JsonObject jsonObject, List<Recommendation> recommendations) {
+    public void recommendationIntoRecommendationList(JsonObject jsonObject, List<Recommendation> recommendations) {
 
         JsonArray jsonArray =  jsonObject.getAsJsonArray("list");
         Iterator<JsonElement> iter = jsonArray.iterator();
@@ -89,16 +89,16 @@ public class RecommendationService {
                 .collect(Collectors.toList());
     }
 
-    public void recommendationListToDataList(List<Recommendation> recommendations, List<Data> recommendedArticles) {
+    public void recommendationListToArticleList(List<Recommendation> recommendations, List<Article> recommendedArticles) {
 
         Iterator<Recommendation> iter = recommendations.iterator();
 
         while(iter.hasNext()) {
             int articleID = iter.next().getArticleId();
 
-            Data data = dataRepository.findByArticleId(articleID);
+            Article article = articleRepository.findByArticleId(articleID);
 
-            recommendedArticles.add(data);
+            recommendedArticles.add(article);
         }
 
     }
@@ -118,24 +118,24 @@ public class RecommendationService {
             }
 
             if (like.getMainTopic().equals(MainTopics.DEVELOPMENT.getMainTopic())) {
-                JsonObjectToRecommendationList(jsonObject, initializeLists.development);
+                recommendationIntoRecommendationList(jsonObject, initializeLists.development);
             } else if (like.getMainTopic().equals(MainTopics.ARCHITECTURE.getMainTopic())) {
-                JsonObjectToRecommendationList(jsonObject, initializeLists.architecture);
+                recommendationIntoRecommendationList(jsonObject, initializeLists.architecture);
             } else if (like.getMainTopic().equals(MainTopics.AI.getMainTopic())) {
-                JsonObjectToRecommendationList(jsonObject, initializeLists.ai);
+                recommendationIntoRecommendationList(jsonObject, initializeLists.ai);
             } else if (like.getMainTopic().equals(MainTopics.CULTURE.getMainTopic())) {
-                JsonObjectToRecommendationList(jsonObject, initializeLists.culture);
+                recommendationIntoRecommendationList(jsonObject, initializeLists.culture);
             } else if (like.getMainTopic().equals(MainTopics.DEVOPS.getMainTopic())) {
-                JsonObjectToRecommendationList(jsonObject, initializeLists.devops);
+                recommendationIntoRecommendationList(jsonObject, initializeLists.devops);
             } else {
-                JsonObjectToRecommendationList(jsonObject, new ArrayList<Recommendation>());
+                recommendationIntoRecommendationList(jsonObject, new ArrayList<Recommendation>());
             }
 
             // TODO: i shouldnt check for else
         }
     }
 
-    public void topRecommendationsToDataList() {
+    public void topRecommendationsIntoArticleList() {
         initializeLists.development = getTopRecommendationsFromList(initializeLists.development);
         initializeLists.architecture = getTopRecommendationsFromList(initializeLists.architecture);
         initializeLists.ai = getTopRecommendationsFromList(initializeLists.ai);
@@ -143,11 +143,11 @@ public class RecommendationService {
         initializeLists.devops = getTopRecommendationsFromList(initializeLists.devops);
 
 
-        recommendationListToDataList(initializeLists.development, initializeLists.recommendedArticles);
-        recommendationListToDataList(initializeLists.architecture, initializeLists.recommendedArticles);
-        recommendationListToDataList(initializeLists.ai, initializeLists.recommendedArticles);
-        recommendationListToDataList(initializeLists.culture, initializeLists.recommendedArticles);
-        recommendationListToDataList(initializeLists.devops, initializeLists.recommendedArticles);
+        recommendationListToArticleList(initializeLists.development, initializeLists.recommendedArticles);
+        recommendationListToArticleList(initializeLists.architecture, initializeLists.recommendedArticles);
+        recommendationListToArticleList(initializeLists.ai, initializeLists.recommendedArticles);
+        recommendationListToArticleList(initializeLists.culture, initializeLists.recommendedArticles);
+        recommendationListToArticleList(initializeLists.devops, initializeLists.recommendedArticles);
 
 
 //        mailService.sendMail(mailService.createMail

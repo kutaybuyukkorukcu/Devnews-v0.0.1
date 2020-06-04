@@ -1,6 +1,6 @@
 package domain;
 
-public class Data {
+public class Article {
 
     private int articleId;
     private String title;
@@ -13,11 +13,11 @@ public class Data {
 
     private int isNew;
 
-    public Data() {
+    public Article() {
 
     }
 
-    public Data(int articleId, String title, String mainTopic, String author, String relatedTopics, String articleLink, int isNew) {
+    public Article(int articleId, String title, String mainTopic, String author, String relatedTopics, String articleLink, int isNew) {
         this.articleId = articleId;
         this.title = title;
         this.mainTopic = mainTopic;
@@ -85,7 +85,7 @@ public class Data {
 
     @Override
     public String toString() {
-        return "Data{" +
+        return "Article{" +
                 "articleID=" + articleId +
                 ", title='" + title + '\'' +
                 ", mainTopic='" + mainTopic + '\'' +

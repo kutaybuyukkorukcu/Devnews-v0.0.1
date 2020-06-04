@@ -2,24 +2,24 @@ package domain;
 
 public class Url {
 
-    private String url;
+    private String articleLink;
     private int isNew;
 
     public Url() {
 
     }
 
-    public Url(String url, int isNew) {
-        this.url = url;
+    public Url(String articleLink, int isNew) {
+        this.articleLink = articleLink;
         this.isNew = isNew;
     }
 
-    public String getUrl() {
-        return url;
+    public String getArticleLink() {
+        return articleLink;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setArticleLink(String articleLink) {
+        this.articleLink = articleLink;
     }
 
     public int getIsNew() {

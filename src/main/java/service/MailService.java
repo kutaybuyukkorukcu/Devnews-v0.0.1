@@ -1,7 +1,7 @@
 package service;
 
 import com.sun.mail.smtp.SMTPTransport;
-import domain.Data;
+import domain.Article;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -112,15 +112,15 @@ public class MailService {
     }
 
 
-    public String createMail(Data data) {
+    public String createMail(Article article) {
         // verilerden mail formati olusturmasini bekleriz.
-        String mainTopic = data.getMainTopic();
-        String title = data.getTitle();
-        String url = data.getArticleLink();
+        String mainTopic = article.getMainTopic();
+        String title = article.getTitle();
+        String articleLink = article.getArticleLink();
 
         String html = "<h2> " + mainTopic + " </h2>" + "\n"
                 + "<h4> " + title + " </h4>" + "\n"
-                + "<h5> " + url + " </h5>";
+                + "<h5> " + articleLink + " </h5>";
 
         return html;
     }
