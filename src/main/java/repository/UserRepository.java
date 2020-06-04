@@ -79,6 +79,10 @@ public class UserRepository implements IRepository<User> {
     public int getNextIdSequence() {
         MongoCollection<User> collection = database.getCollection("user", User.class);
 
+        if (collection.find().first() == null) {
+            return 1;
+        }
+
         User user = collection.find().sort(new Document("_id", -1)).first();
 
         return user.getId() + 1;
