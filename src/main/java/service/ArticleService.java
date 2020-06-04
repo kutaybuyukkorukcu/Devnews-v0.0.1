@@ -22,13 +22,11 @@ import java.util.stream.Collectors;
 
 public class ArticleService {
 
-    protected final MongoDatabase database;
     protected final LikeService likeService;
     protected final DataService dataService;
     protected final DataRepository dataRepository;
 
     public ArticleService() {
-        database = initializeDB.getDatabase();
         likeService = new LikeService();
         dataService = new DataService();
         dataRepository = new DataRepository();
