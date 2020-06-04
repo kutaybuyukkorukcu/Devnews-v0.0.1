@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
-      <module name="InfoqCrawler" target="11" />
+      <module name="InfoqCrawler" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>
