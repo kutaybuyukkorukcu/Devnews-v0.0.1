@@ -1,5 +1,7 @@
-import model.Article;
-import model.Data;
+package utils;
+
+import domain.Article;
+import domain.Data;
 
 import java.util.ArrayList;
 

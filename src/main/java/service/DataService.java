@@ -1,93 +1,57 @@
 package service;
 
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-import model.Article;
-import model.Data;
-import org.bson.Document;
-import org.bson.conversions.Bson;
+import domain.Data;
+import repository.DataRepository;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static com.mongodb.client.model.Filters.eq;
 
 public class DataService {
 
-    public void addData(Data data, MongoDatabase database){
-        MongoCollection<Data> collection = database.getCollection("data", Data.class);
+    protected final DataRepository dataRepository;
 
-        collection.insertOne(data);
+    public DataService() {
+        dataRepository = new DataRepository();
     }
 
-    public ArrayList<Data> getDatas(MongoDatabase database) {
-        MongoCollection<Data> collection = database.getCollection("data", Data.class);
+    public void addData(Data data){
+        dataRepository.add(data);
+    }
 
-        ArrayList<Data> list = new ArrayList<Data>();
+    public List<Data> getDatas() {
+        List<Data> dataList = dataRepository.findAll();
 
-        try(MongoCursor<Data> cursor = collection.find().iterator()) {
-            while (cursor.hasNext()) {
-                Data data = cursor.next();
-                list.add(data);
-            }
+        if (dataList == null) {
+            return Collections.emptyList();
         }
 
-        return list;
+        return dataList;
     }
 
-    public void sendRecommendations(ArrayList<Article> articles, ArrayList<Data> recommendedArticles ,MongoDatabase database) {
+    public boolean doesDataExist(Data data) {
 
-        Iterator<Article> iter = articles.iterator();
-        StringBuilder sb = new StringBuilder();
+        Data mockData = dataRepository.findByTitle(data.getTitle());
 
-
-        while(iter.hasNext()) {
-            int articleID = iter.next().getArticleID();
-
-            MongoCollection<Data> collection = database.getCollection("data", Data.class);
-
-            Document queryFilter =  new Document("articleID", articleID);
-
-            FindIterable<Data> result = collection.find(queryFilter).limit(1);
-
-            Data data = result.first();
-
-            recommendedArticles.add(data);
+        if (mockData == null) {
+            return false;
         }
 
+        return true;
     }
 
-    public boolean dataExist(Data data, MongoDatabase database) {
-        MongoCollection<Data> collection = database.getCollection("data", Data.class);
-
-        Document queryFilter =  new Document("title", data.getTitle());
-
-        FindIterable result = collection.find(queryFilter).limit(1);
-
-        return result.first() == null ? false : true;
-    }
-
-    public String createMail(Data data) {
-        // verilerden mail formati olusturmasini bekleriz.
-        String mainTopic = data.getMainTopic();
-        String title = data.getTitle();
-        String url = data.getArticleLink();
-
-        String html = "<h2> " + mainTopic + " </h2>" + "\n"
-                + "<h4> " + title + " </h4>" + "\n"
-                + "<h5> " + url + " </h5>";
-
-        return html;
-    }
+//    public String createMail(Data data) {
+//        // verilerden mail formati olusturmasini bekleriz.
+//        String mainTopic = data.getMainTopic();
+//        String title = data.getTitle();
+//        String url = data.getArticleLink();
+//
+//        String html = "<h2> " + mainTopic + " </h2>" + "\n"
+//                + "<h4> " + title + " </h4>" + "\n"
+//                + "<h5> " + url + " </h5>";
+//
+//        return html;
+//    }
 }

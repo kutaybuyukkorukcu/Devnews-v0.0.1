@@ -178,7 +178,7 @@ https://www.infoq.com/articles/people-reengineering-magic-teaming/
 https://www.infoq.com/articles/service-mesh-event-driven-messaging/
 https://www.infoq.com/articles/ros-2-gazebo-tutorial/
 https://www.infoq.com/articles/mindset-shift-productive-organizations/
-https://www.infoq.com/articles/adapting-spotify-model-moo/
+https://www.infoq.com/articles/adapting-spotify-domain-moo/
 https://www.infoq.com/articles/mental-health-tech-workplace/
 https://www.infoq.com/articles/api-gateway-service-mesh-app-modernisation/
 https://www.infoq.com/articles/book-review-inviting-leadership/
@@ -194,7 +194,7 @@ https://www.infoq.com/articles/kubernetes-multicluster-comms/
 https://www.infoq.com/articles/qcon-london-2019/
 https://www.infoq.com/articles/testing-conversational-interfaces/
 https://www.infoq.com/articles/kotlin-multiplatform-ios-developers/
-https://www.infoq.com/articles/book-review-digital-business-model/
+https://www.infoq.com/articles/book-review-digital-business-domain/
 https://www.infoq.com/articles/upgrading-java-8-to-12/
 https://www.infoq.com/articles/book-review-incompetent-men-leaders/
 https://www.infoq.com/articles/linkerd-v2-production-adoption/
@@ -349,7 +349,7 @@ https://www.infoq.com/articles/democratizing-stream-processing-kafka-ksql-part2/
 https://www.infoq.com/articles/checklists-software-processes/
 https://www.infoq.com/articles/Async-Streams/
 https://www.infoq.com/articles/continuous-delivery-teamplay/
-https://www.infoq.com/articles/refactoring-deeper-model/
+https://www.infoq.com/articles/refactoring-deeper-domain/
 https://www.infoq.com/articles/azure-cloud-shell/
 https://www.infoq.com/articles/microservices-post-kubernetes/
 https://www.infoq.com/articles/take-charge-agile-project/
@@ -407,7 +407,7 @@ https://www.infoq.com/articles/quantum-computing-intro-one/
 https://www.infoq.com/articles/service-mesh-promise-peril/
 https://www.infoq.com/articles/not-skip-estimation-planning/
 https://www.infoq.com/articles/ios-application-design-patterns-review/
-https://www.infoq.com/articles/C4-architecture-model/
+https://www.infoq.com/articles/C4-architecture-domain/
 https://www.infoq.com/articles/book-review-corporate-lean-strategy/
 https://www.infoq.com/articles/soa-microservices-journey/
 https://www.infoq.com/articles/buzzfeed-microservices-migration/
@@ -458,7 +458,7 @@ https://www.infoq.com/articles/book-review-lost-founder/
 https://www.infoq.com/articles/azure-and-net-core/
 https://www.infoq.com/articles/digital-transformation-oil-gas/
 https://www.infoq.com/articles/monitoring-SRE-golden-signals/
-https://www.infoq.com/articles/book-review-kanban-maturity-model/
+https://www.infoq.com/articles/book-review-kanban-maturity-domain/
 https://www.infoq.com/articles/Digital-Transformation-Guide-1/
 https://www.infoq.com/articles/cloud-native-service-mesh-java-ee/
 https://www.infoq.com/articles/culture-diversity-belong-together/

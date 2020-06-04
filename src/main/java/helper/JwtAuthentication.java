@@ -1,4 +1,4 @@
-package utils;
+package helper;
 
 import exception.InvalidJwtAuthenticationException;
 import helper.ConfigPropertyValues;
@@ -79,4 +79,5 @@ public class JwtAuthentication {
             throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
         }
     }
+
 }

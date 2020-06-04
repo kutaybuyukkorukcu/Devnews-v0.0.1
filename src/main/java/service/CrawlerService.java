@@ -1,27 +1,45 @@
+package service;
+
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import model.Data;
-import model.Like;
-import model.Url;
+import com.mongodb.client.model.FindOneAndUpdateOptions;
+import com.mongodb.client.model.ReturnDocument;
+import domain.Counter;
+import domain.Data;
+import domain.Like;
+import domain.Url;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import helper.Validator;
+import repository.DataRepository;
+import utils.initializeDB;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
-public class Crawler {
+public class CrawlerService {
 
-    Validator validator = new Validator();
+    protected final Validator validator;
+    protected final MongoDatabase database;
+    protected final DataRepository dataRepository;
 
-    public Data urlToData(String url, int articleID) {
+    public CrawlerService() {
+        validator = new Validator();
+        database = initializeDB.getDatabase();
+        dataRepository = new DataRepository();
+    }
+
+    public Data urlToData(String url) {
 
         Data data = new Data();
 
@@ -32,6 +50,7 @@ public class Crawler {
         try {
             doc = Jsoup.connect(url).get();
         } catch (IOException e) {
+            // TODO : logging and handling
             e.printStackTrace();
         }
 
@@ -49,8 +68,10 @@ public class Crawler {
 
         String relatedTopics = validator.removeLastChar(topics.toString());
 
+        int articleID = getNextArticleIdSequence();
+
         // articleLink yine DB'den geliyor.
-        data.setArticleID(articleID);
+        data.setArticleId(articleID);
         data.setArticleLink(url);
         data.setAuthor(author);
         data.setTitle(title);
@@ -63,8 +84,9 @@ public class Crawler {
 
     public void writeDatas(Data data) {
         Path path = Paths.get("src/main/resources/articles.csv");
+
         StringBuilder sb = new StringBuilder();
-        sb.append(Integer.toString(data.getArticleID()) + "\t");
+        sb.append(Integer.toString(data.getArticleId()) + "\t");
         sb.append(data.getTitle() + "\t");
         sb.append(data.getMainTopic() + "\t");
         sb.append(data.getAuthor() + "\t");
@@ -74,55 +96,47 @@ public class Crawler {
             writer.newLine();
             writer.write(sb.toString());
         } catch (IOException e) {
+            // TODO : error handling
             e.printStackTrace();
         }
     }
 
-    public ArrayList<String> fileToList() {
+    public List<String> fileToList() {
         try (Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls.txt"))) {
-            ArrayList<String> list = new ArrayList<>();
+            List<String> list = new ArrayList<>();
 
-            stream
-                    .filter(s -> s.endsWith("/"))
+            stream.filter(s -> s.endsWith("/"))
                     .forEach(list::add);
 
             return list;
         } catch (IOException e) {
+            // TODO : error handling
             e.printStackTrace();
         }
 
-        return new ArrayList<String>();
+        return Collections.emptyList();
     }
 
     public Url urlToUrlCollection(String url) {
         Url _url = new Url();
 
-        _url.setUrl(url);
+        _url.setLink(url);
         _url.setIsNew(1);
 
         return _url;
     }
 
-    public Like urlToLikeCollection(String url, MongoDatabase database) {
+    public Optional<Like> urlToLikeCollection(String link) {
 
-        MongoCollection<Data> collection = database.getCollection("data", Data.class);
+        Data data = dataRepository.findByArticleLink(link);
 
-        org.bson.Document queryFilter =  new org.bson.Document("articleLink", url);
+        Like like = new Like();
 
-        FindIterable<Data> result = collection.find(queryFilter).limit(1);
+        like.setTitle(data.getTitle());
+        like.setMainTopic(data.getMainTopic());
+        like.setIsNew(1);
 
-        if (result != null) {
-            Like like = new Like();
-
-            Data data = result.first();
-            like.setTitle(data.getTitle());
-            like.setMainTopic(data.getMainTopic());
-            like.setIsNew(1);
-
-            return like;
-        }
-
-        return new Like();
+        return Optional.ofNullable(like);
     }
 
     public void writeLikes(Like like) {
@@ -139,5 +153,27 @@ public class Crawler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /*
+    // Create's a collection named counter if there's none.
+    // Increments counterValue by 1 and returns it.
+    // Purpose of this collection : Defines an articleID for each article.
+     */
+    public int getNextArticleIdSequence() {
+        MongoCollection<Counter> collection = database.getCollection("counter", Counter.class);
+
+        org.bson.Document query = new org.bson.Document("counterName", "articleID");
+        org.bson.Document update = new org.bson.Document();
+        org.bson.Document inside = new org.bson.Document();
+        inside.put("counterValue", 1);
+        update.put("$inc", inside);
+
+        FindOneAndUpdateOptions options = new FindOneAndUpdateOptions();
+        options.returnDocument(ReturnDocument.AFTER);
+        options.upsert(true);
+
+        Counter doc = collection.findOneAndUpdate(query, update, options);
+        return doc.getCounterValue();
     }
 }
