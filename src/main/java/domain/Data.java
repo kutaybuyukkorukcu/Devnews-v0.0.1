@@ -1,8 +1,8 @@
-package model;
+package domain;
 
 public class Data {
 
-    private int articleID;
+    private int articleId;
     private String title;
 
     private String mainTopic;
@@ -17,8 +17,8 @@ public class Data {
 
     }
 
-    public Data(int articleID, String title, String mainTopic, String author, String relatedTopics, String articleLink, int isNew) {
-        this.articleID = articleID;
+    public Data(int articleId, String title, String mainTopic, String author, String relatedTopics, String articleLink, int isNew) {
+        this.articleId = articleId;
         this.title = title;
         this.mainTopic = mainTopic;
         this.author = author;
@@ -35,12 +35,12 @@ public class Data {
         this.articleLink = articleLink;
     }
 
-    public int getArticleID() {
-        return articleID;
+    public int getArticleId() {
+        return articleId;
     }
 
-    public void setArticleID(int articleID) {
-        this.articleID = articleID;
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
     }
 
     public String getTitle() {
@@ -86,7 +86,7 @@ public class Data {
     @Override
     public String toString() {
         return "Data{" +
-                "articleID=" + articleID +
+                "articleID=" + articleId +
                 ", title='" + title + '\'' +
                 ", mainTopic='" + mainTopic + '\'' +
                 ", author='" + author + '\'' +

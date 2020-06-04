@@ -5,10 +5,10 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
-import model.Counter;
-import model.Data;
-import model.Like;
-import model.Url;
+import domain.Counter;
+import domain.Data;
+import domain.Like;
+import domain.Url;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -65,7 +65,7 @@ public class CrawlerService {
         int articleID = getNextArticleIdSequence();
 
         // articleLink yine DB'den geliyor.
-        data.setArticleID(articleID);
+        data.setArticleId(articleID);
         data.setArticleLink(url);
         data.setAuthor(author);
         data.setTitle(title);
@@ -79,7 +79,7 @@ public class CrawlerService {
     public void writeDatas(Data data) {
         Path path = Paths.get("src/main/resources/articles.csv");
         StringBuilder sb = new StringBuilder();
-        sb.append(Integer.toString(data.getArticleID()) + "\t");
+        sb.append(Integer.toString(data.getArticleId()) + "\t");
         sb.append(data.getTitle() + "\t");
         sb.append(data.getMainTopic() + "\t");
         sb.append(data.getAuthor() + "\t");
@@ -112,7 +112,7 @@ public class CrawlerService {
     public Url urlToUrlCollection(String url) {
         Url _url = new Url();
 
-        _url.setUrl(url);
+        _url.setLink(url);
         _url.setIsNew(1);
 
         return _url;

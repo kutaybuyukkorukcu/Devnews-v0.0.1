@@ -1,62 +1,53 @@
 package service;
 
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-import model.Data;
-import model.Like;
-import model.Url;
-import org.bson.Document;
-import utils.initializeDB;
+import domain.Like;
+import repository.LikeRepository;
 
-import javax.print.Doc;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 public class LikeService {
 
-    protected final MongoDatabase database;
     protected final UrlService urlService;
     protected final CrawlerService crawlerService;
+    protected final LikeRepository likeRepository;
 
     public LikeService() {
         urlService = new UrlService();
         crawlerService = new CrawlerService();
-        database = initializeDB.getDatabase();
+        likeRepository = new LikeRepository();
     }
 
-    public void addLike(Like like) {
-        MongoCollection<Like> collection = database.getCollection("like", Like.class);
+    public List<Like> getLikes() {
+        List<Like> likeList = likeRepository.findAll();
 
-        collection.insertOne(like);
-    }
-
-    public void updateIsNew() {
-
-    }
-
-    public ArrayList<Like> getLikesAsList() {
-        MongoCollection<Like> collection = database.getCollection("like", Like.class);
-
-        Document queryFilter =  new Document("isNew", 1);
-        ArrayList<Like> list = new ArrayList<Like>();
-
-        try(MongoCursor<Like> cursor = collection.find(queryFilter).iterator()) {
-            while (cursor.hasNext()) {
-                Like like = cursor.next();
-                list.add(like);
-            }
+        if (likeList == null) {
+            return Collections.emptyList();
         }
 
-        return list;
+        return likeList;
     }
 
-    public void addLikesToDatabase() {
-        ArrayList<String> urls = urlService.getUrlsAsList();
+    /*
+    NewLikes means articles user liked in a 1 week span
+    */
+    public List<Like> getNewLikes() {
+        List<Like> likeList = likeRepository.findAllByIsNew();
+
+        if (likeList == null) {
+            return Collections.emptyList();
+        }
+
+        return likeList;
+    }
+
+    public void addLikedDataToDatabase() {
+        List<String> urls = urlService.getNewUrlsAsString();
 
         for (String url : urls) {
             Like like = crawlerService.urlToLikeCollection(url);
-            addLike(like);
+            likeRepository.add(like);
         }
     }
 }

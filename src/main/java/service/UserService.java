@@ -1,94 +1,62 @@
 package service;
 
-import com.mongodb.Mongo;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.UpdateOptions;
-import model.User;
+import domain.User;
 import org.bson.Document;
-import utils.StandardResponse;
-import utils.StatusResponse;
+import repository.UserRepository;
 import utils.initializeDB;
 
-import javax.print.Doc;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class UserService {
 
-    protected final MongoDatabase database;
+    protected final UserRepository userRepository;
 
     public UserService() {
-        database = initializeDB.getDatabase();
+        userRepository = new UserRepository();
     }
 
-    public void createOrUpdateUser(User user) {
-        MongoCollection<User> collection = database.getCollection("user", User.class);
+    public void addOrUpdateUser(User user) {
 
-        int incrementedId = getNextIdSequence();
+        int incrementedId = userRepository.getNextIdSequence();
         user.setId(incrementedId);
 
-        Document queryByUsername = new Document("username", user.getUsername());
-
-        User userExist = collection.find(queryByUsername).first();
+        User userExist = userRepository.findByUsername(user.getUsername());
 
         // temporary code.
         if (userExist == null) {
-            collection.insertOne(user);
+            userRepository.add(user);
         } else {
-            Document updatedUser = new Document("username", user.getUsername());
-
-            // TODO : Var olan kayidin icerdigi datayi degistirip tekrar insertOne ile update edebiliyor muyum?
-            collection.updateOne(queryByUsername, updatedUser);
+            userRepository.update(user);
         }
     }
 
-    public ArrayList<User> getUsers() {
-        MongoCollection<User> collection = database.getCollection("user", User.class);
+    public List<User> getUsers() {
+        List<User> userList = userRepository.findAll();
 
-        ArrayList<User> list = new ArrayList<User>();
-
-        try(MongoCursor<User> cursor = collection.find().iterator()) {
-            while (cursor.hasNext()) {
-                User user = cursor.next();
-                list.add(user);
-            }
+        if (userList == null) {
+            return Collections.emptyList();
         }
 
-        return list;
+        return userList;
     }
 
     public Optional<User> findUserByUsername(String username) {
-        MongoCollection<User> collection = database.getCollection("user", User.class);
-
-        Document queryByUsername = new Document("username", username);
-//        Document queryByIsActive = new Document("isActive", true);
 // TODO : remove user collection from infoq database and re-create it. Then check the name of the user field active or isActive
 // TODO : and rename the active/isActive field based on the name from db collection.
-        User user = collection.find(queryByUsername).first();
+        User user = userRepository.findByUsername(username);
 
         return Optional.ofNullable(user);
     }
 
-    public Optional<User> findUser(int id) {
-        MongoCollection<User> collection = database.getCollection("user", User.class);
-
-        Document queryById = new Document("id", id);
-        Document queryByIsActive = new Document("isActive", true);
-
-        User user = collection.find(queryById).filter(queryByIsActive).first();
+    public Optional<User> findUserById(int id) {
+        User user = userRepository.findById(id);
 
         return Optional.ofNullable(user);
-    }
-
-
-    public int getNextIdSequence() {
-        MongoCollection<User> collection = database.getCollection("user", User.class);
-
-        User user = collection.find().sort(new Document("_id", -1)).first();
-
-        return user.getId() + 1;
     }
 }

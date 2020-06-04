@@ -25,7 +25,7 @@ public class RecommendationController {
 
             initializeLists.recommendedArticles.clear();
 
-            likeService.addLikesToDatabase();
+            likeService.addLikedDataToDatabase();
             articleService.getRecommendedArticles();
             articleService.recommendedArticlesToList();
 

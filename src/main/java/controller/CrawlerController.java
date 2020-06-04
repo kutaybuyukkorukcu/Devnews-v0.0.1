@@ -1,20 +1,15 @@
 package controller;
 
 import com.google.gson.Gson;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.FindOneAndUpdateOptions;
-import com.mongodb.client.model.ReturnDocument;
-import model.Counter;
-import model.Data;
-import model.Url;
-import org.bson.Document;
+import domain.Data;
 import service.CrawlerService;
 import service.DataService;
 import service.UrlService;
 import utils.StandardResponse;
 import utils.StatusResponse;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static spark.Spark.get;
 
@@ -37,12 +32,26 @@ public class CrawlerController {
         get("/v1/crawl", (request, response) -> {
             response.type("application/json");
 
-            ArrayList<String> urls = urlService.getUrlsAsList();
+            List<String> urlList = urlService.getNewUrlsAsString();
 
-            for (String url : urls) {
+            if (urlList.isEmpty()) {
+                return new Gson().toJson(
+                        new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
+                                StatusResponse.ERROR.getMessage()));
+            }
+
+            for (String url : urlList) {
                 Data data = crawlerService.urlToData(url);
                 crawlerService.writeDatas(data);
                 dataService.addData(data);
+            }
+
+            List<Data> dataList = dataService.getDatas();
+
+            if (dataList.isEmpty()) {
+                return new Gson().toJson(
+                        new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
+                                StatusResponse.ERROR.getMessage()));
             }
 
             return new Gson().toJson(

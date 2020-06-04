@@ -1,27 +1,25 @@
-package model;
-
-import java.util.ArrayList;
+package domain;
 
 public class Article {
 
-    private int articleID;
+    private int articleId;
     private double similarityScore;
 
     public Article() {
 
     }
 
-    public Article(int articleID, double similarityScore) {
-        this.articleID = articleID;
+    public Article(int articleId, double similarityScore) {
+        this.articleId = articleId;
         this.similarityScore = similarityScore;
     }
 
-    public int getArticleID() {
-        return articleID;
+    public int getArticleId() {
+        return articleId;
     }
 
-    public void setArticleID(int articleID) {
-        this.articleID = articleID;
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
     }
 
     public double getSimilarityScore() {
@@ -35,7 +33,7 @@ public class Article {
     @Override
     public String toString() {
         return "Article{" +
-                "articleID=" + articleID +
+                "articleID=" + articleId +
                 ", similarityScore=" + similarityScore +
                 '}';
     }

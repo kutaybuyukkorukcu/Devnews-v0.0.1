@@ -1,13 +1,11 @@
 package controller;
 
 import com.google.gson.Gson;
-import com.mongodb.client.MongoDatabase;
 import helper.JwtAuthentication;
-import model.User;
+import domain.User;
 import service.UserService;
 import utils.StandardResponse;
 import utils.StatusResponse;
-import utils.initializeDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,19 +29,14 @@ public class UserController {
             try {
                 response.type("application/json");
 
-                User reqUser = new Gson().fromJson(request.body(), User.class);
+                User requestUser = new Gson().fromJson(request.body(), User.class);
 
                 // Creating static list for jwt. This will change in the future with the extension of domain models.
                 List<String> roles = new ArrayList<>();
                 roles.add("admin");
 
-                Optional<User> user = userService.findUserByUsername(reqUser.getUsername());
+                Optional<User> user = userService.findUserByUsername(requestUser.getUsername());
 
-                System.out.println(user.toString());
-
-                System.out.println(user.get());
-
-                // Kullanici bulunamadi, kayitli degil.
                 if (!user.isPresent()) {
                     return new Gson().toJsonTree(
                             new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
@@ -51,13 +44,15 @@ public class UserController {
                     );
                 }
 
-                String token = jwtAuthentication.createToken(reqUser.getUsername(), roles);
+                String token = jwtAuthentication.createToken(requestUser.getUsername(), roles);
 
                 return new Gson().toJson(
                         new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
                                 StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(token))
                 );
             } catch (Exception e) {
+                // TODO : handling
+                System.out.println(e);
                 e.printStackTrace();
             }
 
@@ -68,12 +63,11 @@ public class UserController {
         });
 
         post("/signup", (request, response) -> {
-
             response.type("application/json");
 
             User user = new Gson().fromJson(request.body(), User.class);
 
-            userService.createOrUpdateUser(user);
+            userService.addOrUpdateUser(user);
 
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
@@ -82,16 +76,13 @@ public class UserController {
         });
 
         get("/v1/users:id", (request, response) -> {
-
             response.type("application/json");
 
             int id = Integer.parseInt(request.params(":id"));
 
-            Optional<User> user= userService.findUser(id);
+            Optional<User> user = userService.findUserById(id);
 
-            // empty
             if (!user.isPresent()) {
-                // User not found!
                 return new Gson().toJson(
                         new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
                                 StatusResponse.SUCCESS.getMessage())
@@ -103,6 +94,5 @@ public class UserController {
                             StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(user.get()))
             );
         });
-
     }
 }

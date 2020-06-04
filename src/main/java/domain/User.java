@@ -1,6 +1,4 @@
-package model;
-
-import java.util.Objects;
+package domain;
 
 public class User {
 

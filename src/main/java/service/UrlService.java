@@ -1,42 +1,51 @@
 package service;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-import model.Url;
-import org.bson.Document;
-import utils.initializeDB;
+import domain.Url;
+import repository.UrlRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 public class UrlService {
 
-    protected final MongoDatabase database;
+    protected final UrlRepository urlRepository;
 
     public UrlService() {
-        database = initializeDB.getDatabase();
+        urlRepository = new UrlRepository();
     }
 
     public void addUrl(Url url) {
-        MongoCollection<Url> collection = database.getCollection("url", Url.class);
-
-        collection.insertOne(url);
+        urlRepository.add(url);
     }
 
-    public ArrayList<String> getUrlsAsList() {
-        MongoCollection<Url> collection = database.getCollection("url", Url.class);
+    public List<Url> getUrls() {
+        List<Url> urlList = urlRepository.findAll();
 
-        Document queryFilter =  new Document("isNew", 1);
-
-        ArrayList<String> urls = new ArrayList<String>();
-
-        try(MongoCursor<Url> cursor = collection.find(queryFilter).iterator()) {
-            while (cursor.hasNext()) {
-                Url url = cursor.next();
-                urls.add(url.getUrl());
-            }
+        if (urlList == null) {
+            return Collections.emptyList();
         }
 
-        return urls;
+        return urlList;
+    }
+
+    /*
+    NewUrls means article urls user liked in a 1 week span
+    */
+    public List<String> getNewUrlsAsString() {
+        List<Url> urlList = urlRepository.findAllByIsNew();
+
+        if (urlList == null) {
+            return Collections.emptyList();
+        }
+
+        List<String> stringUrlList = new ArrayList<>();
+
+        for (Url url: urlList) {
+            stringUrlList.add(url.getLink());
+        }
+
+        return stringUrlList;
     }
 }
