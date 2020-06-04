@@ -1,6 +1,5 @@
 package service;
 
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
@@ -103,12 +102,12 @@ public class CrawlerService {
 
     public List<String> fileToList() {
         try (Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls.txt"))) {
-            List<String> list = new ArrayList<>();
+            List<String> urlList = new ArrayList<>();
 
             stream.filter(s -> s.endsWith("/"))
-                    .forEach(list::add);
+                    .forEach(urlList::add);
 
-            return list;
+            return urlList;
         } catch (IOException e) {
             // TODO : error handling
             e.printStackTrace();
@@ -120,7 +119,7 @@ public class CrawlerService {
     public Url urlToUrlCollection(String url) {
         Url _url = new Url();
 
-        _url.setLink(url);
+        _url.setUrl(url);
         _url.setIsNew(1);
 
         return _url;
@@ -139,21 +138,22 @@ public class CrawlerService {
         return Optional.ofNullable(like);
     }
 
-    public void writeLikes(Like like) {
-
-        Path path = Paths.get("src/main/resources/likes.csv");
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(like.getTitle() + "\t");
-        sb.append(like.getMainTopic());
-
-        try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.APPEND)) {
-            writer.newLine();
-            writer.write(sb.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    // TODO : gerek kalmayabilir buna
+//    public void writeLikes(Like like) {
+//
+//        Path path = Paths.get("src/main/resources/likes.csv");
+//
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(like.getTitle() + "\t");
+//        sb.append(like.getMainTopic());
+//
+//        try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.APPEND)) {
+//            writer.newLine();
+//            writer.write(sb.toString());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /*
     // Create's a collection named counter if there's none.

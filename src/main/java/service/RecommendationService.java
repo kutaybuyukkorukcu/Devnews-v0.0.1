@@ -1,17 +1,15 @@
 package service;
 
 import com.google.gson.*;
-import com.mongodb.client.MongoDatabase;
+import domain.Recommendation;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
-import domain.Article;
 import domain.Data;
 import domain.Like;
 import repository.DataRepository;
 import utils.MainTopics;
-import utils.initializeDB;
 import utils.initializeLists;
 
 import java.util.ArrayList;
@@ -20,30 +18,32 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ArticleService {
+public class RecommendationService {
 
     protected final LikeService likeService;
     protected final DataService dataService;
+    protected final MailService mailService;
     protected final DataRepository dataRepository;
 
-    public ArticleService() {
+    public RecommendationService() {
         likeService = new LikeService();
         dataService = new DataService();
+        mailService = new MailService();
         dataRepository = new DataRepository();
     }
 
-    public void JsonObjectToList(JsonObject jsonObject, ArrayList<Article> articles) {
+    public void JsonObjectToRecommendationList(JsonObject jsonObject, List<Recommendation> recommendations) {
 
         JsonArray jsonArray =  jsonObject.getAsJsonArray("list");
         Iterator<JsonElement> iter = jsonArray.iterator();
 
 
         while(iter.hasNext()) {
-                Article article = new Article();
+                Recommendation recommendation = new Recommendation();
                 JsonArray arr = (JsonArray) iter.next();
-                article.setArticleId(arr.get(0).getAsInt() + 1); // Because recom.py subtracts 1 from articleID
-                article.setSimilarityScore(arr.get(1).getAsDouble());
-                articles.add(article);
+                recommendation.setArticleId(arr.get(0).getAsInt() + 1); // Because recom.py subtracts 1 from articleID
+                recommendation.setSimilarityScore(arr.get(1).getAsDouble());
+                recommendations.add(recommendation);
             }
 
     }
@@ -71,11 +71,11 @@ public class ArticleService {
         return JsonNull.INSTANCE.getAsJsonObject();
     }
 
-    public ArrayList<Article> getTopRecommendations(ArrayList<Article> articles) {
+    public List<Recommendation> getTopRecommendationsFromList(List<Recommendation> recommendations) {
 
-        Comparator<Article> comparator = new Comparator<Article>() {
+        Comparator<Recommendation> comparator = new Comparator<Recommendation>() {
             @Override
-            public int compare(Article i1, Article i2) {
+            public int compare(Recommendation i1, Recommendation i2) {
                 int a1 = (int) Math.round(i1.getSimilarityScore());
                 int a2 = (int) Math.round(i2.getSimilarityScore());
                 return a2 - a1;
@@ -83,15 +83,15 @@ public class ArticleService {
         };
 
         // Set kontrolu yapilsin. Ayni articleID'ye sahipler alinmasin.
-        return (ArrayList<Article>) articles.stream()
+        return recommendations.stream()
                 .sorted(comparator)
                 .limit(5)
                 .collect(Collectors.toList());
     }
 
-    public void recommendationsToArticleList(ArrayList<Article> articles, ArrayList<Data> recommendedArticles) {
+    public void recommendationListToDataList(List<Recommendation> recommendations, List<Data> recommendedArticles) {
 
-        Iterator<Article> iter = articles.iterator();
+        Iterator<Recommendation> iter = recommendations.iterator();
 
         while(iter.hasNext()) {
             int articleID = iter.next().getArticleId();
@@ -103,7 +103,7 @@ public class ArticleService {
 
     }
 
-    public void getRecommendedArticles() {
+    public void getRecommendations() {
         List<Like> likes =  likeService.getNewLikes();
 
         // TODO : exception handling if likes empty, or something else
@@ -118,40 +118,40 @@ public class ArticleService {
             }
 
             if (like.getMainTopic().equals(MainTopics.DEVELOPMENT.getMainTopic())) {
-                JsonObjectToList(jsonObject, initializeLists.development);
+                JsonObjectToRecommendationList(jsonObject, initializeLists.development);
             } else if (like.getMainTopic().equals(MainTopics.ARCHITECTURE.getMainTopic())) {
-                JsonObjectToList(jsonObject, initializeLists.architecture);
+                JsonObjectToRecommendationList(jsonObject, initializeLists.architecture);
             } else if (like.getMainTopic().equals(MainTopics.AI.getMainTopic())) {
-                JsonObjectToList(jsonObject, initializeLists.ai);
+                JsonObjectToRecommendationList(jsonObject, initializeLists.ai);
             } else if (like.getMainTopic().equals(MainTopics.CULTURE.getMainTopic())) {
-                JsonObjectToList(jsonObject, initializeLists.culture);
+                JsonObjectToRecommendationList(jsonObject, initializeLists.culture);
             } else if (like.getMainTopic().equals(MainTopics.DEVOPS.getMainTopic())) {
-                JsonObjectToList(jsonObject, initializeLists.devops);
+                JsonObjectToRecommendationList(jsonObject, initializeLists.devops);
             } else {
-                JsonObjectToList(jsonObject, new ArrayList<Article>());
+                JsonObjectToRecommendationList(jsonObject, new ArrayList<Recommendation>());
             }
 
             // TODO: i shouldnt check for else
         }
     }
 
-    public void recommendedArticlesToList() {
-        initializeLists.development = getTopRecommendations(initializeLists.development);
-        initializeLists.architecture = getTopRecommendations(initializeLists.architecture);
-        initializeLists.ai = getTopRecommendations(initializeLists.ai);
-        initializeLists.culture = getTopRecommendations(initializeLists.culture);
-        initializeLists.devops = getTopRecommendations(initializeLists.devops);
+    public void topRecommendationsToDataList() {
+        initializeLists.development = getTopRecommendationsFromList(initializeLists.development);
+        initializeLists.architecture = getTopRecommendationsFromList(initializeLists.architecture);
+        initializeLists.ai = getTopRecommendationsFromList(initializeLists.ai);
+        initializeLists.culture = getTopRecommendationsFromList(initializeLists.culture);
+        initializeLists.devops = getTopRecommendationsFromList(initializeLists.devops);
 
 
-        recommendationsToArticleList(initializeLists.development, initializeLists.recommendedArticles);
-        recommendationsToArticleList(initializeLists.architecture, initializeLists.recommendedArticles);
-        recommendationsToArticleList(initializeLists.ai, initializeLists.recommendedArticles);
-        recommendationsToArticleList(initializeLists.culture, initializeLists.recommendedArticles);
-        recommendationsToArticleList(initializeLists.devops, initializeLists.recommendedArticles);
+        recommendationListToDataList(initializeLists.development, initializeLists.recommendedArticles);
+        recommendationListToDataList(initializeLists.architecture, initializeLists.recommendedArticles);
+        recommendationListToDataList(initializeLists.ai, initializeLists.recommendedArticles);
+        recommendationListToDataList(initializeLists.culture, initializeLists.recommendedArticles);
+        recommendationListToDataList(initializeLists.devops, initializeLists.recommendedArticles);
 
 
-//        Mail mail = new Mail();
-//        mail.sendMail(utils.initializeLists.recommendedArticles.toString());
+//        mailService.sendMail(mailService.createMail
+//        mailService.sendMail(utils.initializeLists.recommendedArticles.toString());
 
         // TODO : recommendedArticles.toString() -> mail formatina donusturecek bir fonksiyon yaz.
     }

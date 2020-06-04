@@ -1,18 +1,19 @@
 package utils;
 
-import domain.Article;
+import domain.Recommendation;
 import domain.Data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class initializeLists {
 
-    public static ArrayList<Article> development = null;
-    public static ArrayList<Article> architecture = null;
-    public static ArrayList<Article> ai = null;
-    public static ArrayList<Article> culture = null;
-    public static ArrayList<Article> devops = null;
-    public static ArrayList<Data> recommendedArticles = null;
+    public static List<Recommendation> development = null;
+    public static List<Recommendation> architecture = null;
+    public static List<Recommendation> ai = null;
+    public static List<Recommendation> culture = null;
+    public static List<Recommendation> devops = null;
+    public static List<Data> recommendedArticles = null;
 
     public static void generateLists() {
         development = new ArrayList<>();

@@ -1,7 +1,7 @@
 package controller;
 
 import com.google.gson.Gson;
-import service.ArticleService;
+import service.RecommendationService;
 import service.LikeService;
 import utils.StandardResponse;
 import utils.StatusResponse;
@@ -12,12 +12,12 @@ import static spark.Spark.get;
 public class RecommendationController {
 
     protected final LikeService likeService;
-    protected final ArticleService articleService;
+    protected final RecommendationService recommendationService;
 
     public RecommendationController() {
 
         likeService = new LikeService();
-        articleService = new ArticleService();
+        recommendationService = new RecommendationService();
 
         get("/v1/recommend", (request, response) -> {
 
@@ -26,8 +26,8 @@ public class RecommendationController {
             initializeLists.recommendedArticles.clear();
 
             likeService.addLikedDataToDatabase();
-            articleService.getRecommendedArticles();
-            articleService.recommendedArticlesToList();
+            recommendationService.getRecommendations();
+            recommendationService.topRecommendationsToDataList();
 
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),

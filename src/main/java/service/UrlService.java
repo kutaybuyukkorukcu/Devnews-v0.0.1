@@ -6,7 +6,6 @@ import repository.UrlRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public class UrlService {
 
@@ -43,7 +42,7 @@ public class UrlService {
         List<String> stringUrlList = new ArrayList<>();
 
         for (Url url: urlList) {
-            stringUrlList.add(url.getLink());
+            stringUrlList.add(url.getUrl());
         }
 
         return stringUrlList;

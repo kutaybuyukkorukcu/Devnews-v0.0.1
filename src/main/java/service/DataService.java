@@ -41,17 +41,4 @@ public class DataService {
 
         return true;
     }
-
-//    public String createMail(Data data) {
-//        // verilerden mail formati olusturmasini bekleriz.
-//        String mainTopic = data.getMainTopic();
-//        String title = data.getTitle();
-//        String url = data.getArticleLink();
-//
-//        String html = "<h2> " + mainTopic + " </h2>" + "\n"
-//                + "<h4> " + title + " </h4>" + "\n"
-//                + "<h5> " + url + " </h5>";
-//
-//        return html;
-//    }
 }

@@ -1,15 +1,15 @@
 package domain;
 
-public class Article {
+public class Recommendation {
 
     private int articleId;
     private double similarityScore;
 
-    public Article() {
+    public Recommendation() {
 
     }
 
-    public Article(int articleId, double similarityScore) {
+    public Recommendation(int articleId, double similarityScore) {
         this.articleId = articleId;
         this.similarityScore = similarityScore;
     }
