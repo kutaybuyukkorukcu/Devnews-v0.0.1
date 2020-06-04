@@ -42,12 +42,12 @@ public class LikeService {
         return likeList;
     }
 
-    public void addLikedDataToDatabase() {
-        List<String> urls = urlService.getNewUrlsAsString();
+    public void addLikedArticlesIntoLikeCollection() {
+        List<String> urls = urlService.getArticleLinksAsList();
 
         for (String url : urls) {
 
-            Optional<Like> like = crawlerService.urlToLikeCollection(url);
+            Optional<Like> like = crawlerService.articleLinkToLike(url);
 
             if (!like.isPresent()) {
                 // TODO : error/log handling

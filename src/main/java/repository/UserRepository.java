@@ -3,14 +3,12 @@ package repository;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import domain.Data;
 import domain.User;
 import org.bson.Document;
 import utils.initializeDB;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class UserRepository implements IRepository<User> {
 

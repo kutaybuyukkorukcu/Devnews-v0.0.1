@@ -10,7 +10,7 @@ public class App {
     public static void main(String[] args) {
 
         initializeDB.createCounter();
-        initializeDB.createData();
+        initializeDB.createArticle();
         initializeDB.createUrl();
         initializeDB.createLike();
         initializeDB.createUser();
@@ -33,7 +33,7 @@ public class App {
 //        });
 
         final CrawlerController crawlerController = new CrawlerController();
-        final DataController dataController = new DataController();
+        final ArticleController articleController = new ArticleController();
         final RecommendationController recommendationController = new RecommendationController();
         final UrlController urlController = new UrlController();
         final UserController userController = new UserController();

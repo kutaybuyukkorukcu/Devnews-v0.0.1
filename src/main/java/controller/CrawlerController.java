@@ -1,15 +1,14 @@
 package controller;
 
 import com.google.gson.Gson;
-import domain.Data;
+import domain.Article;
 import service.CrawlerService;
-import service.DataService;
+import service.ArticleService;
 import service.UrlService;
 import utils.StandardResponse;
 import utils.StatusResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 import static spark.Spark.get;
 
@@ -17,38 +16,38 @@ public class CrawlerController {
 
     CrawlerService crawlerService;
     UrlService urlService;
-    DataService dataService;
+    ArticleService articleService;
 
     public CrawlerController() {
 
         crawlerService = new CrawlerService();
         urlService = new UrlService();
-        dataService = new DataService();
+        articleService = new ArticleService();
 
         // Reads each url from database, crawls it and then
         // -> Appends each formatted data into articles.csv file
-        // -> Inserts each formatted data into Data collection
+        // -> Inserts each formatted data into Article collection
         // Use /crawl for generating .csv file which contains all articles
         get("/v1/crawl", (request, response) -> {
             response.type("application/json");
 
-            List<String> urlList = urlService.getNewUrlsAsString();
+            List<String> articleLinkList = urlService.getArticleLinksAsList();
 
-            if (urlList.isEmpty()) {
+            if (articleLinkList.isEmpty()) {
                 return new Gson().toJson(
                         new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
                                 StatusResponse.ERROR.getMessage()));
             }
 
-            for (String url : urlList) {
-                Data data = crawlerService.urlToData(url);
-                crawlerService.writeDatas(data);
-                dataService.addData(data);
+            for (String articleLink : articleLinkList) {
+                Article article = crawlerService.crawlArticleLinkIntoArticle(articleLink);
+                crawlerService.writeArticlesIntoCSV(article);
+                articleService.addArticle(article);
             }
 
-            List<Data> dataList = dataService.getDatas();
+            List<Article> articleList = articleService.getArticles();
 
-            if (dataList.isEmpty()) {
+            if (articleList.isEmpty()) {
                 return new Gson().toJson(
                         new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
                                 StatusResponse.ERROR.getMessage()));
@@ -56,7 +55,7 @@ public class CrawlerController {
 
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
-                            StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(dataService.getDatas())));
+                            StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(articleService.getArticles())));
         });
     }
 }

@@ -1,31 +1,30 @@
 package controller;
 
 import com.google.gson.Gson;
-import domain.Data;
-import service.DataService;
+import domain.Article;
+import service.ArticleService;
 import utils.StandardResponse;
 import utils.StatusResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 import static spark.Spark.get;
 
-public class DataController {
+public class ArticleController {
 
-    protected final DataService dataService;
+    protected final ArticleService articleService;
 
-    public DataController() {
+    public ArticleController() {
 
-        dataService = new DataService();
+        articleService = new ArticleService();
 
-        // Get datas stored in Data collection
-        get("/v1/datas", (request, response) -> {
+        // Get datas stored in Article collection
+        get("/v1/articles", (request, response) -> {
             response.type("application/json");
 
-            List<Data> dataList = dataService.getDatas();
+            List<Article> articleList = articleService.getArticles();
 
-            if (dataList.isEmpty()) {
+            if (articleList.isEmpty()) {
                 return new Gson().toJson(
                         new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
                                 StatusResponse.ERROR.getMessage()));
@@ -33,7 +32,7 @@ public class DataController {
 
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
-                            StatusResponse.SUCCESS.getMessage(),new Gson().toJsonTree(dataService.getDatas())));
+                            StatusResponse.SUCCESS.getMessage(),new Gson().toJsonTree(articleService.getArticles())));
         });
     }
 }

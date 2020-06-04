@@ -1,4 +1,7 @@
+package service;
+
 import com.sun.mail.smtp.SMTPTransport;
+import domain.Article;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -15,7 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-public class Mail {
+public class MailService {
 
     public String getAPIKEY() {
         Path path = Paths.get("src/main/resources/config.properties");
@@ -31,7 +34,7 @@ public class Mail {
 
     private static final String SMTP_SERVER = "smtp.sendgrid.net";
     private static final String USERNAME = "apikey";
-    private static final String PASSWORD = new Mail().getAPIKEY();
+    private static final String PASSWORD = new MailService().getAPIKEY();
 
     private static final String EMAIL_FROM = "kutaybuyukkorukcu@gmail.com";
     private static final String EMAIL_TO = "kutaybuyukkorukcu@gmail.com";
@@ -40,6 +43,7 @@ public class Mail {
     private static final String EMAIL_TEXT = "";
 
     public void sendMail(String sb) {
+        // TODO : get props from config.properties -> helper.ConfigPropertyValues
         Properties prop = System.getProperties();
         prop.put("mail.smtp.host", SMTP_SERVER);
         prop.put("mail.smtp.auth", "true");
@@ -69,8 +73,10 @@ public class Mail {
             t.close();
 
         } catch (AddressException e) {
+            // TODO : error handling
             e.printStackTrace();
         } catch (MessagingException e) {
+            // TODO : error handling
             e.printStackTrace();
         }
     }
@@ -103,5 +109,19 @@ public class Mail {
         public String getName() {
             return "HTMLDataSource";
         }
+    }
+
+
+    public String createMail(Article article) {
+        // verilerden mail formati olusturmasini bekleriz.
+        String mainTopic = article.getMainTopic();
+        String title = article.getTitle();
+        String articleLink = article.getArticleLink();
+
+        String html = "<h2> " + mainTopic + " </h2>" + "\n"
+                + "<h4> " + title + " </h4>" + "\n"
+                + "<h5> " + articleLink + " </h5>";
+
+        return html;
     }
 }

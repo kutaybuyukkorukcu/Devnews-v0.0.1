@@ -1,12 +1,11 @@
 package service;
 
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
+import domain.Article;
 import domain.Counter;
-import domain.Data;
 import domain.Like;
 import domain.Url;
 import org.jsoup.Jsoup;
@@ -14,7 +13,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import helper.Validator;
-import repository.DataRepository;
+import repository.ArticleRepository;
 import utils.initializeDB;
 
 import java.io.BufferedWriter;
@@ -31,24 +30,24 @@ public class CrawlerService {
 
     protected final Validator validator;
     protected final MongoDatabase database;
-    protected final DataRepository dataRepository;
+    protected final ArticleRepository articleRepository;
 
     public CrawlerService() {
         validator = new Validator();
         database = initializeDB.getDatabase();
-        dataRepository = new DataRepository();
+        articleRepository = new ArticleRepository();
     }
 
-    public Data urlToData(String url) {
+    public Article crawlArticleLinkIntoArticle(String articleLink) {
 
-        Data data = new Data();
+        Article article = new Article();
 
         StringBuilder topics = new StringBuilder();
 
         Document doc = null;
 
         try {
-            doc = Jsoup.connect(url).get();
+            doc = Jsoup.connect(articleLink).get();
         } catch (IOException e) {
             // TODO : logging and handling
             e.printStackTrace();
@@ -71,26 +70,26 @@ public class CrawlerService {
         int articleID = getNextArticleIdSequence();
 
         // articleLink yine DB'den geliyor.
-        data.setArticleId(articleID);
-        data.setArticleLink(url);
-        data.setAuthor(author);
-        data.setTitle(title);
-        data.setMainTopic(mainTopic);
-        data.setRelatedTopics(relatedTopics);
-        data.setIsNew(1);
+        article.setArticleId(articleID);
+        article.setArticleLink(articleLink);
+        article.setAuthor(author);
+        article.setTitle(title);
+        article.setMainTopic(mainTopic);
+        article.setRelatedTopics(relatedTopics);
+        article.setIsNew(1);
 
-        return data;
+        return article;
     }
 
-    public void writeDatas(Data data) {
+    public void writeArticlesIntoCSV(Article article) {
         Path path = Paths.get("src/main/resources/articles.csv");
 
         StringBuilder sb = new StringBuilder();
-        sb.append(Integer.toString(data.getArticleId()) + "\t");
-        sb.append(data.getTitle() + "\t");
-        sb.append(data.getMainTopic() + "\t");
-        sb.append(data.getAuthor() + "\t");
-        sb.append(data.getRelatedTopics());
+        sb.append(Integer.toString(article.getArticleId()) + "\t");
+        sb.append(article.getTitle() + "\t");
+        sb.append(article.getMainTopic() + "\t");
+        sb.append(article.getAuthor() + "\t");
+        sb.append(article.getRelatedTopics());
 
         try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.APPEND)) {
             writer.newLine();
@@ -101,14 +100,14 @@ public class CrawlerService {
         }
     }
 
-    public List<String> fileToList() {
+    public List<String> getArticleLinksFromFileAsList() {
         try (Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls.txt"))) {
-            List<String> list = new ArrayList<>();
+            List<String> urlList = new ArrayList<>();
 
             stream.filter(s -> s.endsWith("/"))
-                    .forEach(list::add);
+                    .forEach(urlList::add);
 
-            return list;
+            return urlList;
         } catch (IOException e) {
             // TODO : error handling
             e.printStackTrace();
@@ -117,43 +116,44 @@ public class CrawlerService {
         return Collections.emptyList();
     }
 
-    public Url urlToUrlCollection(String url) {
-        Url _url = new Url();
+    public Optional<Url> articleLinkToUrl(String articleLink) {
+        Url url = new Url();
 
-        _url.setLink(url);
-        _url.setIsNew(1);
+        url.setArticleLink(articleLink);
+        url.setIsNew(1);
 
-        return _url;
+        return Optional.ofNullable(url);
     }
 
-    public Optional<Like> urlToLikeCollection(String link) {
+    public Optional<Like> articleLinkToLike(String articleLink) {
 
-        Data data = dataRepository.findByArticleLink(link);
+        Article article = articleRepository.findByArticleLink(articleLink);
 
         Like like = new Like();
 
-        like.setTitle(data.getTitle());
-        like.setMainTopic(data.getMainTopic());
+        like.setTitle(article.getTitle());
+        like.setMainTopic(article.getMainTopic());
         like.setIsNew(1);
 
         return Optional.ofNullable(like);
     }
 
-    public void writeLikes(Like like) {
-
-        Path path = Paths.get("src/main/resources/likes.csv");
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(like.getTitle() + "\t");
-        sb.append(like.getMainTopic());
-
-        try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.APPEND)) {
-            writer.newLine();
-            writer.write(sb.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    // TODO : gerek kalmayabilir buna
+//    public void writeLikes(Like like) {
+//
+//        Path path = Paths.get("src/main/resources/likes.csv");
+//
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(like.getTitle() + "\t");
+//        sb.append(like.getMainTopic());
+//
+//        try(BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.APPEND)) {
+//            writer.newLine();
+//            writer.write(sb.toString());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /*
     // Create's a collection named counter if there's none.

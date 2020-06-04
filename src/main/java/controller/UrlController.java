@@ -7,7 +7,6 @@ import service.UrlService;
 import utils.StandardResponse;
 import utils.StatusResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,16 +26,23 @@ public class UrlController {
         get("/v1/urls", (request, response) -> {
             response.type("application/json");
 
-            List<String> urlList = crawlerService.fileToList();
+            List<String> articleLinkList = crawlerService.getArticleLinksFromFileAsList();
 
-            for (String url : urlList) {
-                Url link = crawlerService.urlToUrlCollection(url);
-                urlService.addUrl(link);
+            for (String articleLink : articleLinkList) {
+                Optional<Url> url = crawlerService.articleLinkToUrl(articleLink);
+
+                if (!url.isPresent()) {
+                    return new Gson().toJson(
+                            new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
+                                    StatusResponse.ERROR.getMessage()));
+                }
+
+                urlService.addUrl(url.get());
             }
 
-            List<String> newUrlList = urlService.getNewUrlsAsString();
+            List<String> allArticleLinkList = urlService.getArticleLinksAsList();
 
-            if (newUrlList.isEmpty()) {
+            if (allArticleLinkList.isEmpty()) {
                 return new Gson().toJson(
                         new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
                                 StatusResponse.ERROR.getMessage()));
@@ -44,7 +50,7 @@ public class UrlController {
 
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
-                            StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(newUrlList)));
+                            StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(allArticleLinkList)));
         });
 
         post("/v1/urls", (request, response) -> {
