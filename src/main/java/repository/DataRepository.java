@@ -74,4 +74,14 @@ public class DataRepository implements IRepository<Data>{
 
         return data;
     }
+
+    public Data findByArticleLink(String link) {
+        MongoCollection<Data> collection = database.getCollection("data", Data.class);
+
+        Document queryByArticleLink =  new Document("articleLink", link);
+
+        Data data = collection.find(queryByArticleLink).first();
+
+        return data;
+    }
 }

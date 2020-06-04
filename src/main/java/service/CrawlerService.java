@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import helper.Validator;
+import repository.DataRepository;
 import utils.initializeDB;
 
 import java.io.BufferedWriter;
@@ -21,16 +22,21 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class CrawlerService {
 
     protected final Validator validator;
     protected final MongoDatabase database;
+    protected final DataRepository dataRepository;
 
     public CrawlerService() {
         validator = new Validator();
         database = initializeDB.getDatabase();
+        dataRepository = new DataRepository();
     }
 
     public Data urlToData(String url) {
@@ -78,6 +84,7 @@ public class CrawlerService {
 
     public void writeDatas(Data data) {
         Path path = Paths.get("src/main/resources/articles.csv");
+
         StringBuilder sb = new StringBuilder();
         sb.append(Integer.toString(data.getArticleId()) + "\t");
         sb.append(data.getTitle() + "\t");
@@ -89,24 +96,25 @@ public class CrawlerService {
             writer.newLine();
             writer.write(sb.toString());
         } catch (IOException e) {
+            // TODO : error handling
             e.printStackTrace();
         }
     }
 
-    public ArrayList<String> fileToList() {
+    public List<String> fileToList() {
         try (Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls.txt"))) {
-            ArrayList<String> list = new ArrayList<>();
+            List<String> list = new ArrayList<>();
 
-            stream
-                    .filter(s -> s.endsWith("/"))
+            stream.filter(s -> s.endsWith("/"))
                     .forEach(list::add);
 
             return list;
         } catch (IOException e) {
+            // TODO : error handling
             e.printStackTrace();
         }
 
-        return new ArrayList<String>();
+        return Collections.emptyList();
     }
 
     public Url urlToUrlCollection(String url) {
@@ -118,26 +126,17 @@ public class CrawlerService {
         return _url;
     }
 
-    public Like urlToLikeCollection(String url) {
+    public Optional<Like> urlToLikeCollection(String link) {
 
-        MongoCollection<Data> collection = database.getCollection("data", Data.class);
+        Data data = dataRepository.findByArticleLink(link);
 
-        org.bson.Document queryFilter =  new org.bson.Document("articleLink", url);
+        Like like = new Like();
 
-        FindIterable<Data> result = collection.find(queryFilter).limit(1);
+        like.setTitle(data.getTitle());
+        like.setMainTopic(data.getMainTopic());
+        like.setIsNew(1);
 
-        if (result != null) {
-            Like like = new Like();
-
-            Data data = result.first();
-            like.setTitle(data.getTitle());
-            like.setMainTopic(data.getMainTopic());
-            like.setIsNew(1);
-
-            return like;
-        }
-
-        return new Like();
+        return Optional.ofNullable(like);
     }
 
     public void writeLikes(Like like) {

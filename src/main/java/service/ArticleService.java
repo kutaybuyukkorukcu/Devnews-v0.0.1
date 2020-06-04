@@ -1,20 +1,15 @@
 package service;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mongodb.client.MongoCollection;
+import com.google.gson.*;
 import com.mongodb.client.MongoDatabase;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
-import kong.unirest.json.JSONObject;
 import domain.Article;
 import domain.Data;
 import domain.Like;
-import org.bson.Document;
+import repository.DataRepository;
 import utils.MainTopics;
 import utils.initializeDB;
 import utils.initializeLists;
@@ -30,11 +25,13 @@ public class ArticleService {
     protected final MongoDatabase database;
     protected final LikeService likeService;
     protected final DataService dataService;
+    protected final DataRepository dataRepository;
 
     public ArticleService() {
         database = initializeDB.getDatabase();
         likeService = new LikeService();
         dataService = new DataService();
+        dataRepository = new DataRepository();
     }
 
     public void JsonObjectToList(JsonObject jsonObject, ArrayList<Article> articles) {
@@ -55,7 +52,7 @@ public class ArticleService {
 
 
     // Belli bir formata soktuktan sonra hem elimde bulunan makale verilerini hem de kisinin begendiklerini artik recommendation icin yollayabilirim.
-    public JsonObject getRecommendations(String title) {
+    public JsonObject getRecommendation(String title) {
 
         try {
             HttpResponse<JsonNode> jsonResponse = Unirest.get("http://localhost:5000/api/recommend")
@@ -63,19 +60,20 @@ public class ArticleService {
                     .asJson();
 
             JsonNode jsonNode = jsonResponse.getBody();
-            JSONObject jsonObject = jsonNode.getObject();
+            String jsonString = jsonNode.getObject().toString();
             JsonParser jsonParser = new JsonParser();
-            JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-            return gsonObject;
+            JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonString);
+
+            return jsonObject;
         } catch (UnirestException e) {
              // TODO : handling
             e.printStackTrace();
         }
 
-        return new JsonObject();
+        return JsonNull.INSTANCE.getAsJsonObject();
     }
 
-    public ArrayList<Article> returnRecommendations(ArrayList<Article> articles) {
+    public ArrayList<Article> getTopRecommendations(ArrayList<Article> articles) {
 
         Comparator<Article> comparator = new Comparator<Article>() {
             @Override
@@ -93,18 +91,14 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public void sendRecommendations(ArrayList<Article> articles, ArrayList<Data> recommendedArticles) {
+    public void recommendationsToArticleList(ArrayList<Article> articles, ArrayList<Data> recommendedArticles) {
 
         Iterator<Article> iter = articles.iterator();
 
         while(iter.hasNext()) {
             int articleID = iter.next().getArticleId();
 
-            MongoCollection<Data> collection = database.getCollection("data", Data.class);
-
-            Document queryFilter =  new Document("articleID", articleID);
-
-            Data data = collection.find(queryFilter).limit(1).first();
+            Data data = dataRepository.findByArticleId(articleID);
 
             recommendedArticles.add(data);
         }
@@ -119,7 +113,11 @@ public class ArticleService {
 
         while(iter.hasNext()) {
             Like like = iter.next();
-            JsonObject jsonObject = getRecommendations(like.getTitle());
+            JsonObject jsonObject = getRecommendation(like.getTitle());
+
+            if (jsonObject.isJsonNull()) {
+                // TODO : exception handling
+            }
 
             if (like.getMainTopic().equals(MainTopics.DEVELOPMENT.getMainTopic())) {
                 JsonObjectToList(jsonObject, initializeLists.development);
@@ -140,18 +138,18 @@ public class ArticleService {
     }
 
     public void recommendedArticlesToList() {
-        initializeLists.development = returnRecommendations(initializeLists.development);
-        initializeLists.architecture = returnRecommendations(initializeLists.architecture);
-        initializeLists.ai = returnRecommendations(initializeLists.ai);
-        initializeLists.culture = returnRecommendations(initializeLists.culture);
-        initializeLists.devops = returnRecommendations(initializeLists.devops);
+        initializeLists.development = getTopRecommendations(initializeLists.development);
+        initializeLists.architecture = getTopRecommendations(initializeLists.architecture);
+        initializeLists.ai = getTopRecommendations(initializeLists.ai);
+        initializeLists.culture = getTopRecommendations(initializeLists.culture);
+        initializeLists.devops = getTopRecommendations(initializeLists.devops);
 
 
-        sendRecommendations(initializeLists.development, initializeLists.recommendedArticles);
-        sendRecommendations(initializeLists.architecture, initializeLists.recommendedArticles);
-        sendRecommendations(initializeLists.ai, initializeLists.recommendedArticles);
-        sendRecommendations(initializeLists.culture, initializeLists.recommendedArticles);
-        sendRecommendations(initializeLists.devops, initializeLists.recommendedArticles);
+        recommendationsToArticleList(initializeLists.development, initializeLists.recommendedArticles);
+        recommendationsToArticleList(initializeLists.architecture, initializeLists.recommendedArticles);
+        recommendationsToArticleList(initializeLists.ai, initializeLists.recommendedArticles);
+        recommendationsToArticleList(initializeLists.culture, initializeLists.recommendedArticles);
+        recommendationsToArticleList(initializeLists.devops, initializeLists.recommendedArticles);
 
 
 //        Mail mail = new Mail();

@@ -46,8 +46,14 @@ public class LikeService {
         List<String> urls = urlService.getNewUrlsAsString();
 
         for (String url : urls) {
-            Like like = crawlerService.urlToLikeCollection(url);
-            likeRepository.add(like);
+
+            Optional<Like> like = crawlerService.urlToLikeCollection(url);
+
+            if (!like.isPresent()) {
+                // TODO : error/log handling
+            }
+
+            likeRepository.add(like.get());
         }
     }
 }
