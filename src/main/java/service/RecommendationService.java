@@ -33,19 +33,23 @@ public class RecommendationService {
     }
 
     public void recommendationIntoRecommendationList(JsonObject jsonObject, List<Recommendation> recommendations) {
+    try {
 
-        JsonArray jsonArray =  jsonObject.getAsJsonArray("list");
-        Iterator<JsonElement> iter = jsonArray.iterator();
+            JsonArray jsonArray =  jsonObject.getAsJsonArray("list");
+            Iterator<JsonElement> iter = jsonArray.iterator();
 
+            while(iter.hasNext()) {
+                    Recommendation recommendation = new Recommendation();
+                    JsonArray arr = (JsonArray) iter.next();
+                    recommendation.setArticleId(arr.get(0).getAsInt() + 1); // Because recom.py subtracts 1 from articleID
+                    recommendation.setSimilarityScore(arr.get(1).getAsDouble());
+                    recommendations.add(recommendation);
+                }
 
-        while(iter.hasNext()) {
-                Recommendation recommendation = new Recommendation();
-                JsonArray arr = (JsonArray) iter.next();
-                recommendation.setArticleId(arr.get(0).getAsInt() + 1); // Because recom.py subtracts 1 from articleID
-                recommendation.setSimilarityScore(arr.get(1).getAsDouble());
-                recommendations.add(recommendation);
-            }
-
+    } catch (Exception e) {
+        System.out.println(e);
+        System.out.println("recommendationIntoRecommendationList");
+    }
     }
 
 
@@ -61,18 +65,23 @@ public class RecommendationService {
             String jsonString = jsonNode.getObject().toString();
             JsonParser jsonParser = new JsonParser();
             JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonString);
+            System.out.println("title : " + title);
+            System.out.println(jsonObject.toString());
 
             return jsonObject;
         } catch (UnirestException e) {
              // TODO : handling
-            e.printStackTrace();
+            System.out.println(e);
+            System.out.println("getRecommendation");
+
         }
 
-        return JsonNull.INSTANCE.getAsJsonObject();
+//        return JsonNull.INSTANCE.getAsJsonObject();
+        return new JsonObject();
     }
 
     public List<Recommendation> getTopRecommendationsFromList(List<Recommendation> recommendations) {
-
+try{
         Comparator<Recommendation> comparator = new Comparator<Recommendation>() {
             @Override
             public int compare(Recommendation i1, Recommendation i2) {
@@ -87,9 +96,15 @@ public class RecommendationService {
                 .sorted(comparator)
                 .limit(5)
                 .collect(Collectors.toList());
+} catch (Exception e) {
+    System.out.println(e);
+    System.out.println("getTopRecommendationsFromList");
+}
+return new ArrayList<Recommendation>();
     }
 
     public void recommendationListToArticleList(List<Recommendation> recommendations, List<Article> recommendedArticles) {
+try{
 
         Iterator<Recommendation> iter = recommendations.iterator();
 
@@ -100,10 +115,17 @@ public class RecommendationService {
 
             recommendedArticles.add(article);
         }
+}catch (Exception e) {
+    System.out.println(e);
+    System.out.println("recommendationListToArticleList");
+}
+
 
     }
 
     public void getRecommendations() {
+        try {
+
         List<Like> likes =  likeService.getNewLikes();
 
         // TODO : exception handling if likes empty, or something else
@@ -113,9 +135,10 @@ public class RecommendationService {
             Like like = iter.next();
             JsonObject jsonObject = getRecommendation(like.getTitle());
 
-            if (jsonObject.isJsonNull()) {
-                // TODO : exception handling
-            }
+//            if (jsonObject.isJsonNull()) {
+//                // TODO : exception handling
+//                System.out.println(jsonObject.toString());
+//            }
 
             if (like.getMainTopic().equals(MainTopics.DEVELOPMENT.getMainTopic())) {
                 recommendationIntoRecommendationList(jsonObject, initializeLists.development);
@@ -128,10 +151,15 @@ public class RecommendationService {
             } else if (like.getMainTopic().equals(MainTopics.DEVOPS.getMainTopic())) {
                 recommendationIntoRecommendationList(jsonObject, initializeLists.devops);
             } else {
-                recommendationIntoRecommendationList(jsonObject, new ArrayList<Recommendation>());
+                recommendationIntoRecommendationList(jsonObject, new ArrayList<>());
             }
 
             // TODO: i shouldnt check for else
+        }
+        } catch (NullPointerException e) {
+            System.out.println(e);
+            System.out.println("getRecommendations");
+            throw e;
         }
     }
 
@@ -141,6 +169,13 @@ public class RecommendationService {
         initializeLists.ai = getTopRecommendationsFromList(initializeLists.ai);
         initializeLists.culture = getTopRecommendationsFromList(initializeLists.culture);
         initializeLists.devops = getTopRecommendationsFromList(initializeLists.devops);
+
+        System.out.println("dev list " + initializeLists.development.toString());
+        System.out.println("arch list " + initializeLists.architecture.toString());
+        System.out.println("ai list " + initializeLists.ai.toString());
+        System.out.println("cult list " + initializeLists.culture.toString());
+        System.out.println("devops list " + initializeLists.devops.toString());
+
 
 
         recommendationListToArticleList(initializeLists.development, initializeLists.recommendedArticles);

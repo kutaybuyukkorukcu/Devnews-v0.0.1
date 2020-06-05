@@ -48,6 +48,7 @@ public class CrawlerService {
             doc = Jsoup.connect(articleLink).get();
         } catch (IOException e) {
             // TODO : logging and handling
+            System.out.println(e);
             e.printStackTrace();
         }
 

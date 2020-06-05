@@ -41,7 +41,7 @@ public class CrawlerController {
 
             for (String articleLink : articleLinkList) {
                 Article article = crawlerService.crawlArticleLinkIntoArticle(articleLink);
-                crawlerService.writeArticlesIntoCSV(article);
+//                crawlerService.writeArticlesIntoCSV(article);
                 articleService.addArticle(article);
             }
 

@@ -43,11 +43,11 @@ public class LikeService {
     }
 
     public void addLikedArticlesIntoLikeCollection() {
-        List<String> urls = urlService.getArticleLinksAsList();
+        List<String> articleLinkList = urlService.getArticleLinksAsList();
 
-        for (String url : urls) {
+        for (String articleLink : articleLinkList) {
 
-            Optional<Like> like = crawlerService.articleLinkToLike(url);
+            Optional<Like> like = crawlerService.articleLinkToLike(articleLink);
 
             if (!like.isPresent()) {
                 // TODO : error/log handling

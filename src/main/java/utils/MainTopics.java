@@ -3,7 +3,7 @@ package utils;
 public enum MainTopics {
     DEVELOPMENT("Development"),
     ARCHITECTURE("Architecture & Design"),
-    AI("AI, ML & Article Engineering"),
+    AI("AI, ML & Data Engineering"),
     CULTURE("Culture & Methods"),
     DEVOPS("DevOps");
 

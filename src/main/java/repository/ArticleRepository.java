@@ -98,9 +98,9 @@ public class ArticleRepository implements IRepository<Article>{
     }
 
     /*
-// Create's a collection named counter if there's none.
-// Increments counterValue by 1 and returns it.
-// Purpose of this collection : Defines an articleID for each article.
+ Create's a collection named counter if there's none.
+ Increments counterValue by 1 and returns it.
+ Purpose of this collection : Defines an articleID for each article.
  */
 //    public int getNextArticleIdSequence() {
 //        MongoCollection<Counter> collection = database.getCollection("counter", Counter.class);
