@@ -55,13 +55,13 @@ public class Validator {
     }
 
     public void setAI() {
-        generic.put("AI, ML & Article Engineering", "AI, ML & Article Engineering");
-        generic.put("Big Article", "AI, ML & Article Engineering");
-        generic.put("Machine Learning", "AI, ML & Article Engineering");
-        generic.put("NoSQL", "AI, ML & Article Engineering");
-        generic.put("Database", "AI, ML & Article Engineering");
-        generic.put("Article Analytics", "AI, ML & Article Engineering");
-        generic.put("Streaming", "AI, ML & Article Engineering");
+        generic.put("AI, ML & Data Engineering", "AI, ML & Data Engineering");
+        generic.put("Big Data", "AI, ML & Data Engineering");
+        generic.put("Machine Learning", "AI, ML & Data Engineering");
+        generic.put("NoSQL", "AI, ML & Data Engineering");
+        generic.put("Database", "AI, ML & Data Engineering");
+        generic.put("Data Analytics", "AI, ML & Data Engineering");
+        generic.put("Streaming", "AI, ML & Data Engineering");
     }
 
     public void setCulture() {

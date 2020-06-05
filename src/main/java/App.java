@@ -1,9 +1,14 @@
+import com.google.gson.Gson;
 import controller.*;
 import helper.CorsFilter;
 import helper.JwtAuthentication;
+import service.LikeService;
+import service.RecommendationService;
 import utils.initializeDB;
 
 import utils.*;
+
+import static spark.Spark.get;
 
 public class App {
 
@@ -37,5 +42,6 @@ public class App {
         final RecommendationController recommendationController = new RecommendationController();
         final UrlController urlController = new UrlController();
         final UserController userController = new UserController();
+
     }
 }

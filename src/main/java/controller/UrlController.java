@@ -28,6 +28,12 @@ public class UrlController {
 
             List<String> articleLinkList = crawlerService.getArticleLinksFromFileAsList();
 
+            if (articleLinkList.isEmpty()) {
+                return new Gson().toJson(
+                        new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
+                                StatusResponse.ERROR.getMessage()));
+            }
+
             for (String articleLink : articleLinkList) {
                 Optional<Url> url = crawlerService.articleLinkToUrl(articleLink);
 

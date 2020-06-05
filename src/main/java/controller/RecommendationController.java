@@ -18,21 +18,30 @@ public class RecommendationController {
 
         likeService = new LikeService();
         recommendationService = new RecommendationService();
-
         get("/v1/recommend", (request, response) -> {
 
             response.type("application/json");
 
             initializeLists.recommendedArticles.clear();
 
+            // TODO : based on user ID, update user's old liked articles isNew 1 to 0
+
             likeService.addLikedArticlesIntoLikeCollection();
-            recommendationService.getRecommendations();
+            try {
+
+             recommendationService.getRecommendations();
+            } catch (NullPointerException e) {
+                return new Gson().toJson(
+                        new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
+                                StatusResponse.ERROR.getMessage()));
+            }
+
             recommendationService.topRecommendationsIntoArticleList();
 
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
                             StatusResponse.SUCCESS.getMessage(),
-                            new Gson().toJsonTree(initializeLists.recommendedArticles)));
-        });
+                            new Gson().toJsonTree(initializeLists.recommendedArticles.toString())));
+            });
     }
 }
