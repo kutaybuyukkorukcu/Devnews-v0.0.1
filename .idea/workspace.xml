@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="57c1feae-1585-4bb9-a566-fc5502751d24" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/CrawlerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/CrawlerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/RecommendationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/RecommendationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/UrlController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/UrlController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/helper/Validator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helper/Validator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/ArticleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/ArticleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/CrawlerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/CrawlerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/LikeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/LikeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/RecommendationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/RecommendationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/MainTopics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/MainTopics.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/urls.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/urls.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/urls1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/urls1.txt" afterDir="false" />
-    </list>
+    <list default="true" id="57c1feae-1585-4bb9-a566-fc5502751d24" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -111,7 +97,7 @@
       <workItem from="1591116606750" duration="18143000" />
       <workItem from="1591191576786" duration="33154000" />
       <workItem from="1591263353282" duration="229000" />
-      <workItem from="1591352227691" duration="20308000" />
+      <workItem from="1591352227691" duration="20592000" />
     </task>
     <servers />
   </component>
