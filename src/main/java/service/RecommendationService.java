@@ -33,8 +33,8 @@ public class RecommendationService {
     }
 
     public void recommendationIntoRecommendationList(JsonObject jsonObject, List<Recommendation> recommendations) {
-    try {
 
+        try {
             JsonArray jsonArray =  jsonObject.getAsJsonArray("list");
             Iterator<JsonElement> iter = jsonArray.iterator();
 
@@ -46,10 +46,10 @@ public class RecommendationService {
                     recommendations.add(recommendation);
                 }
 
-    } catch (Exception e) {
-        System.out.println(e);
-        System.out.println("recommendationIntoRecommendationList");
-    }
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("recommendationIntoRecommendationList");
+        }
     }
 
 
@@ -65,8 +65,6 @@ public class RecommendationService {
             String jsonString = jsonNode.getObject().toString();
             JsonParser jsonParser = new JsonParser();
             JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonString);
-            System.out.println("title : " + title);
-            System.out.println(jsonObject.toString());
 
             return jsonObject;
         } catch (UnirestException e) {
@@ -75,13 +73,10 @@ public class RecommendationService {
             System.out.println("getRecommendation");
 
         }
-
-//        return JsonNull.INSTANCE.getAsJsonObject();
-        return new JsonObject();
+        return JsonNull.INSTANCE.getAsJsonObject();
     }
 
     public List<Recommendation> getTopRecommendationsFromList(List<Recommendation> recommendations) {
-try{
         Comparator<Recommendation> comparator = new Comparator<Recommendation>() {
             @Override
             public int compare(Recommendation i1, Recommendation i2) {
@@ -96,15 +91,9 @@ try{
                 .sorted(comparator)
                 .limit(5)
                 .collect(Collectors.toList());
-} catch (Exception e) {
-    System.out.println(e);
-    System.out.println("getTopRecommendationsFromList");
-}
-return new ArrayList<Recommendation>();
     }
 
     public void recommendationListToArticleList(List<Recommendation> recommendations, List<Article> recommendedArticles) {
-try{
 
         Iterator<Recommendation> iter = recommendations.iterator();
 
@@ -115,23 +104,16 @@ try{
 
             recommendedArticles.add(article);
         }
-}catch (Exception e) {
-    System.out.println(e);
-    System.out.println("recommendationListToArticleList");
-}
-
-
     }
 
     public void getRecommendations() {
-        try {
 
-        List<Like> likes =  likeService.getNewLikes();
+        List<Like> likes = likeService.getNewLikes();
 
         // TODO : exception handling if likes empty, or something else
         Iterator<Like> iter = likes.iterator();
 
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             Like like = iter.next();
             JsonObject jsonObject = getRecommendation(like.getTitle());
 
@@ -155,11 +137,7 @@ try{
             }
 
             // TODO: i shouldnt check for else
-        }
-        } catch (NullPointerException e) {
-            System.out.println(e);
-            System.out.println("getRecommendations");
-            throw e;
+
         }
     }
 
@@ -169,14 +147,6 @@ try{
         initializeLists.ai = getTopRecommendationsFromList(initializeLists.ai);
         initializeLists.culture = getTopRecommendationsFromList(initializeLists.culture);
         initializeLists.devops = getTopRecommendationsFromList(initializeLists.devops);
-
-        System.out.println("dev list " + initializeLists.development.toString());
-        System.out.println("arch list " + initializeLists.architecture.toString());
-        System.out.println("ai list " + initializeLists.ai.toString());
-        System.out.println("cult list " + initializeLists.culture.toString());
-        System.out.println("devops list " + initializeLists.devops.toString());
-
-
 
         recommendationListToArticleList(initializeLists.development, initializeLists.recommendedArticles);
         recommendationListToArticleList(initializeLists.architecture, initializeLists.recommendedArticles);

@@ -27,15 +27,7 @@ public class RecommendationController {
             // TODO : based on user ID, update user's old liked articles isNew 1 to 0
 
             likeService.addLikedArticlesIntoLikeCollection();
-            try {
-
-             recommendationService.getRecommendations();
-            } catch (NullPointerException e) {
-                return new Gson().toJson(
-                        new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
-                                StatusResponse.ERROR.getMessage()));
-            }
-
+            recommendationService.getRecommendations();
             recommendationService.topRecommendationsIntoArticleList();
 
             return new Gson().toJson(

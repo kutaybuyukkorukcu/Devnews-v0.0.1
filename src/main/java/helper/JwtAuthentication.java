@@ -76,7 +76,7 @@ public class JwtAuthentication {
 
             return true;
         } catch (IllegalArgumentException | JwtException e) {
-            throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
+            throw new InvalidJwtAuthenticationException("Expired or invalid JWT token", e);
         }
     }
 

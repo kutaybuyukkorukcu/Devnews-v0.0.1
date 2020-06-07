@@ -1,6 +1,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import exception.UserNotFoundException;
 import helper.JwtAuthentication;
 import domain.User;
 import service.UserService;
@@ -81,6 +82,7 @@ public class UserController {
             int id = Integer.parseInt(request.params(":id"));
 
             Optional<User> user = userService.findUserById(id);
+            user.orElseThrow(UserNotFoundException::new);
 
             if (!user.isPresent()) {
                 return new Gson().toJson(

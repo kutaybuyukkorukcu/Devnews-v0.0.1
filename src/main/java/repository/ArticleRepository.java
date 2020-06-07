@@ -96,26 +96,4 @@ public class ArticleRepository implements IRepository<Article>{
 
         return article.getArticleId() + 1;
     }
-
-    /*
- Create's a collection named counter if there's none.
- Increments counterValue by 1 and returns it.
- Purpose of this collection : Defines an articleID for each article.
- */
-//    public int getNextArticleIdSequence() {
-//        MongoCollection<Counter> collection = database.getCollection("counter", Counter.class);
-//
-//        org.bson.Document query = new org.bson.Document("counterName", "articleID");
-//        org.bson.Document update = new org.bson.Document();
-//        org.bson.Document inside = new org.bson.Document();
-//        inside.put("counterValue", 1);
-//        update.put("$inc", inside);
-//
-//        FindOneAndUpdateOptions options = new FindOneAndUpdateOptions();
-//        options.returnDocument(ReturnDocument.AFTER);
-//        options.upsert(true);
-//
-//        Counter doc = collection.findOneAndUpdate(query, update, options);
-//        return doc.getCounterValue();
-//    }
 }
