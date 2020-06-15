@@ -36,7 +36,6 @@ public class UrlService {
         List<Url> urlList = urlRepository.findAllByIsNew();
 
         if (urlList == null) {
-
             return Collections.emptyList();
         }
 

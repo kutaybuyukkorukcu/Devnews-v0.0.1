@@ -3,6 +3,7 @@ package utils;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoClientURI;
+import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -19,7 +20,7 @@ public class initializeDB {
     public static MongoDatabase getDatabase() {
         return database;
     }
-
+// Collection exists template.collectionExists
     public static void createCounter() {
         if (!checkDB()) {
             database.createCollection("counter");

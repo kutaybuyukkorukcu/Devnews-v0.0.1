@@ -2,21 +2,25 @@ package controller;
 
 import com.google.gson.Gson;
 import domain.Article;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import service.CrawlerService;
 import service.ArticleService;
 import service.UrlService;
 import utils.StandardResponse;
 import utils.StatusResponse;
 
+import java.io.IOException;
 import java.util.List;
 
 import static spark.Spark.get;
 
 public class CrawlerController {
 
-    CrawlerService crawlerService;
-    UrlService urlService;
-    ArticleService articleService;
+    protected final CrawlerService crawlerService;
+    protected final UrlService urlService;
+    protected final ArticleService articleService;
+    protected static final Logger logger = LoggerFactory.getLogger(CrawlerController.class);
 
     public CrawlerController() {
 
@@ -40,7 +44,18 @@ public class CrawlerController {
             }
 
             for (String articleLink : articleLinkList) {
-                Article article = crawlerService.crawlArticleLinkIntoArticle(articleLink);
+                Article article;
+                
+                try {
+                    article = crawlerService.crawlArticleLinkIntoArticle(articleLink);
+                } catch (IOException e) {
+                    logger.error("An exception occurred!", e);
+
+                    return new Gson().toJson(
+                            new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
+                                    StatusResponse.ERROR.getMessage()));
+                }
+
 //                crawlerService.writeArticlesIntoCSV(article);
                 articleService.addArticle(article);
             }

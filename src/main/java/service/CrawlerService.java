@@ -36,7 +36,7 @@ public class CrawlerService {
         articleRepository = new ArticleRepository();
     }
 
-    public Article crawlArticleLinkIntoArticle(String articleLink) {
+    public Article crawlArticleLinkIntoArticle(String articleLink) throws IOException {
 
         Article article = new Article();
 
@@ -44,13 +44,9 @@ public class CrawlerService {
 
         Document doc = null;
 
-        try {
-            doc = Jsoup.connect(articleLink).get();
-        } catch (IOException e) {
-            // TODO : logging and handling
-            System.out.println(e);
-            e.printStackTrace();
-        }
+        doc = Jsoup.connect(articleLink).get();
+
+        // TODO : logging and handling
 
         String topic = doc.select("div.article__category > a[title]").text();
         String mainTopic = validator.validate(topic);
@@ -60,6 +56,7 @@ public class CrawlerService {
 
         Elements ul = doc.select("div.topics > ul");
         Elements li = ul.select("li");
+
         for(Element item : li) {
             topics.append(item.text() + "|");
         }
@@ -94,25 +91,25 @@ public class CrawlerService {
             writer.newLine();
             writer.write(sb.toString());
         } catch (IOException e) {
-            // TODO : error handling
+            // TODO : error handling - log handling
             e.printStackTrace();
         }
     }
 
-    public List<String> getArticleLinksFromFileAsList() {
-        try (Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls.txt"))) {
-            List<String> urlList = new ArrayList<>();
+    public List<String> getArticleLinksFromFileAsList() throws IOException {
 
-            stream.filter(s -> s.endsWith("/"))
-                    .forEach(urlList::add);
+        Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls.txt"));
 
-            return urlList;
-        } catch (IOException e) {
-            // TODO : error handling
-            e.printStackTrace();
+        List<String> urlList = new ArrayList<>();
+
+        stream.filter(s -> s.endsWith("/"))
+                .forEach(urlList::add);
+
+        if (urlList == null) {
+            return Collections.emptyList();
         }
 
-        return Collections.emptyList();
+        return urlList;
     }
 
     public Optional<Url> articleLinkToUrl(String articleLink) {
