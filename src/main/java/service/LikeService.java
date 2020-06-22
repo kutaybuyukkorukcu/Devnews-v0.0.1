@@ -1,6 +1,7 @@
 package service;
 
 import domain.Like;
+import exception.ResourceNotFoundException;
 import repository.LikeRepository;
 
 import java.util.Collections;
@@ -45,12 +46,19 @@ public class LikeService {
     public void addLikedArticlesIntoLikeCollection() {
         List<String> articleLinkList = urlService.getArticleLinksAsList();
 
+        if (articleLinkList.isEmpty()) {
+            throw new ResourceNotFoundException();
+        }
+
         for (String articleLink : articleLinkList) {
 
             Optional<Like> like = crawlerService.articleLinkToLike(articleLink);
 
             if (!like.isPresent()) {
                 // TODO : error/log handling
+                // TODO : throw custom exception
+
+                throw new ResourceNotFoundException();
             }
 
             likeRepository.add(like.get());

@@ -2,6 +2,7 @@ package controller;
 
 import com.google.gson.Gson;
 import domain.Article;
+import org.slf4j.LoggerFactory;
 import service.ArticleService;
 import utils.StandardResponse;
 import utils.StatusResponse;

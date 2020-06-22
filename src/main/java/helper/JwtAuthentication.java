@@ -1,8 +1,11 @@
 package helper;
 
+import controller.RecommendationController;
 import exception.InvalidJwtAuthenticationException;
 import helper.ConfigPropertyValues;
 import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.Request;
 
 import java.io.IOException;
@@ -14,14 +17,14 @@ public class JwtAuthentication {
 
     private String SECRET_KEY;
     private long ttlMillis = 3600000;
-
+    protected static final Logger logger = LoggerFactory.getLogger(JwtAuthentication.class);
 
     public JwtAuthentication() {
 
         try {
             SECRET_KEY = Base64.getEncoder().encodeToString(configPropertyValues.getPropValueByKey("SECRET_KEY").getBytes());
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (IOException e) {
+            logger.error("An exception occurred!", e);
         }
     }
 
@@ -76,7 +79,7 @@ public class JwtAuthentication {
 
             return true;
         } catch (IllegalArgumentException | JwtException e) {
-            throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
+            throw new InvalidJwtAuthenticationException("Expired or invalid JWT token", e);
         }
     }
 

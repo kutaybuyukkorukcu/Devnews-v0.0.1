@@ -3,6 +3,8 @@ package service;
 import com.google.gson.*;
 import domain.Article;
 import domain.Recommendation;
+import exception.GetRecommendationHttpException;
+import exception.ResourceNotFoundException;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
@@ -33,23 +35,17 @@ public class RecommendationService {
     }
 
     public void recommendationIntoRecommendationList(JsonObject jsonObject, List<Recommendation> recommendations) {
-    try {
 
-            JsonArray jsonArray =  jsonObject.getAsJsonArray("list");
-            Iterator<JsonElement> iter = jsonArray.iterator();
+        JsonArray jsonArray =  jsonObject.getAsJsonArray("list");
+        Iterator<JsonElement> iter = jsonArray.iterator();
 
-            while(iter.hasNext()) {
-                    Recommendation recommendation = new Recommendation();
-                    JsonArray arr = (JsonArray) iter.next();
-                    recommendation.setArticleId(arr.get(0).getAsInt() + 1); // Because recom.py subtracts 1 from articleID
-                    recommendation.setSimilarityScore(arr.get(1).getAsDouble());
-                    recommendations.add(recommendation);
-                }
-
-    } catch (Exception e) {
-        System.out.println(e);
-        System.out.println("recommendationIntoRecommendationList");
-    }
+        while(iter.hasNext()) {
+                Recommendation recommendation = new Recommendation();
+                JsonArray arr = (JsonArray) iter.next();
+                recommendation.setArticleId(arr.get(0).getAsInt() + 1); // Because recom.py subtracts 1 from articleID
+                recommendation.setSimilarityScore(arr.get(1).getAsDouble());
+                recommendations.add(recommendation);
+            }
     }
 
 
@@ -65,46 +61,36 @@ public class RecommendationService {
             String jsonString = jsonNode.getObject().toString();
             JsonParser jsonParser = new JsonParser();
             JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonString);
-            System.out.println("title : " + title);
-            System.out.println(jsonObject.toString());
 
             return jsonObject;
         } catch (UnirestException e) {
-             // TODO : handling
-            System.out.println(e);
-            System.out.println("getRecommendation");
-
+             // TODO : logging
+            throw new GetRecommendationHttpException();
         }
-
 //        return JsonNull.INSTANCE.getAsJsonObject();
-        return new JsonObject();
     }
 
     public List<Recommendation> getTopRecommendationsFromList(List<Recommendation> recommendations) {
-try{
-        Comparator<Recommendation> comparator = new Comparator<Recommendation>() {
-            @Override
-            public int compare(Recommendation i1, Recommendation i2) {
-                int a1 = (int) Math.round(i1.getSimilarityScore());
-                int a2 = (int) Math.round(i2.getSimilarityScore());
-                return a2 - a1;
-            }
-        };
+//        Comparator<Recommendation> comparator = new Comparator<Recommendation>() {
+//            @Override
+//            public int compare(Recommendation i1, Recommendation i2) {
+//                int a1 = (int) Math.round(i1.getSimilarityScore());
+//                int a2 = (int) Math.round(i2.getSimilarityScore());
+//                return a2 - a1;
+//            }
+//        };
+
+        // TODO : test edilecek ofc. Ondan dolayi eski implementationu silmiyorum
+        recommendations.sort(Comparator.comparingDouble(Recommendation::getSimilarityScore));
 
         // Set kontrolu yapilsin. Ayni articleID'ye sahipler alinmasin.
         return recommendations.stream()
-                .sorted(comparator)
+//                .sorted(comparator)
                 .limit(5)
                 .collect(Collectors.toList());
-} catch (Exception e) {
-    System.out.println(e);
-    System.out.println("getTopRecommendationsFromList");
-}
-return new ArrayList<Recommendation>();
     }
 
     public void recommendationListToArticleList(List<Recommendation> recommendations, List<Article> recommendedArticles) {
-try{
 
         Iterator<Recommendation> iter = recommendations.iterator();
 
@@ -113,32 +99,29 @@ try{
 
             Article article = articleRepository.findByArticleId(articleID);
 
+            if (article == null) {
+                throw new ResourceNotFoundException();
+            }
+
             recommendedArticles.add(article);
         }
-}catch (Exception e) {
-    System.out.println(e);
-    System.out.println("recommendationListToArticleList");
-}
-
-
     }
 
     public void getRecommendations() {
-        try {
 
-        List<Like> likes =  likeService.getNewLikes();
+        List<Like> likes = likeService.getNewLikes();
+
+        if (likes.isEmpty()) {
+            throw new ResourceNotFoundException();
+        }
 
         // TODO : exception handling if likes empty, or something else
         Iterator<Like> iter = likes.iterator();
 
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             Like like = iter.next();
-            JsonObject jsonObject = getRecommendation(like.getTitle());
 
-//            if (jsonObject.isJsonNull()) {
-//                // TODO : exception handling
-//                System.out.println(jsonObject.toString());
-//            }
+            JsonObject jsonObject = getRecommendation(like.getTitle());
 
             if (like.getMainTopic().equals(MainTopics.DEVELOPMENT.getMainTopic())) {
                 recommendationIntoRecommendationList(jsonObject, initializeLists.development);
@@ -155,11 +138,7 @@ try{
             }
 
             // TODO: i shouldnt check for else
-        }
-        } catch (NullPointerException e) {
-            System.out.println(e);
-            System.out.println("getRecommendations");
-            throw e;
+
         }
     }
 
@@ -169,14 +148,6 @@ try{
         initializeLists.ai = getTopRecommendationsFromList(initializeLists.ai);
         initializeLists.culture = getTopRecommendationsFromList(initializeLists.culture);
         initializeLists.devops = getTopRecommendationsFromList(initializeLists.devops);
-
-        System.out.println("dev list " + initializeLists.development.toString());
-        System.out.println("arch list " + initializeLists.architecture.toString());
-        System.out.println("ai list " + initializeLists.ai.toString());
-        System.out.println("cult list " + initializeLists.culture.toString());
-        System.out.println("devops list " + initializeLists.devops.toString());
-
-
 
         recommendationListToArticleList(initializeLists.development, initializeLists.recommendedArticles);
         recommendationListToArticleList(initializeLists.architecture, initializeLists.recommendedArticles);

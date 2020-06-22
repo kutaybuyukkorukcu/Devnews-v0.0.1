@@ -1,6 +1,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import exception.UserNotFoundException;
 import helper.JwtAuthentication;
 import domain.User;
 import service.UserService;
@@ -26,39 +27,28 @@ public class UserController {
 
         post("/signin", (request, response) -> {
 
-            try {
-                response.type("application/json");
+            response.type("application/json");
 
-                User requestUser = new Gson().fromJson(request.body(), User.class);
+            User requestUser = new Gson().fromJson(request.body(), User.class);
 
-                // Creating static list for jwt. This will change in the future with the extension of domain models.
-                List<String> roles = new ArrayList<>();
-                roles.add("admin");
+            // Creating static list for jwt. This will change in the future with the extension of domain models.
+            List<String> roles = new ArrayList<>();
+            roles.add("admin");
 
-                Optional<User> user = userService.findUserByUsername(requestUser.getUsername());
+            Optional<User> user = userService.findUserByUsername(requestUser.getUsername());
 
-                if (!user.isPresent()) {
-                    return new Gson().toJsonTree(
-                            new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
-                                    StatusResponse.ERROR.getMessage())
-                    );
-                }
-
-                String token = jwtAuthentication.createToken(requestUser.getUsername(), roles);
-
-                return new Gson().toJson(
-                        new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
-                                StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(token))
+            if (!user.isPresent()) {
+                return new Gson().toJsonTree(
+                        new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
+                                StatusResponse.ERROR.getMessage())
                 );
-            } catch (Exception e) {
-                // TODO : handling
-                System.out.println(e);
-                e.printStackTrace();
             }
 
+            String token = jwtAuthentication.createToken(requestUser.getUsername(), roles);
+
             return new Gson().toJson(
-                    new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
-                            StatusResponse.ERROR.getMessage())
+                    new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
+                            StatusResponse.SUCCESS.getMessage(), new Gson().toJsonTree(token))
             );
         });
 
