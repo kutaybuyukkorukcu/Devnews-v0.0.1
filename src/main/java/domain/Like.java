@@ -4,13 +4,13 @@ public class Like {
 
     private String title;
     private String mainTopic;
-    private int isNew;
+    private boolean isNew;
 
     public Like() {
 
     }
 
-    public Like(String title, String mainTopic, int isNew) {
+    public Like(String title, String mainTopic, boolean isNew) {
         this.title = title;
         this.mainTopic = mainTopic;
         this.isNew = isNew;
@@ -41,11 +41,11 @@ public class Like {
         this.mainTopic = mainTopic;
     }
 
-    public int getIsNew() {
+    public boolean getIsNew() {
         return isNew;
     }
 
-    public void setIsNew(int isNew) {
+    public void setIsNew(boolean isNew) {
         this.isNew = isNew;
     }
 }

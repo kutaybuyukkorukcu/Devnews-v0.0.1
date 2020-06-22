@@ -32,7 +32,7 @@ public class UserRepository implements IRepository<User> {
         Document queryByUsername = new Document("username", user.getUsername());
 
         // TODO : ileride sadece username degil baska seyleri de updatelemek isteyebilir. Password eklenecek mesela.
-        Document updatedUser = new Document("username", user.getUsername());
+        Document updatedUser = new Document("password", user.getPassword());
 
         // TODO : Var olan kayidin icerdigi datayi degistirip tekrar insertOne ile update edebiliyor muyum?
         collection.updateOne(queryByUsername, updatedUser);

@@ -3,13 +3,13 @@ package domain;
 public class Url {
 
     private String articleLink;
-    private int isNew;
+    private boolean isNew;
 
     public Url() {
 
     }
 
-    public Url(String articleLink, int isNew) {
+    public Url(String articleLink, boolean isNew) {
         this.articleLink = articleLink;
         this.isNew = isNew;
     }
@@ -22,11 +22,11 @@ public class Url {
         this.articleLink = articleLink;
     }
 
-    public int getIsNew() {
+    public boolean getIsNew() {
         return isNew;
     }
 
-    public void setIsNew(int isNew) {
+    public void setIsNew(boolean isNew) {
         this.isNew = isNew;
     }
 }
