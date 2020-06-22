@@ -11,13 +11,13 @@ public class Article {
     private String relatedTopics;
     private String articleLink;
 
-    private int isNew;
+    private boolean isNew;
 
     public Article() {
 
     }
 
-    public Article(int articleId, String title, String mainTopic, String author, String relatedTopics, String articleLink, int isNew) {
+    public Article(int articleId, String title, String mainTopic, String author, String relatedTopics, String articleLink, boolean isNew) {
         this.articleId = articleId;
         this.title = title;
         this.mainTopic = mainTopic;
@@ -75,11 +75,11 @@ public class Article {
         this.relatedTopics = relatedTopics;
     }
 
-    public int getIsNew() {
+    public boolean getIsNew() {
         return isNew;
     }
 
-    public void setIsNew(int isNew) {
+    public void setIsNew(boolean isNew) {
         this.isNew = isNew;
     }
 

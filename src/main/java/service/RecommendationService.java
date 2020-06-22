@@ -34,7 +34,7 @@ public class RecommendationService {
         articleRepository = new ArticleRepository();
     }
 
-    public void recommendationIntoRecommendationList(JsonObject jsonObject, List<Recommendation> recommendations) {
+    public void recommendationIntoRecommendationList(JsonObject jsonObject, List<Recommendation> recommendationList) {
 
         JsonArray jsonArray =  jsonObject.getAsJsonArray("list");
         Iterator<JsonElement> iter = jsonArray.iterator();
@@ -44,11 +44,12 @@ public class RecommendationService {
                 JsonArray arr = (JsonArray) iter.next();
                 recommendation.setArticleId(arr.get(0).getAsInt() + 1); // Because recom.py subtracts 1 from articleID
                 recommendation.setSimilarityScore(arr.get(1).getAsDouble());
-                recommendations.add(recommendation);
+                recommendationList.add(recommendation);
             }
     }
 
 
+    // TODO : test api/recommend under Integration
     // Belli bir formata soktuktan sonra hem elimde bulunan makale verilerini hem de kisinin begendiklerini artik recommendation icin yollayabilirim.
     public JsonObject getRecommendation(String title) {
 
@@ -62,6 +63,11 @@ public class RecommendationService {
             JsonParser jsonParser = new JsonParser();
             JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonString);
 
+            if (jsonObject.isJsonNull()) {
+                // TODO : test it / not sure if it works for json data that only has 1 null val in size() 3 data.
+                throw new ResourceNotFoundException();
+            }
+
             return jsonObject;
         } catch (UnirestException e) {
              // TODO : logging
@@ -70,7 +76,7 @@ public class RecommendationService {
 //        return JsonNull.INSTANCE.getAsJsonObject();
     }
 
-    public List<Recommendation> getTopRecommendationsFromList(List<Recommendation> recommendations) {
+    public List<Recommendation> getTopRecommendationsFromList(List<Recommendation> recommendationList) {
 //        Comparator<Recommendation> comparator = new Comparator<Recommendation>() {
 //            @Override
 //            public int compare(Recommendation i1, Recommendation i2) {
@@ -79,20 +85,22 @@ public class RecommendationService {
 //                return a2 - a1;
 //            }
 //        };
+        // TODO : should we check if static list recommendations is present or not ? Dont forget to implement tests
 
         // TODO : test edilecek ofc. Ondan dolayi eski implementationu silmiyorum
-        recommendations.sort(Comparator.comparingDouble(Recommendation::getSimilarityScore));
+        recommendationList.sort(Comparator.comparingDouble(Recommendation::getSimilarityScore));
 
         // Set kontrolu yapilsin. Ayni articleID'ye sahipler alinmasin.
-        return recommendations.stream()
+        return recommendationList.stream()
 //                .sorted(comparator)
                 .limit(5)
                 .collect(Collectors.toList());
     }
 
-    public void recommendationListToArticleList(List<Recommendation> recommendations, List<Article> recommendedArticles) {
+    public void recommendationListToArticleList(List<Recommendation> recommendationList, List<Article> recommendedArticles) {
 
-        Iterator<Recommendation> iter = recommendations.iterator();
+        // TODO : should we check if static list recommendations is present or not ? Dont forget to implement tests
+        Iterator<Recommendation> iter = recommendationList.iterator();
 
         while(iter.hasNext()) {
             int articleID = iter.next().getArticleId();
@@ -122,6 +130,8 @@ public class RecommendationService {
             Like like = iter.next();
 
             JsonObject jsonObject = getRecommendation(like.getTitle());
+
+            // TODO : handle empty jsonObject -> If the whole jsonObject is null then throw exception otherwise catch
 
             if (like.getMainTopic().equals(MainTopics.DEVELOPMENT.getMainTopic())) {
                 recommendationIntoRecommendationList(jsonObject, initializeLists.development);

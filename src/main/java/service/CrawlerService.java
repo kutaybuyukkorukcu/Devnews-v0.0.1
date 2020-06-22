@@ -116,7 +116,7 @@ public class CrawlerService {
         Url url = new Url();
 
         url.setArticleLink(articleLink);
-        url.setIsNew(1);
+        url.setIsNew(true);
 
         return Optional.ofNullable(url);
     }
@@ -129,7 +129,7 @@ public class CrawlerService {
 
         like.setTitle(article.getTitle());
         like.setMainTopic(article.getMainTopic());
-        like.setIsNew(1);
+        like.setIsNew(true);
 
         return Optional.ofNullable(like);
     }
