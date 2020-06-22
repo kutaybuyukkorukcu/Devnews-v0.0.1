@@ -2,6 +2,7 @@ package service;
 
 import domain.Article;
 import domain.User;
+import org.assertj.core.api.AtomicReferenceArrayAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -26,20 +27,19 @@ public class ArticleServiceTest {
     ArticleService articleService;
 
     @Test
-    public void test_addUser_whenNoArticlesArePresent() {
+    public void test_addArticle_whenNoArticlesArePresent() {
 
-        Article article = new Article();
 
         doThrow(new NullPointerException())
                 .doNothing()
-                .when(articleService).addArticle(article);
+                .when(articleService).addArticle(null);
 
-        verify(articleRepository).add(article);
+        verify(articleRepository).add(null);
         verifyNoMoreInteractions(articleService);
     }
 
     @Test
-    public void test_addUser_whenOneArticleIsPresent() {
+    public void test_addArticle_whenOneArticleIsPresent() {
 
         Article article = new Article(1,"Whats new with Java 11", "Development", "Author",
                 "Development|Java", "www.infoq.com/Whats-new-with-Java-11", true);
@@ -52,13 +52,13 @@ public class ArticleServiceTest {
 
     @Test
     public void test_getArticles_whenFindAllIsNotPresent() {
-        List<Article> articleList = new ArrayList<>();
 
-        when(articleRepository.findAll()).thenReturn(articleList);
+        when(articleRepository.findAll()).thenReturn(null);
 
-        doThrow(new NullPointerException())
-                .doNothing()
-                .when(articleService).getArticles();
+        List<Article> articleList = articleService.getArticles();
+        List<Article> expectedArticleList = new ArrayList<>();
+
+        assertThat(articleList).isEqualTo(expectedArticleList);
 
         verify(articleRepository).findAll();
         verifyNoMoreInteractions(articleService);

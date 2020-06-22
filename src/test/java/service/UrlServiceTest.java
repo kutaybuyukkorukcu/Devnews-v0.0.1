@@ -29,13 +29,11 @@ public class UrlServiceTest {
     @Test
     public void test_addUrl_whenNoUrlsArePresent() {
 
-        Url url = new Url();
-
         doThrow(new NullPointerException())
                 .doNothing()
-                .when(urlService).addUrl(url);
+                .when(urlService).addUrl(null);
 
-        verify(urlRepository).add(url);
+        verify(urlRepository).add(null);
         verifyNoMoreInteractions(urlService);
     }
 
@@ -51,17 +49,21 @@ public class UrlServiceTest {
     }
 
     @Test
-    public void test_getArticles_whenFindAllByIsNewIsNotPresent() {
+    public void test_getArticleLinksAsList_whenFindAllByIsNewIsNotPresent() {
 
-        when(urlRepository.findAllByIsNew()).thenReturn(asList());
+        when(urlRepository.findAllByIsNew()).thenReturn(null);
 
+        List<String> expectedArticleLinkList = urlService.getArticleLinksAsList();
+        List<String> emptyList = new ArrayList<>();
 
-        verify(urlRepository).findAll();
+        assertThat(expectedArticleLinkList).isEqualTo(emptyList);
+
+        verify(urlRepository).findAllByIsNew();
         verifyNoMoreInteractions(urlService);
     }
 
     @Test
-    public void test_getArticleLinks_whenFindAllByIsNewIsPresent() {
+    public void test_getArticleLinksAsList_whenFindAllByIsNewIsPresent() {
 
         Url url = new Url("www.infoq.com/Whats-new-with-Java-11", true);
         Url url1 = new Url("www.dzone.com/Comprehensive-guide-to-unit-testing", true);

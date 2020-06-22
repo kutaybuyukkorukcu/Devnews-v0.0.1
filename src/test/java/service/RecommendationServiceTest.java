@@ -43,6 +43,7 @@ public class RecommendationServiceTest {
         Recommendation recommendation2 = new Recommendation(3,0.85);
 
         List<Recommendation> recommendationList = new ArrayList();
+        // Adding recommendations in random.
         recommendationList.add(recommendation1);
         recommendationList.add(recommendation2);
         recommendationList.add(recommendation);
@@ -70,10 +71,9 @@ public class RecommendationServiceTest {
 
         int articleID = recommendationList.get(0).getArticleId();
 
-        Article article = new Article();
         List<Article> recommendedArticles = new ArrayList<>();
 
-        when(articleRepository.findByArticleId(articleID)).thenReturn(article);
+        when(articleRepository.findByArticleId(articleID)).thenReturn(null);
 
         doThrow(new ResourceNotFoundException())
                 .doNothing()
@@ -138,9 +138,8 @@ public class RecommendationServiceTest {
 
         when(likeService.getNewLikes()).thenReturn(likeList);
 
-        JsonObject jsonObject = new JsonObject();
         // Not sure about mocking a service that was initiated using @InjectMocks
-        when(recommendationService.getRecommendation(likeList.get(0).getTitle())).thenReturn(jsonObject);
+        when(recommendationService.getRecommendation(likeList.get(0).getTitle())).thenReturn(null);
 
         doThrow(new ResourceNotFoundException())
                 .doNothing()

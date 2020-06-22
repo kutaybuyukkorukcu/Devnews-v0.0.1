@@ -34,14 +34,14 @@ public class LikeServiceTest {
 
     @Test
     public void test_getNewLikes_whenFindAllByIsNewIsNotPresent() {
-        List<Like> likeList = new ArrayList();
 
-        when(likeRepository.findAllByIsNew()).thenReturn(likeList);
+        when(likeRepository.findAllByIsNew()).thenReturn(null);
 
         List<Like> expectedLikeList = likeService.getNewLikes();
 
-        verify(likeRepository).findAllByIsNew();
+        List<Like> likeList = new ArrayList();
 
+        verify(likeRepository).findAllByIsNew();
         assertThat(likeList).isEqualTo(expectedLikeList);
         verifyNoMoreInteractions(likeService);
     }
@@ -91,9 +91,9 @@ public class LikeServiceTest {
         verify(urlService).getArticleLinksAsList();
 
         String articleLink = "www.infoq.com/Whats-new-with-Java-11";
-        Like like = new Like();
 
-        when(crawlerService.articleLinkToLike(articleLink).get()).thenReturn(like);
+        // null yerine empty optional object mi getirilmeli?
+        when(crawlerService.articleLinkToLike(articleLink).get()).thenReturn(null);
 
         doThrow(new ResourceNotFoundException())
                 .doNothing()

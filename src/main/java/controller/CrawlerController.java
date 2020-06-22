@@ -45,7 +45,9 @@ public class CrawlerController {
 
             for (String articleLink : articleLinkList) {
                 Article article;
-                
+
+                // TODO : crawlArticleLinkIntoArticle() icerisine null deger articleLink verebilriiz.
+                // Bunu icerisinde catchlemek lazim.
                 try {
                     article = crawlerService.crawlArticleLinkIntoArticle(articleLink);
                 } catch (IOException e) {
