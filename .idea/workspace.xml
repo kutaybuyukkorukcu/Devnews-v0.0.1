@@ -3,15 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="57c1feae-1585-4bb9-a566-fc5502751d24" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InfoqCrawler.iml" beforeDir="false" afterPath="$PROJECT_DIR$/InfoqCrawler.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/Article.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/Article.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/Like.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/Like.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/Url.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/Url.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/CrawlerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/CrawlerService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/RecommendationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/RecommendationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/service/LikeServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/LikeServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/service/RecommendationServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/RecommendationServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/service/UrlServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/UrlServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +117,8 @@
       <workItem from="1592434993265" duration="6342000" />
       <workItem from="1592576160634" duration="4914000" />
       <workItem from="1592642293815" duration="4777000" />
-      <workItem from="1592721398652" duration="21105000" />
+      <workItem from="1592721398652" duration="21506000" />
+      <workItem from="1592824905322" duration="9452000" />
     </task>
     <servers />
   </component>
@@ -207,11 +203,11 @@
     <state x="548" y="84" key="SettingsEditor/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1591311763372" />
     <state x="798" y="178" key="SettingsEditor/-1680.15.1680.1010/0.0.1920.1040@0.0.1920.1040" timestamp="1589832062200" />
     <state x="265" y="107" key="SettingsEditor/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1590261314764" />
-    <state x="220" y="383" width="743" height="304" key="com.intellij.ide.util.TipDialog" timestamp="1592722047156">
+    <state x="220" y="383" width="743" height="304" key="com.intellij.ide.util.TipDialog" timestamp="1592824952866">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="595" y="327" key="com.intellij.ide.util.TipDialog/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589740813176" />
-    <state x="220" y="383" width="743" height="304" key="com.intellij.ide.util.TipDialog/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1592722047156" />
+    <state x="220" y="383" width="743" height="304" key="com.intellij.ide.util.TipDialog/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1592824952866" />
     <state x="605" y="302" width="583" height="336" key="com.intellij.ide.util.TipDialog/-1680.15.1680.1010/0.0.1920.1040@0.0.1920.1040" timestamp="1590061205940" />
     <state x="595" y="327" key="com.intellij.ide.util.TipDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1589753906839" />
     <state x="595" y="327" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1590226169665" />
@@ -220,15 +216,15 @@
     </state>
     <state x="289" y="440" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1592614588384" />
     <state x="289" y="440" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1590102535715" />
-    <state x="-7" y="0" width="974" height="1047" key="dock-window-1" timestamp="1592748198296">
+    <state x="-7" y="0" width="974" height="1047" key="dock-window-1" timestamp="1592828744739">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="953" y="0" width="974" height="1047" key="dock-window-1/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589727014555" />
-    <state x="-7" y="0" width="974" height="1047" key="dock-window-1/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1592748198296" />
-    <state x="-7" y="0" width="974" height="1047" key="dock-window-2" timestamp="1592785650405">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="-7" y="0" width="974" height="1047" key="dock-window-1/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1592828744739" />
+    <state x="-690" y="311" width="697" height="735" key="dock-window-2" timestamp="1592834854550">
+      <screen x="-1366" y="311" width="1366" height="728" />
     </state>
-    <state x="-7" y="0" width="974" height="1047" key="dock-window-2/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1592785650405" />
+    <state x="-690" y="311" width="697" height="735" key="dock-window-2/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1592834854550" />
     <state x="-690" y="311" width="695" height="735" key="dock-window-3" timestamp="1592760575277">
       <screen x="-1366" y="311" width="1366" height="728" />
     </state>
@@ -245,11 +241,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1175" y="141" key="refactoring.ChangeSignatureDialog/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1589877799984" />
-    <state x="616" y="240" key="run.anything.popup" timestamp="1592758986864">
+    <state x="616" y="240" key="run.anything.popup" timestamp="1592834586978">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="616" y="240" key="run.anything.popup/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589732600719" />
-    <state x="616" y="240" key="run.anything.popup/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1592758986864" />
+    <state x="616" y="240" key="run.anything.popup/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1592834586978" />
     <state x="616" y="240" key="run.anything.popup/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1590172299920" />
     <state x="143" y="230" width="672" height="678" key="search.everywhere.popup" timestamp="1592784564684">
       <screen x="0" y="0" width="1920" height="1040" />

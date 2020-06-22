@@ -1,5 +1,6 @@
 package service;
 
+import domain.Article;
 import domain.Url;
 import domain.User;
 import org.junit.Test;
@@ -50,7 +51,17 @@ public class UrlServiceTest {
     }
 
     @Test
-    public void test_getArticleLinks() {
+    public void test_getArticles_whenFindAllByIsNewIsNotPresent() {
+
+        when(urlRepository.findAllByIsNew()).thenReturn(asList());
+
+
+        verify(urlRepository).findAll();
+        verifyNoMoreInteractions(urlService);
+    }
+
+    @Test
+    public void test_getArticleLinks_whenFindAllByIsNewIsPresent() {
 
         Url url = new Url("www.infoq.com/Whats-new-with-Java-11", true);
         Url url1 = new Url("www.dzone.com/Comprehensive-guide-to-unit-testing", true);
@@ -66,6 +77,6 @@ public class UrlServiceTest {
         verify(urlRepository).findAllByIsNew();
 
         assertThat(articleLinkList).isEqualTo(expectedArticleLinkList);
-        verifyNoMoreInteractions();
+        verifyNoMoreInteractions(urlService);
     }
 }

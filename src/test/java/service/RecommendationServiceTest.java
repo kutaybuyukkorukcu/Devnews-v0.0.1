@@ -1,5 +1,8 @@
 package service;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import domain.Article;
 import domain.Like;
 import domain.Recommendation;
@@ -12,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import repository.ArticleRepository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -76,7 +80,7 @@ public class RecommendationServiceTest {
                 .when(recommendationService).recommendationListToArticleList(recommendationList, recommendedArticles);
 
         verify(articleRepository).findByArticleId(articleID);
-        verifyNoMoreInteractions();
+        verifyNoMoreInteractions(recommendationService);
     }
 
     // recommendationListToArticleList - recommendation dolu, recommendedArticles bos liste ata
@@ -103,16 +107,85 @@ public class RecommendationServiceTest {
         assertThat(recommendedArticles.get(0)).isEqualTo(article);
 
         verify(articleRepository).findByArticleId(articleID);
-        verifyNoMoreInteractions();
+        verifyNoMoreInteractions(recommendationService);
     }
 
     // getRecommendations() - likeService bos donsun
-//    @Test
-//    public void test_getRecommendations_when
+    @Test
+    public void test_getRecommendations_whenGetNewLikesIsNotPresent() {
+        List<Like> likeList = new ArrayList();
+
+        when(likeService.getNewLikes()).thenReturn(likeList);
+
+        doThrow(new ResourceNotFoundException())
+                .doNothing()
+                .when(recommendationService).getRecommendations();
+
+        verify(likeService).getNewLikes();
+        verifyNoMoreInteractions(recommendationService);
+    }
 
     // getRecommendations() - likeService dolu donsun, recommendationService.getRecommendation'i mocklamaya calis
     // jsonObject full bos donsun
+    @Test
+    public void test_getRecommendations_whenGetRecommendationIsNotPresent() {
+        Like like = new Like("What's new with Java 11", "Development", true);
+        Like like1 = new Like("Comprehensive guide to unit testing", "Development", true);
+
+        List<Like> likeList = new ArrayList();
+        likeList.add(like);
+        likeList.add(like1);
+
+        when(likeService.getNewLikes()).thenReturn(likeList);
+
+        JsonObject jsonObject = new JsonObject();
+        // Not sure about mocking a service that was initiated using @InjectMocks
+        when(recommendationService.getRecommendation(likeList.get(0).getTitle())).thenReturn(jsonObject);
+
+        doThrow(new ResourceNotFoundException())
+                .doNothing()
+                .when(recommendationService).getRecommendations();
+
+        verify(likeService).getNewLikes();
+        verify(recommendationService).getRecommendation(likeList.get(0).getTitle());
+        verifyNoMoreInteractions(recommendationService);
+    }
 
     // getRecommendations() - likeService dolu donsun, recommendationService.getRecommendation'i mocklamaya calis
     // jsonObject dolu donsun ve verify(recommendationIntoRecommendationList)
+    @Test
+    public void test_getRecommendations_whenEverythingIsPresent() {
+        Like like = new Like("What's new with Java 11", "Development", true);
+        Like like1 = new Like("Comprehensive guide to unit testing", "Development", true);
+
+        List<Like> likeList = new ArrayList();
+        likeList.add(like);
+        likeList.add(like1);
+
+        when(likeService.getNewLikes()).thenReturn(likeList);
+
+        List<Recommendation> recommendationList = Arrays.asList(
+                new Recommendation(395, 0.42356506617672646),
+                new Recommendation(250, 0.2579225416660869),
+                new Recommendation(468, 0.2302017341361332),
+                new Recommendation(248, 0.2230720491097254),
+                new Recommendation(490, 0.19212489538396202));
+
+        List<Recommendation> initializedStaticList = new ArrayList<>();
+
+        Gson gson = new Gson();
+        JsonElement jsonElement = gson.toJsonTree(recommendationList);
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("list", jsonElement);
+
+        // Not sure about mocking a service that was initiated using @InjectMocks
+        when(recommendationService.getRecommendation(likeList.get(0).getTitle())).thenReturn(jsonObject);
+
+        verify(likeService).getNewLikes();
+        verify(recommendationService).getRecommendation(likeList.get(0).getTitle());
+        // Not sure about this but will try it.
+        verify(recommendationService).recommendationIntoRecommendationList(jsonObject, initializedStaticList);
+        verifyNoMoreInteractions(recommendationService);
+    }
 }
