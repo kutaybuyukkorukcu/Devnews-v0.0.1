@@ -81,4 +81,21 @@ public class UrlServiceTest {
         assertThat(articleLinkList).isEqualTo(expectedArticleLinkList);
         verifyNoMoreInteractions(urlService);
     }
+
+    @Test
+    public void test_articleLinkToUrl_whenArticleLinkIsNotPresent() {
+
+        Url url = urlService.articleLinkToUrl(null).get();
+
+        assertThat(url).isEqualTo(null);
+    }
+
+    @Test
+    public void test_articleLinkToUrl_whenArticleLinkIsPresent() {
+
+        Url url = urlService.articleLinkToUrl("stub-article-link").get();
+
+        assertThat(url.getArticleLink()).isEqualTo("stub-article-link");
+        assertThat(url.getIsNew()).isEqualTo(true);
+    }
 }

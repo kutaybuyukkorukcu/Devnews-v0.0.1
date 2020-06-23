@@ -3,13 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="57c1feae-1585-4bb9-a566-fc5502751d24" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/CrawlerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/CrawlerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/UrlController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/UrlController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/CrawlerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/CrawlerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/service/ArticleServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/ArticleServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/service/LikeServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/LikeServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/service/RecommendationServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/RecommendationServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/UrlService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/UrlService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/service/CrawlerServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/CrawlerServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/service/UrlServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/UrlServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/service/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/UserServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +119,7 @@
       <workItem from="1592576160634" duration="4914000" />
       <workItem from="1592642293815" duration="4777000" />
       <workItem from="1592721398652" duration="21506000" />
-      <workItem from="1592824905322" duration="17204000" />
+      <workItem from="1592824905322" duration="22911000" />
     </task>
     <servers />
   </component>

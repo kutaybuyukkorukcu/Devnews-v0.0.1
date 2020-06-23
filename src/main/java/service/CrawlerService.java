@@ -96,34 +96,37 @@ public class CrawlerService {
         }
     }
 
-    public List<String> getArticleLinksFromFileAsList() throws IOException {
+    public List<String> getArticleLinksFromFileAsList() {
 
-        Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls.txt"));
+        try {
+            Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls.txt"));
 
-        List<String> urlList = new ArrayList<>();
+            List<String> urlList = new ArrayList<>();
 
-        stream.filter(s -> s.endsWith("/"))
-                .forEach(urlList::add);
+            stream.filter(s -> s.endsWith("/"))
+                    .forEach(urlList::add);
 
-        if (urlList == null) {
-            return Collections.emptyList();
+            if (urlList == null) {
+                return Collections.emptyList();
+            }
+
+            return urlList;
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return urlList;
+        return new ArrayList<>();
     }
 
-    public Optional<Url> articleLinkToUrl(String articleLink) {
-        Url url = new Url();
-
-        url.setArticleLink(articleLink);
-        url.setIsNew(true);
-
-        return Optional.ofNullable(url);
-    }
 
     public Optional<Like> articleLinkToLike(String articleLink) {
 
         Article article = articleRepository.findByArticleLink(articleLink);
+
+        if (article == null) {
+            return Optional.empty();
+        }
 
         Like like = new Like();
 
