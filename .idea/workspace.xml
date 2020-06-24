@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="57c1feae-1585-4bb9-a566-fc5502751d24" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/UrlController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/UrlController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/CrawlerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/CrawlerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/UrlService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/UrlService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/service/CrawlerServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/CrawlerServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/service/UrlServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/UrlServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +115,9 @@
       <workItem from="1592576160634" duration="4914000" />
       <workItem from="1592642293815" duration="4777000" />
       <workItem from="1592721398652" duration="21506000" />
-      <workItem from="1592824905322" duration="22911000" />
+      <workItem from="1592824905322" duration="23442000" />
+      <workItem from="1592912030178" duration="1298000" />
+      <workItem from="1592945329286" duration="1289000" />
     </task>
     <servers />
   </component>
@@ -204,13 +202,14 @@
     <state x="548" y="84" key="SettingsEditor/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1591311763372" />
     <state x="798" y="178" key="SettingsEditor/-1680.15.1680.1010/0.0.1920.1040@0.0.1920.1040" timestamp="1589832062200" />
     <state x="265" y="107" key="SettingsEditor/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1590261314764" />
-    <state x="220" y="383" width="743" height="304" key="com.intellij.ide.util.TipDialog" timestamp="1592824952866">
+    <state x="220" y="383" width="743" height="304" key="com.intellij.ide.util.TipDialog" timestamp="1592945702338">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="595" y="327" key="com.intellij.ide.util.TipDialog/-1366.160.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1589740813176" />
-    <state x="220" y="383" width="743" height="304" key="com.intellij.ide.util.TipDialog/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1592824952866" />
+    <state x="220" y="383" width="743" height="304" key="com.intellij.ide.util.TipDialog/-1366.311.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1592945702338" />
     <state x="605" y="302" width="583" height="336" key="com.intellij.ide.util.TipDialog/-1680.15.1680.1010/0.0.1920.1040@0.0.1920.1040" timestamp="1590061205940" />
     <state x="595" y="327" key="com.intellij.ide.util.TipDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1589753906839" />
+    <state x="157" y="268" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1592912096347" />
     <state x="595" y="327" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1680.15.1680.1010@0.0.1920.1040" timestamp="1590226169665" />
     <state x="289" y="440" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1592614588384">
       <screen x="0" y="0" width="1920" height="1040" />

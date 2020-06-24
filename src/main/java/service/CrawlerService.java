@@ -96,27 +96,21 @@ public class CrawlerService {
         }
     }
 
-    public List<String> getArticleLinksFromFileAsList() {
+    public List<String> getArticleLinksFromFileAsList() throws IOException {
 
-        try {
-            Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls.txt"));
+        Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls.txt"));
 
-            List<String> urlList = new ArrayList<>();
+        List<String> urlList = new ArrayList<>();
 
-            stream.filter(s -> s.endsWith("/"))
-                    .forEach(urlList::add);
+        stream.filter(s -> s.endsWith("/"))
+                .forEach(urlList::add);
 
-            if (urlList == null) {
-                return Collections.emptyList();
-            }
-
-            return urlList;
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (urlList == null) {
+            return Collections.emptyList();
         }
 
-        return new ArrayList<>();
+        return urlList;
+
     }
 
 
