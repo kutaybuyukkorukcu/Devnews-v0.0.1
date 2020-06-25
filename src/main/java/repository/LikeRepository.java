@@ -54,7 +54,7 @@ public class LikeRepository implements IRepository<Like>{
     public List<Like> findAllByIsNew() {
         MongoCollection<Like> collection = database.getCollection("like", Like.class);
 
-        Document queryFilter = new Document("isNew", 1);
+        Document queryFilter = new Document("isNew", true);
 
         MongoCursor<Like> cursor = collection.find(queryFilter).iterator();
         List<Like> likeList = new ArrayList<>();

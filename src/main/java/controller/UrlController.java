@@ -39,13 +39,13 @@ public class UrlController {
 
                 return new Gson().toJson(
                         new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
-                                StatusResponse.ERROR.getMessage()));
+                                "which one yo1"));
             }
 
             if (articleLinkList.isEmpty()) {
                 return new Gson().toJson(
                         new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
-                                StatusResponse.ERROR.getMessage()));
+                                "which one yo2"));
             }
 
             for (String articleLink : articleLinkList) {
@@ -54,7 +54,7 @@ public class UrlController {
                 if (!url.isPresent()) {
                     return new Gson().toJson(
                             new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
-                                    StatusResponse.ERROR.getMessage()));
+                                    "which one yo3"));
                 }
 
                 urlService.addUrl(url.get());
@@ -65,7 +65,7 @@ public class UrlController {
             if (allArticleLinkList.isEmpty()) {
                 return new Gson().toJson(
                         new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
-                                StatusResponse.ERROR.getMessage()));
+                                "which one yo4"));
             }
 
             return new Gson().toJson(
