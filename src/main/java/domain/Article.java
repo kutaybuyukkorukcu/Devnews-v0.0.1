@@ -10,6 +10,7 @@ public class Article {
     private String author;
     private String relatedTopics;
     private String articleLink;
+    private String articleSource;
 
     private boolean isNew;
 
@@ -17,13 +18,26 @@ public class Article {
 
     }
 
-    public Article(int articleId, String title, String mainTopic, String author, String relatedTopics, String articleLink, boolean isNew) {
+    public Article(int articleId, String title, String mainTopic, String author, String relatedTopics,
+                   String articleLink, boolean isNew) {
         this.articleId = articleId;
         this.title = title;
         this.mainTopic = mainTopic;
         this.author = author;
         this.relatedTopics = relatedTopics;
         this.articleLink = articleLink;
+        this.isNew = isNew;
+    }
+
+    public Article(int articleId, String title, String mainTopic, String author, String relatedTopics,
+                   String articleLink, String articleSource, boolean isNew) {
+        this.articleId = articleId;
+        this.title = title;
+        this.mainTopic = mainTopic;
+        this.author = author;
+        this.relatedTopics = relatedTopics;
+        this.articleLink = articleLink;
+        this.articleSource = articleSource;
         this.isNew = isNew;
     }
 

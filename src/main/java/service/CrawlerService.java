@@ -1,5 +1,9 @@
 package service;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
@@ -8,6 +12,9 @@ import domain.Article;
 import domain.Counter;
 import domain.Like;
 import domain.Url;
+import exception.GetRecommendationHttpException;
+import exception.ResourceNotFoundException;
+import kong.unirest.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,10 +27,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class CrawlerService {
@@ -147,4 +151,68 @@ public class CrawlerService {
 //            e.printStackTrace();
 //        }
 //    }
+
+    public JsonObject getJson(String subreddit) {
+
+        try {
+
+            HttpResponse<JsonNode> jsonResponse = Unirest.get("https://www.reddit.com/r/" + subreddit + "/hot.json")
+                    .queryString("limit", 1)
+                    .asJson();
+
+            JsonNode jsonNode = jsonResponse.getBody();
+            String jsonString = jsonNode.getObject().toString();
+            JsonParser jsonParser = new JsonParser();
+            JsonObject jsonObject = (JsonObject) jsonParser.parse(jsonString);
+
+//        if (jsonObject.isJsonNull()) {
+//
+//        }
+            return jsonObject;
+        } catch (UnirestException e) {
+            throw new GetRecommendationHttpException();
+        }
+    }
+    // get subreddit's top 10 hot post from json response
+
+    // cast JsonObject to Article domain object
+    // db'ye yaz
+
+    public List<Article> getArticle(JsonObject jsonObject) {
+        JsonObject jsonObject1 =  jsonObject.getAsJsonObject("data");
+        JsonArray jsonArray = jsonObject1.getAsJsonArray("children");
+        Iterator<JsonElement> iter = jsonArray.iterator();
+
+//        String relatedTopics = validator.removeLastChar(topics.toString());
+        List<Article> articles = new ArrayList<>();
+
+        while (iter.hasNext()) {
+            Article article = new Article();
+
+            JsonObject jsonObject2 = (JsonObject) iter.next();
+            JsonObject finalJson = jsonObject2.getAsJsonObject("data");
+
+            int articleID = articleRepository.getNextArticleIdSequence();
+            String articleLink = "https://www.reddit.com/" + finalJson.get("permalink").getAsString();
+            String author = finalJson.get("author_fullname").getAsString();
+            String title = finalJson.get("title").getAsString();
+
+            article.setArticleId(articleID);
+            article.setArticleLink(articleLink);
+            article.setAuthor(author);
+
+            // will implement Validator after testing the response
+            article.setMainTopic("Development");
+            article.setRelatedTopics("Development|Java");
+            article.setTitle(title);
+            article.setIsNew(true);
+
+            System.out.println(article.toString());
+            articles.add(article);
+            articleRepository.add(article);
+        }
+
+        return articles;
+    }
+
 }

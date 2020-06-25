@@ -69,6 +69,7 @@ public class RecommendationService {
             }
 
             return jsonObject;
+            // TODO : I might aswell throw UnirestException instead of wrapping it with GetRecommendationHttpException
         } catch (UnirestException e) {
              // TODO : logging
             throw new GetRecommendationHttpException();
