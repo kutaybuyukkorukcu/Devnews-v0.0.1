@@ -42,7 +42,7 @@ public class CrawlerService {
 
         StringBuilder topics = new StringBuilder();
 
-        Document doc = null;
+        Document doc;
 
         doc = Jsoup.connect(articleLink).get();
 
@@ -98,7 +98,7 @@ public class CrawlerService {
 
     public List<String> getArticleLinksFromFileAsList() throws IOException {
 
-        Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls.txt"));
+        Stream<String> stream = Files.lines(Paths.get("src/main/resources/urls1.txt"));
 
         List<String> urlList = new ArrayList<>();
 

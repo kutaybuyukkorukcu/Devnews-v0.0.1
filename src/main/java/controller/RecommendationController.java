@@ -42,13 +42,13 @@ public class RecommendationController {
 
                 return new Gson().toJson(
                         new StandardResponse(StatusResponse.ERROR, StatusResponse.ERROR.getStatusCode(),
-                                StatusResponse.ERROR.getMessage()));
+                                "recom controller"));
             }
 
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, StatusResponse.SUCCESS.getStatusCode(),
                             StatusResponse.SUCCESS.getMessage(),
-                            new Gson().toJsonTree(initializeLists.recommendedArticles.toString())));
+                            new Gson().toJsonTree(initializeLists.recommendedArticles)));
             });
     }
 }

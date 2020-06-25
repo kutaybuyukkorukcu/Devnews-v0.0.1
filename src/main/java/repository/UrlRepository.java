@@ -55,7 +55,7 @@ public class UrlRepository implements IRepository<Url>{
     public List<Url> findAllByIsNew() {
         MongoCollection<Url> collection = database.getCollection("url", Url.class);
 
-        Document queryFilter = new Document("isNew", 1);
+        Document queryFilter = new Document("isNew", true);
 
         MongoCursor<Url> cursor = collection.find(queryFilter).iterator();
         List<Url> urlList = new ArrayList<>();
