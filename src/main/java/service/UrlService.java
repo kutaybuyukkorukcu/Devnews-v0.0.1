@@ -6,6 +6,7 @@ import repository.UrlRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class UrlService {
 
@@ -46,5 +47,14 @@ public class UrlService {
         }
 
         return articleLinkList;
+    }
+
+    public Optional<Url> articleLinkToUrl(String articleLink) {
+        Url url = new Url();
+
+        url.setArticleLink(articleLink);
+        url.setIsNew(true);
+
+        return Optional.ofNullable(url);
     }
 }

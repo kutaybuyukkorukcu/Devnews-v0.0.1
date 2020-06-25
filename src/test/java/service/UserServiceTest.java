@@ -66,7 +66,22 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_getUserById() {
+    public void test_findUserById_whenIdOfAUserIsNotPresent() {
+
+        int id = 1;
+
+        when(userRepository.findById(id)).thenReturn(null);
+
+        User expectedUser = userService.findUserById(id).get();
+
+        assertThat(expectedUser).isEqualTo(null);
+
+        verify(userRepository).findById(id);
+        verifyNoMoreInteractions(userService);
+    }
+
+    @Test
+    public void test_findUserById_whenIdOfAUserIsPresent() {
 
         User user = new User("kutay", "password");
         int id = 1;
@@ -79,7 +94,22 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_getUserByUsername() {
+    public void test_findUserByUsername_whenUsernameOfAUserIsNotPresent() {
+
+        String username = "kutay";
+
+        when(userRepository.findByUsername(username)).thenReturn(null);
+
+        User expectedUser = userService.findUserByUsername(username).get();
+
+        assertThat(expectedUser).isEqualTo(null);
+
+        verify(userRepository).findByUsername(username);
+        verifyNoMoreInteractions(userService);
+    }
+
+    @Test
+    public void test_findUserByUsername_whenUsernameOfAUserIsPresent() {
 
         User user = new User("kutay", "password");
         String username = "kutay";

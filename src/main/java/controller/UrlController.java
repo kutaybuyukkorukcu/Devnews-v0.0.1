@@ -49,7 +49,7 @@ public class UrlController {
             }
 
             for (String articleLink : articleLinkList) {
-                Optional<Url> url = crawlerService.articleLinkToUrl(articleLink);
+                Optional<Url> url = urlService.articleLinkToUrl(articleLink);
 
                 if (!url.isPresent()) {
                     return new Gson().toJson(

@@ -46,7 +46,7 @@ public class CrawlerService {
 
         doc = Jsoup.connect(articleLink).get();
 
-        // TODO : logging and handling
+        // TODO : logging and handling null articleLink
 
         String topic = doc.select("div.article__category > a[title]").text();
         String mainTopic = validator.validate(topic);
@@ -72,7 +72,7 @@ public class CrawlerService {
         article.setTitle(title);
         article.setMainTopic(mainTopic);
         article.setRelatedTopics(relatedTopics);
-        article.setIsNew(1);
+        article.setIsNew(true);
 
         return article;
     }
@@ -110,20 +110,17 @@ public class CrawlerService {
         }
 
         return urlList;
+
     }
 
-    public Optional<Url> articleLinkToUrl(String articleLink) {
-        Url url = new Url();
-
-        url.setArticleLink(articleLink);
-        url.setIsNew(true);
-
-        return Optional.ofNullable(url);
-    }
 
     public Optional<Like> articleLinkToLike(String articleLink) {
 
         Article article = articleRepository.findByArticleLink(articleLink);
+
+        if (article == null) {
+            return Optional.empty();
+        }
 
         Like like = new Like();
 

@@ -33,17 +33,21 @@ public class LikeServiceTest {
     LikeService likeService;
 
     @Test
-    public void test_addLike_whenNoLikesArePresent() {
+    public void test_getNewLikes_whenFindAllByIsNewIsNotPresent() {
 
+        when(likeRepository.findAllByIsNew()).thenReturn(null);
+
+        List<Like> expectedLikeList = likeService.getNewLikes();
+
+        List<Like> likeList = new ArrayList();
+
+        verify(likeRepository).findAllByIsNew();
+        assertThat(likeList).isEqualTo(expectedLikeList);
+        verifyNoMoreInteractions(likeService);
     }
 
     @Test
-    public void test_addLike_whenSingleLikeIsPresent() {
-
-    }
-
-    @Test
-    public void test_getLikes() {
+    public void test_getNewLikes_whenFindAllByIsNewIsPresent() {
         Like like = new Like("What's new with Java 11", "Development", true);
         Like like1 = new Like("Comprehensive guide to unit testing", "Development", true);
 
@@ -58,7 +62,7 @@ public class LikeServiceTest {
         verify(likeRepository).findAllByIsNew();
 
         assertThat(likeList).isEqualTo(expectedLikeList);
-        verifyNoMoreInteractions();
+        verifyNoMoreInteractions(likeService);
     }
 
     // getArticleLinksAsList() bos donsun ve exception firlatsin
@@ -73,7 +77,7 @@ public class LikeServiceTest {
                 .when(likeService).addLikedArticlesIntoLikeCollection();
 
         verify(urlService).getArticleLinksAsList();
-        verifyNoMoreInteractions();
+        verifyNoMoreInteractions(likeService);
     }
 
     // getArticleLinkAsList() dolu donsun, articleLinkToLike(articleLink) bos donsun ve exception firlatsin
@@ -87,9 +91,9 @@ public class LikeServiceTest {
         verify(urlService).getArticleLinksAsList();
 
         String articleLink = "www.infoq.com/Whats-new-with-Java-11";
-        Like like = new Like();
 
-        when(crawlerService.articleLinkToLike(articleLink).get()).thenReturn(like);
+        // null yerine empty optional object mi getirilmeli?
+        when(crawlerService.articleLinkToLike(articleLink).get()).thenReturn(null);
 
         doThrow(new ResourceNotFoundException())
                 .doNothing()
@@ -97,12 +101,12 @@ public class LikeServiceTest {
 
 
         verify(crawlerService).articleLinkToLike(articleLink);
-        verifyNoMoreInteractions();
+        verifyNoMoreInteractions(likeService);
     }
 
     // her iki fonksiyon da dolu donsun ve likeRepository gerceklessin
     @Test
-    public void test_addLikedArticlesIntoLikeCollection_whenAllDatasArePresent() {
+    public void test_addLikedArticlesIntoLikeCollection_whenEverythingIsPresent() {
         List<String> articleLinkList = new ArrayList();
         articleLinkList.add("www.infoq.com/Whats-new-with-Java-11");
         articleLinkList.add("www.dzone.com/Comprehensive-guide-to-unit-testing");
@@ -117,7 +121,7 @@ public class LikeServiceTest {
         verify(crawlerService).articleLinkToLike(articleLink);
 
         verify(likeRepository).add(like);
-        verifyNoMoreInteractions();
+        verifyNoMoreInteractions(likeService);
     }
 
 }

@@ -132,6 +132,9 @@ public class RecommendationService {
             JsonObject jsonObject = getRecommendation(like.getTitle());
 
             // TODO : handle empty jsonObject -> If the whole jsonObject is null then throw exception otherwise catch
+            if (jsonObject.isJsonNull()) {
+                throw new ResourceNotFoundException();
+            }
 
             if (like.getMainTopic().equals(MainTopics.DEVELOPMENT.getMainTopic())) {
                 recommendationIntoRecommendationList(jsonObject, initializeLists.development);

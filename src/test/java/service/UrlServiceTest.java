@@ -1,5 +1,6 @@
 package service;
 
+import domain.Article;
 import domain.Url;
 import domain.User;
 import org.junit.Test;
@@ -28,13 +29,11 @@ public class UrlServiceTest {
     @Test
     public void test_addUrl_whenNoUrlsArePresent() {
 
-        Url url = new Url();
-
         doThrow(new NullPointerException())
                 .doNothing()
-                .when(urlService).addUrl(url);
+                .when(urlService).addUrl(null);
 
-        verify(urlRepository).add(url);
+        verify(urlRepository).add(null);
         verifyNoMoreInteractions(urlService);
     }
 
@@ -50,7 +49,21 @@ public class UrlServiceTest {
     }
 
     @Test
-    public void test_getArticleLinks() {
+    public void test_getArticleLinksAsList_whenFindAllByIsNewIsNotPresent() {
+
+        when(urlRepository.findAllByIsNew()).thenReturn(null);
+
+        List<String> expectedArticleLinkList = urlService.getArticleLinksAsList();
+        List<String> emptyList = new ArrayList<>();
+
+        assertThat(expectedArticleLinkList).isEqualTo(emptyList);
+
+        verify(urlRepository).findAllByIsNew();
+        verifyNoMoreInteractions(urlService);
+    }
+
+    @Test
+    public void test_getArticleLinksAsList_whenFindAllByIsNewIsPresent() {
 
         Url url = new Url("www.infoq.com/Whats-new-with-Java-11", true);
         Url url1 = new Url("www.dzone.com/Comprehensive-guide-to-unit-testing", true);
@@ -66,6 +79,23 @@ public class UrlServiceTest {
         verify(urlRepository).findAllByIsNew();
 
         assertThat(articleLinkList).isEqualTo(expectedArticleLinkList);
-        verifyNoMoreInteractions();
+        verifyNoMoreInteractions(urlService);
+    }
+
+    @Test
+    public void test_articleLinkToUrl_whenArticleLinkIsNotPresent() {
+
+        Url url = urlService.articleLinkToUrl(null).get();
+
+        assertThat(url).isEqualTo(null);
+    }
+
+    @Test
+    public void test_articleLinkToUrl_whenArticleLinkIsPresent() {
+
+        Url url = urlService.articleLinkToUrl("stub-article-link").get();
+
+        assertThat(url.getArticleLink()).isEqualTo("stub-article-link");
+        assertThat(url.getIsNew()).isEqualTo(true);
     }
 }
