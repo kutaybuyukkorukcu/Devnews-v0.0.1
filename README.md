@@ -1,1 +1,1 @@
-# InfoQCrawler
+# Devnews v0.0.1
